@@ -1,0 +1,45 @@
+export com.zhengchalei.cloud.platform.modules.sys.domain.SysDepartment
+    -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
+
+specification SysDepartmentPageSpecification {
+    like/i(name)
+    eq(status)
+    like/i(description)
+    id(parent)
+    ge(createTime) as startTime
+    le(createTime) as endTime
+}
+
+SysDepartmentTreeView {
+    #allScalars
+    children*
+}
+
+SysDepartmentTreeRootView {
+    #allScalars
+}
+
+SysDepartmentPageView {
+    #allScalars
+}
+
+SysDepartmentDetailView {
+    #allScalars
+}
+
+input SysDepartmentCreateInput {
+    name
+    sort
+    status
+    id(parent)
+    description
+}
+
+input SysDepartmentUpdateInput {
+    id!
+    name
+    sort
+    status
+    id(parent)
+    description
+}

@@ -1,0 +1,37 @@
+export com.zhengchalei.cloud.platform.modules.sys.domain.SysDict
+    -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
+
+specification SysDictPageSpecification {
+    like/i(name)
+    like/i(code)
+    like/i(description)
+    eq(status)
+}
+
+SysDictPageView {
+    #allScalars
+}
+
+SysDictDetailView {
+    #allScalars
+    dictItems {
+        #allScalars
+    }
+}
+
+input SysDictCreateInput {
+    name
+    code
+    sort
+    status
+    description
+}
+
+input SysDictUpdateInput {
+    id!
+    name
+    code
+    sort
+    status
+    description
+}

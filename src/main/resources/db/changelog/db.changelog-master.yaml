@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db.changelog-sys.1.0.xml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-sys-data.1.0.xml
+      relativeToChangelogFile: true

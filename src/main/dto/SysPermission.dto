@@ -1,0 +1,41 @@
+export com.zhengchalei.cloud.platform.modules.sys.domain.SysPermission
+    -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
+
+specification SysPermissionPageSpecification {
+    like/i(name)
+    like/i(code)
+    like/i(description)
+    id(parent)
+}
+
+SysPermissionTreeView {
+    #allScalars
+    children*
+}
+
+SysPermissionTreeRootView {
+    #allScalars
+}
+
+SysPermissionPageView {
+    #allScalars
+}
+
+SysPermissionDetailView {
+    #allScalars
+}
+
+input SysPermissionCreateInput {
+    name
+    code
+    id(parent)
+    description
+}
+
+input SysPermissionUpdateInput {
+    id!
+    name
+    code
+    id(parent)
+    description
+}

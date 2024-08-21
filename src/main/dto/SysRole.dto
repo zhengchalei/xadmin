@@ -1,0 +1,42 @@
+export com.zhengchalei.cloud.platform.modules.sys.domain.SysRole
+    -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
+
+specification SysRolePageSpecification {
+    like/i(name)
+    like/i(code)
+    like/i(description)
+    flat(permissions) {
+        eq(id)
+    }
+    ge(createTime) as startTime
+    le(createTime) as endTime
+}
+
+SysRolePageView {
+    #allScalars
+    permissions {
+        #allScalars
+    }
+}
+
+SysRoleDetailView {
+    #allScalars
+    permissions {
+        #allScalars
+    }
+}
+
+input SysRoleCreateInput {
+    name
+    code
+    description
+    id(permissions) as permissionIds
+}
+
+input SysRoleUpdateInput {
+    id!
+    name
+    code
+    description
+    id(permissions) as permissionIds
+}

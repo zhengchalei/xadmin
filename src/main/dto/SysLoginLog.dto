@@ -1,0 +1,22 @@
+export com.zhengchalei.cloud.platform.modules.sys.domain.SysLoginLog
+    -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
+
+specification SysLoginLogPageSpecification {
+    like/i(username)
+    like/i(password)
+    like/i(ip)
+    like/i(address)
+    eq(status)
+    eq(tenant)
+    like/i(errorMessage)
+    ge(loginTime) as startTime
+    le(loginTime) as endTime
+}
+
+SysLoginLogPageView {
+    #allScalars
+}
+
+SysLoginLogDetailView {
+    #allScalars
+}

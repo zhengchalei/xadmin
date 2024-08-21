@@ -1,0 +1,74 @@
+export com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
+    -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
+
+specification SysUserPageSpecification {
+    like/i(username)
+    like/i(email)
+    eq(status)
+    like/i(phoneNumber)
+    eq(gender)
+    id(department)
+    id(posts)
+    flat(roles) {
+        eq(id)
+    }
+    ge(createTime) as startTime
+    le(createTime) as endTime
+}
+
+SysUserPageView {
+    #allScalars
+    roles {
+        #allScalars
+        permissions {
+            #allScalars
+        }
+    }
+    department {
+        #allScalars
+    }
+    posts {
+        #allScalars
+    }
+}
+
+SysUserDetailView {
+    #allScalars
+    roles {
+        #allScalars
+        permissions {
+            #allScalars
+        }
+    }
+    department {
+        #allScalars
+    }
+    posts {
+        #allScalars
+    }
+}
+
+input SysUserCreateInput {
+    username
+    email
+    gender
+    phoneNumber
+    birthday
+    id(department)
+    id(posts)
+    status
+    id(roles) as roleIds
+}
+
+input SysUserUpdateInput {
+    id!
+    username
+    email
+    gender
+    phoneNumber
+    birthday
+    id(department)
+    id(posts)
+    status
+    id(roles) as roleIds
+}

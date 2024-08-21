@@ -1,0 +1,33 @@
+export com.zhengchalei.cloud.platform.modules.sys.domain.SysPosts
+    -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
+
+specification SysPostsPageSpecification {
+    like/i(name)
+    eq(status)
+    like/i(description)
+    ge(createTime) as startTime
+    le(createTime) as endTime
+}
+
+SysPostsPageView {
+    #allScalars
+}
+
+SysPostsDetailView {
+    #allScalars
+}
+
+input SysPostsCreateInput {
+    name
+    sort
+    status
+    description
+}
+
+input SysPostsUpdateInput {
+    id!
+    name
+    sort
+    status
+    description
+}

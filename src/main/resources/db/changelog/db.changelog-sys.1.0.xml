@@ -1,0 +1,418 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="郑查磊" id="创建租户表">
+        <createTable tableName="sys_tenant">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="租户名称" type="VARCHAR(255)" >
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="code" remarks="租户编码" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_name" remarks="负责人" type="VARCHAR(255)"/>
+            <column name="contact_phone_number" remarks="租户电话" type="VARCHAR(255)"/>
+            <column name="domain" remarks="域名" type="VARCHAR(255)"/>
+            <column name="logo" remarks="logo" type="VARCHAR(255)"/>
+            <column name="address" remarks="地址" type="VARCHAR(255)"/>
+            <column name="description" remarks="描述" type="VARCHAR(255)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="郑查磊" id="创建部门表">
+        <createTable tableName="sys_department">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="部门名称" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_id" remarks="父级ID" type="BIGINT"/>
+            <column defaultValueNumeric="0" name="sort" remarks="排序" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" remarks="描述" type="VARCHAR(255)"/>
+            <column name="tenant" remarks="租户" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint columnNames="parent_id, name, tenant" constraintName="uk_sys_department_parent_id_name"
+                             tableName="sys_department"/>
+        <addForeignKeyConstraint baseTableName="sys_department" baseColumnNames="tenant"
+                                 constraintName="fk_sys_department_tenant"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="code" referencedTableName="sys_tenant" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="sys_department"
+                                 constraintName="fk_sys_department_parent_id" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_department" validate="true"/>
+    </changeSet>
+    <changeSet author="郑查磊" id="创建字典表">
+        <createTable tableName="sys_dict">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="字典名称" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" remarks="字典编码" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" remarks="描述" type="VARCHAR(255)"/>
+            <column defaultValueNumeric="0" name="sort" remarks="排序" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="郑查磊" id="创建字典详情表">
+        <createTable tableName="sys_dict_item">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="字典名称" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" remarks="字典编码" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="data" remarks="字典值" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" remarks="描述" type="VARCHAR(255)"/>
+            <column defaultValueNumeric="0" name="sort" remarks="排序" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="dict_id" remarks="字典id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex associatedWith="" indexName="fk_sys_dict_item_dict_id" tableName="sys_dict_item">
+            <column defaultValueNumeric="0" name="dict_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseColumnNames="dict_id" baseTableName="sys_dict_item"
+                                 constraintName="fk_sys_dict_item_dict_id" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_dict" validate="true"/>
+    </changeSet>
+    <changeSet author="郑查磊" id="创建权限表">
+        <createTable tableName="sys_permission">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="权限名称" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="code" remarks="权限标识" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="parent_id" remarks="父级ID" type="BIGINT"/>
+            <column defaultValueNumeric="1" name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" remarks="备注" type="VARCHAR(255)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint columnNames="parent_id, code" constraintName="uk_sys_permission_parent_id_code"
+                             tableName="sys_permission"/>
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="sys_permission"
+                                 constraintName="fk_sys_permission_parent_id" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_permission" validate="true"/>
+    </changeSet>
+    <changeSet author="郑查磊" id="创建岗位表">
+        <createTable tableName="sys_posts">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="岗位名称" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="sort" remarks="排序" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" remarks="描述" type="VARCHAR(255)"/>
+            <column name="tenant" remarks="租户" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="tenant" baseTableName="sys_posts"
+                                 constraintName="fk_sys_posts_tenant"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="code" referencedTableName="sys_tenant" validate="true"/>
+    </changeSet>
+    <changeSet author="郑查磊" id="创建角色表">
+        <createTable tableName="sys_role">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="角色名称" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" remarks="角色标识" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" remarks="备注" type="VARCHAR(255)"/>
+            <column name="tenant" remarks="租户" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="tenant" baseTableName="sys_role"
+                                 constraintName="fk_sys_role_tenant"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="code" referencedTableName="sys_tenant" validate="true"/>
+    </changeSet>
+    <changeSet author="郑查磊" id="创建角色权限中间表">
+        <createTable tableName="sys_role_permission">
+            <column name="role_id" remarks="角色ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="permission_id" remarks="权限ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <createIndex associatedWith="" indexName="fk_sys_role_permission_permission_id" tableName="sys_role_permission">
+            <column name="permission_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="sys_role_permission"
+                                 constraintName="fk_sys_role_permission_permission_id" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_permission" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="sys_role_permission"
+                                 constraintName="fk_sys_role_permission_role_id" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_role" validate="true"/>
+    </changeSet>
+    <changeSet author="郑查磊" id="创建用户表">
+        <createTable tableName="sys_user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="username" remarks="用户名" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" remarks="密码" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" remarks="邮箱" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" remarks="手机号" type="VARCHAR(20)">
+                <constraints/>
+            </column>
+            <column name="gender" remarks="性别" type="VARCHAR(20)"/>
+            <column name="birthday" remarks="生日" type="DATE"/>
+            <!--      岗位      -->
+            <column name="posts_id" remarks="岗位ID" type="BIGINT"/>
+            <column name="department_id" remarks="部门ID" type="BIGINT"/>
+            <column name="avatar" remarks="头像" type="VARCHAR(255)"/>
+            <column defaultValueNumeric="1" name="status" remarks="状态  false：禁用   true：正常" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant" remarks="租户" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="posts_id" baseTableName="sys_user" constraintName="fk_sys_user_posts_id"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_posts" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="department_id" baseTableName="sys_user"
+                                 constraintName="fk_sys_user_department_id" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_department" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="tenant" baseTableName="sys_user"
+                                 constraintName="fk_sys_user_tenant"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="code" referencedTableName="sys_tenant" validate="true"/>
+    </changeSet>
+    <changeSet author="郑查磊" id="创建用户角色关联表">
+        <createTable tableName="sys_user_role">
+            <column name="user_id" remarks="用户ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="role_id" remarks="角色ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <createIndex associatedWith="" indexName="fk_sys_user_role_role_id" tableName="sys_user_role">
+            <column name="role_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="sys_user_role"
+                                 constraintName="fk_sys_user_role_role_id" deferrable="false" initiallyDeferred="false"
+                                 onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+                                 referencedTableName="sys_role" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="sys_user_role"
+                                 constraintName="fk_sys_user_role_user_id" deferrable="false" initiallyDeferred="false"
+                                 onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+                                 referencedTableName="sys_user" validate="true"/>
+    </changeSet>
+
+    <changeSet author="郑查磊" id="创建日志表">
+        <createTable tableName="sys_log">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="日志名称" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" remarks="用户id" type="BIGINT"/>
+            <column name="department_id" remarks="部门id" type="BIGINT"/>
+            <column name="method" remarks="请求方法" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="http_method" remarks="http method" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="url" remarks="请求路径" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="request_data" remarks="请求参数" type="json"/>
+            <column name="response_data" remarks="响应结果" type="json"/>
+            <column name="time" remarks="请求耗时" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ip" remarks="IP地址" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" remarks="操作地点" type="VARCHAR(255)"/>
+            <column name="status" remarks="状态" type="bit(1)" defaultValueComputed="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="error_stack" remarks="异常堆栈" type="text"/>
+            <column name="tenant" remarks="租户" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="sys_log" constraintName="fk_sys_log_user_id"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="department_id" baseTableName="sys_log"
+                                 constraintName="fk_sys_log_department_id" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_department" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="tenant" baseTableName="sys_log"
+                                 constraintName="fk_sys_log_tenant"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="code" referencedTableName="sys_tenant" validate="true"/>
+    </changeSet>
+
+    <changeSet author="郑查磊" id="创建登录日志">
+        <createTable tableName="sys_login_log">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="username" remarks="用户名" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" remarks="密码" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login_time" remarks="登录时间" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ip" remarks="IP地址" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" remarks="操作地点" type="VARCHAR(255)"/>
+            <column name="status" remarks="登录状态 (0: 失败, 1: 成功)" type="bit(1)" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="error_message" remarks="失败原因" type="VARCHAR(255)"/>
+            <column name="user_id" remarks="用户id" type="BIGINT"/>
+            <column name="tenant" remarks="租户" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="sys_login_log"
+                                 constraintName="fk_sys_login_log_user_id" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="tenant" baseTableName="sys_login_log"
+                                 constraintName="fk_sys_login_log_tenant" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="code" referencedTableName="sys_tenant" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

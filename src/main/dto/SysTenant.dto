@@ -1,0 +1,48 @@
+export com.zhengchalei.cloud.platform.modules.sys.domain.SysTenant
+    -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
+
+specification SysTenantPageSpecification {
+    like/i(name)
+    like/i(code)
+    like/i(contactName)
+    like/i(contactPhoneNumber)
+    like/i(domain)
+    like/i(address)
+    eq(status)
+    like/i(description)
+    ge(createTime) as startTime
+    le(createTime) as endTime
+}
+
+SysTenantPageView {
+    #allScalars
+}
+
+SysTenantDetailView {
+    #allScalars
+}
+
+input SysTenantCreateInput {
+    name
+    code
+    status
+    contactName
+    contactPhoneNumber
+    domain
+    logo
+    address
+    description
+}
+
+input SysTenantUpdateInput {
+    id!
+    name
+    code
+    status
+    contactName
+    contactPhoneNumber
+    domain
+    logo
+    address
+    description
+}
