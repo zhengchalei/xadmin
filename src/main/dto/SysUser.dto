@@ -9,9 +9,7 @@ specification SysUserPageSpecification {
     eq(gender)
     id(department)
     id(posts)
-    flat(roles) {
-        eq(id)
-    }
+    id(roles) as roleId
     ge(createTime) as startTime
     le(createTime) as endTime
 }

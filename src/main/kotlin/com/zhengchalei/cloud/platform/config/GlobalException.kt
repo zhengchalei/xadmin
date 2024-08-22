@@ -2,6 +2,7 @@ package com.zhengchalei.cloud.platform.config
 
 import com.zhengchalei.cloud.platform.commons.R
 import org.springframework.security.authorization.AuthorizationDeniedException
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
@@ -58,6 +59,12 @@ class GlobalException {
     fun handleAccessDeniedException(e: AccessDeniedException): R<Boolean> {
         logger.error("权限不足", e)
         return R(errorMessage = "权限不足, 请联系管理员", success = false, errorCode = 403)
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): R<Boolean> {
+        logger.error("参数错误", e)
+        return R(errorMessage = e.bindingResult.allErrors[0].defaultMessage, success = false, errorCode = 500)
     }
 
 }
