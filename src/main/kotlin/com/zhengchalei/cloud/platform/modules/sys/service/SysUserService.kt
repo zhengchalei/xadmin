@@ -4,13 +4,12 @@ import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.ServiceException
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.by
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserCreateInput
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserPageSpecification
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserUpdateInput
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysUserRepository
 import org.babyfish.jimmer.kt.new
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -26,7 +25,8 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(rollbackFor = [Exception::class])
 class SysUserService(
     private val sysUserRepository: SysUserRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val jdbcTemplate: JdbcTemplate
 ) {
 
     private val logger = org.slf4j.LoggerFactory.getLogger(SysUserService::class.java)
@@ -51,8 +51,22 @@ class SysUserService(
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysUserPage(specification: SysUserPageSpecification, pageable: Pageable) =
-        this.sysUserRepository.findPage(specification, pageable)
+    fun findSysUserPage(specification: SysUserPageSpecification, pageable: Pageable): Page<SysUserPageView> {
+        val sql = """
+            WITH RECURSIVE DepartmentHierarchy AS (
+                SELECT id FROM sys_department WHERE id = ?
+                UNION ALL
+                SELECT d.id FROM sys_department d
+                INNER JOIN DepartmentHierarchy dh ON d.parent_id = dh.id
+            )
+            SELECT id FROM DepartmentHierarchy
+        """
+        if (specification.departmentId != null) {
+            val sysDepartmentIds = jdbcTemplate.queryForList(sql, Long::class.java, specification.departmentId)
+            return this.sysUserRepository.findPage(specification, pageable, sysDepartmentIds)
+        }
+        return this.sysUserRepository.findPage(specification, pageable)
+    }
 
     /**
      * 创建系统用户

@@ -9,6 +9,7 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserPageView
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.spring.repository.fetchSpringPage
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.valueIn
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -22,13 +23,31 @@ interface SysUserRepository : KRepository<SysUser, Long> {
         )
     }.fetchOne()
 
-    fun findPage(specification: SysUserPageSpecification, pageable: Pageable): Page<SysUserPageView> =
-        sql.createQuery(SysUser::class) {
+    fun findPage(specification: SysUserPageSpecification, pageable: Pageable): Page<SysUserPageView> {
+        return sql.createQuery(SysUser::class) {
             where(specification)
             select(
                 table.fetch(SysUserPageView::class)
             )
         }.fetchSpringPage(pageable)
+    }
+
+
+    fun findPage(
+        specification: SysUserPageSpecification,
+        pageable: Pageable,
+        sysDepartmentIds: List<Long>
+    ): Page<SysUserPageView> {
+        specification.departmentId = null
+        return sql.createQuery(SysUser::class) {
+            where(specification)
+            where(table.departmentId valueIn sysDepartmentIds)
+            select(
+                table.fetch(SysUserPageView::class)
+            )
+        }.fetchSpringPage(pageable)
+    }
+
 
     fun findList(specification: SysUserPageSpecification): List<SysUserPageView> = sql.createQuery(SysUser::class) {
         where(specification)

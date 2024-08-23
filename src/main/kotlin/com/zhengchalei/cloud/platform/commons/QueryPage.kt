@@ -6,12 +6,10 @@ import org.springframework.data.domain.Sort
 class QueryPage(
     val currentPage: Int = 1,
     val pageSize: Int = 10,
-    val sortDirection: Sort.Direction = Sort.Direction.ASC,
-    val sortProperty: String = "id",
 ) {
 
     fun sort(): Sort {
-        return Sort.by(sortDirection, sortProperty)
+        return Sort.by(Sort.Direction.ASC, "id")
     }
 
     fun page(): PageRequest {

@@ -24,6 +24,9 @@ kotlin {
 
 jimmer {
 	version = "latest.release"
+	dto {
+		mutable = true
+	}
 }
 
 repositories {
