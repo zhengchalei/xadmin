@@ -26,16 +26,13 @@ SysPermissionDetailView {
 }
 
 input SysPermissionCreateInput {
-    name
-    code
+    #allScalars(this)
     id(parent)
-    description
+    -id
 }
 
 input SysPermissionUpdateInput {
+    #allScalars(this)
     id!
-    name
-    code
     id(parent)
-    description
 }

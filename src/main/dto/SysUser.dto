@@ -47,26 +47,19 @@ SysUserDetailView {
 }
 
 input SysUserCreateInput {
-    username
-    email
-    gender
-    phoneNumber
-    birthday
+    #allScalars(this)
     id(department)
     id(posts)
-    status
     id(roles) as roleIds
+    -id
+    -password
 }
 
 input SysUserUpdateInput {
+    #allScalars(this)
     id!
-    username
-    email
-    gender
-    phoneNumber
-    birthday
     id(department)
     id(posts)
-    status
     id(roles) as roleIds
+    -password
 }

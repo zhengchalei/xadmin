@@ -20,18 +20,11 @@ SysDictDetailView {
 }
 
 input SysDictCreateInput {
-    name
-    code
-    sort
-    status
-    description
+    #allScalars(this)
+    -id
 }
 
 input SysDictUpdateInput {
+    #allScalars(this)
     id!
-    name
-    code
-    sort
-    status
-    description
 }

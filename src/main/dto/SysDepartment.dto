@@ -30,18 +30,13 @@ SysDepartmentDetailView {
 }
 
 input SysDepartmentCreateInput {
-    name
-    sort
-    status
+    #allScalars(this)
     id(parent)
-    description
+    -id
 }
 
 input SysDepartmentUpdateInput {
+    #allScalars(this)
     id!
-    name
-    sort
-    status
     id(parent)
-    description
 }

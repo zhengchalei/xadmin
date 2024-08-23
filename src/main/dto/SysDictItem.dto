@@ -25,22 +25,13 @@ SysDictItemDetailView {
 }
 
 input SysDictItemCreateInput {
-    name
-    code
-    data
-    sort
-    status
-    description
+    #allScalars(this)
     id(dict) as dictId
+    -id
 }
 
 input SysDictItemUpdateInput {
+    #allScalars(this)
     id!
-    name
-    code
-    data
-    sort
-    status
-    description
     id(dict) as dictId
 }

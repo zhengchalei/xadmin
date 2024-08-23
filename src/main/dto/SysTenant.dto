@@ -23,26 +23,11 @@ SysTenantDetailView {
 }
 
 input SysTenantCreateInput {
-    name
-    code
-    status
-    contactName
-    contactPhoneNumber
-    domain
-    logo
-    address
-    description
+    #allScalars(this)
+    -id
 }
 
 input SysTenantUpdateInput {
+    #allScalars(this)
     id!
-    name
-    code
-    status
-    contactName
-    contactPhoneNumber
-    domain
-    logo
-    address
-    description
 }

@@ -27,16 +27,13 @@ SysRoleDetailView {
 }
 
 input SysRoleCreateInput {
-    name
-    code
-    description
+    #allScalars(this)
     id(permissions) as permissionIds
+    -id
 }
 
 input SysRoleUpdateInput {
+    #allScalars(this)
     id!
-    name
-    code
-    description
     id(permissions) as permissionIds
 }

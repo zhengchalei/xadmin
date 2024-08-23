@@ -18,16 +18,11 @@ SysPostsDetailView {
 }
 
 input SysPostsCreateInput {
-    name
-    sort
-    status
-    description
+    #allScalars(this)
+    -id
 }
 
 input SysPostsUpdateInput {
+    #allScalars(this)
     id!
-    name
-    sort
-    status
-    description
 }

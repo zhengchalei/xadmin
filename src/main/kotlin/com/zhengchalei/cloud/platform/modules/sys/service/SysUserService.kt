@@ -1,6 +1,7 @@
 package com.zhengchalei.cloud.platform.modules.sys.service
 
 import com.zhengchalei.cloud.platform.commons.Const
+import com.zhengchalei.cloud.platform.config.ServiceException
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.by
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserCreateInput
@@ -60,7 +61,7 @@ class SysUserService(
      */
     fun createSysUser(sysUserCreateInput: SysUserCreateInput): SysUserDetailView {
         if (sysUserCreateInput.username == Const.ADMIN_USER || sysUserCreateInput.username == Const.SuperAdmin) {
-            throw IllegalArgumentException("用户名不能为 ${Const.ADMIN_USER}")
+            throw ServiceException("用户名不能为 ${Const.ADMIN_USER}")
         }
         // TODO 集成邮件后, 这里密码应该由邮件发送
         val newSysUser = new(SysUser::class).by(sysUserCreateInput.toEntity()) {
@@ -79,7 +80,7 @@ class SysUserService(
         val oldUser = this.sysUserRepository.findById(sysUserUpdateInput.id)
             .orElseThrow { throw IllegalArgumentException("用户不存在") }
         if (oldUser.username == Const.ADMIN_USER || oldUser.username == Const.SuperAdmin) {
-            throw IllegalArgumentException("${Const.ADMIN_USER} 不能修改用户名")
+            throw ServiceException("${Const.ADMIN_USER} 不能修改用户名")
         }
         val sysUser = this.sysUserRepository.update(sysUserUpdateInput)
         return findSysUserById(sysUser.id)
@@ -92,7 +93,7 @@ class SysUserService(
     fun deleteSysUserPageById(id: Long) {
         val sysUser = this.sysUserRepository.findById(id).orElseThrow { throw IllegalArgumentException("用户不存在") }
         if (sysUser.username == Const.ADMIN_USER || sysUser.username == Const.SuperAdmin) {
-            throw IllegalArgumentException("${sysUser.username} 不能删除")
+            throw ServiceException("${sysUser.username} 不能删除")
         }
         this.sysUserRepository.deleteById(id)
     }
