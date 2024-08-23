@@ -98,7 +98,7 @@ class SysUserControllerTest {
     }
 
     @Test
-    fun updateSysUserPageById() {
+    fun updateSysUserById() {
         mockMvc.post("/api/sys/user/update") {
             content = objectMapper.writeValueAsString(
                 SysUserUpdateInput(

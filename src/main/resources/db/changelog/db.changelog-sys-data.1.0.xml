@@ -31,13 +31,13 @@
                                  phone_number, tenant)
             values ('superAdmin', 'mail@gmail.com', '$2a$10$teGAavoNRwk36qcJQX9IaOHQoOYtnxnkakCMQKJwtDGMbULkVd5e2',
                     'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 1, 1, 1, 'MALE',
-                    '12345678902', 'default'),
+                    '16255198881', 'default'),
                    ('admin', 'mail@163.com', '$2a$10$teGAavoNRwk36qcJQX9IaOHQoOYtnxnkakCMQKJwtDGMbULkVd5e2',
                     'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 1, 1, 1, 'MALE',
-                    '12345678902', 'default'),
+                    '16255198882', 'default'),
                    ('editor', 'mail2@163.com', '$2a$10$teGAavoNRwk36qcJQX9IaOHQoOYtnxnkakCMQKJwtDGMbULkVd5e2',
                     'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 1, 1, 1, 'MALE',
-                    '12345678901', 'default');
+                    '16255198883', 'default');
 
             insert into sys_role(name, code, status, description, tenant)
             values ('超级管理员', 'admin', 1, '超级管理员', 'default'),

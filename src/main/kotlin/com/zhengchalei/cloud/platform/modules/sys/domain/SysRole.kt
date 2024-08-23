@@ -25,4 +25,7 @@ interface SysRole : TenantAware {
         inverseJoinColumnName = "permission_id"
     )
     val permissions: List<SysPermission>
+
+    @ManyToMany(mappedBy = "roles")
+    val users: List<SysUser>
 }

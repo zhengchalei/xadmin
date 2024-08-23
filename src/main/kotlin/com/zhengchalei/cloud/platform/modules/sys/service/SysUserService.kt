@@ -90,11 +90,15 @@ class SysUserService(
      * @param [sysUserUpdateInput] 系统用户更新输入
      * @return [SysUserDetailView]
      */
-    fun updateSysUserPageById(sysUserUpdateInput: SysUserUpdateInput): SysUserDetailView {
+    fun updateSysUserById(sysUserUpdateInput: SysUserUpdateInput): SysUserDetailView {
         val oldUser = this.sysUserRepository.findById(sysUserUpdateInput.id)
             .orElseThrow { throw IllegalArgumentException("用户不存在") }
         if (oldUser.username == Const.ADMIN_USER || oldUser.username == Const.SuperAdmin) {
             throw ServiceException("${Const.ADMIN_USER} 不能修改用户名")
+        }
+        // avatar
+        if (sysUserUpdateInput.avatar == null) {
+            sysUserUpdateInput.avatar = oldUser.avatar
         }
         val sysUser = this.sysUserRepository.update(sysUserUpdateInput)
         return findSysUserById(sysUser.id)
@@ -104,7 +108,7 @@ class SysUserService(
      * 删除系统用户分页通过ID
      * @param [id] ID
      */
-    fun deleteSysUserPageById(id: Long) {
+    fun deleteSysUserById(id: Long) {
         val sysUser = this.sysUserRepository.findById(id).orElseThrow { throw IllegalArgumentException("用户不存在") }
         if (sysUser.username == Const.ADMIN_USER || sysUser.username == Const.SuperAdmin) {
             throw ServiceException("${sysUser.username} 不能删除")

@@ -48,15 +48,15 @@ class SysUserController(
 
     @PreAuthorize("hasAuthority('sys:user:update') or hasRole('admin')")
     @PostMapping("/update")
-    fun updateSysUserPageById(@NotNull @RequestBody sysUserUpdateInput: SysUserUpdateInput): R<SysUserDetailView> {
-        val data = sysUserService.updateSysUserPageById(sysUserUpdateInput)
+    fun updateSysUserById(@NotNull @RequestBody sysUserUpdateInput: SysUserUpdateInput): R<SysUserDetailView> {
+        val data = sysUserService.updateSysUserById(sysUserUpdateInput)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:user:delete') or hasRole('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysUserPageById(@NotNull @PathVariable id: Long): R<Boolean> {
-        sysUserService.deleteSysUserPageById(id)
+    fun deleteSysUserById(@NotNull @PathVariable id: Long): R<Boolean> {
+        sysUserService.deleteSysUserById(id)
         return R()
     }
 }
