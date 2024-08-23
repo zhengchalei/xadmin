@@ -13,6 +13,11 @@ SysPermissionTreeView {
     children*
 }
 
+SysPermissionTreeSelectView {
+    #allScalars
+    children*
+}
+
 SysPermissionTreeRootView {
     #allScalars
 }

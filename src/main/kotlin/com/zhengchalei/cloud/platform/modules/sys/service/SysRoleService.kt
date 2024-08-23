@@ -1,6 +1,7 @@
 package com.zhengchalei.cloud.platform.modules.sys.service
 
 import com.zhengchalei.cloud.platform.commons.Const
+import com.zhengchalei.cloud.platform.config.ServiceException
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysRole
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRoleCreateInput
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRoleDetailView
@@ -54,7 +55,7 @@ class SysRoleService(
      */
     fun createSysRole(sysRoleCreateInput: SysRoleCreateInput): SysRoleDetailView {
         if (sysRoleCreateInput.code == Const.ADMIN_ROLE) {
-            throw IllegalArgumentException("角色不能为 ${Const.ADMIN_ROLE}")
+            throw ServiceException("角色不能为 ${Const.ADMIN_ROLE}")
         }
         val sysRole: SysRole = this.sysRoleRepository.insert(sysRoleCreateInput)
         return findSysRoleById(sysRole.id)
@@ -67,12 +68,12 @@ class SysRoleService(
      */
     fun updateSysRoleById(sysRoleUpdateInput: SysRoleUpdateInput): SysRoleDetailView {
         val oldRole = this.sysRoleRepository.findById(sysRoleUpdateInput.id)
-            .orElseThrow { IllegalArgumentException("角色不存在") }
+            .orElseThrow { ServiceException("角色不存在") }
         if (oldRole.code == Const.ADMIN_ROLE) {
-            throw IllegalArgumentException("角色不能为 ${Const.ADMIN_ROLE}")
+            throw ServiceException("${Const.ADMIN_ROLE} 不能修改")
         }
         if (sysRoleUpdateInput.code == Const.ADMIN_ROLE) {
-            throw IllegalArgumentException("角色不能为 ${Const.ADMIN_ROLE}")
+            throw ServiceException("${Const.ADMIN_ROLE} 不能修改")
         }
         val sysRole = this.sysRoleRepository.update(sysRoleUpdateInput)
         return findSysRoleById(sysRole.id)
@@ -83,9 +84,9 @@ class SysRoleService(
      * @param [id] ID
      */
     fun deleteSysRoleById(id: Long) {
-        val sysRole = this.sysRoleRepository.findById(id).orElseThrow { IllegalArgumentException("角色不存在") }
+        val sysRole = this.sysRoleRepository.findById(id).orElseThrow { ServiceException("角色不存在") }
         if (sysRole.code == Const.ADMIN_ROLE) {
-            throw IllegalArgumentException("${Const.ADMIN_ROLE} 不能删除")
+            throw ServiceException("${Const.ADMIN_ROLE} 不能删除")
         }
         this.sysRoleRepository.deleteById(id)
     }

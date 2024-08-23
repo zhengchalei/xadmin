@@ -6,6 +6,7 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.id
 import com.zhengchalei.cloud.platform.modules.sys.domain.parentId
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.spring.repository.fetchSpringPage
+import org.babyfish.jimmer.sql.kt.ast.expression.asc
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.isNull
 import org.springframework.data.domain.Page
@@ -23,6 +24,7 @@ interface SysPermissionRepository : KRepository<SysPermission, Long> {
 
     fun findPage(specification: SysPermissionPageSpecification, pageable: Pageable): Page<SysPermissionPageView> =
         sql.createQuery(SysPermission::class) {
+            orderBy(table.id.asc())
             where(specification)
             select(
                 table.fetch(SysPermissionPageView::class)
@@ -31,6 +33,7 @@ interface SysPermissionRepository : KRepository<SysPermission, Long> {
 
     fun findList(specification: SysPermissionPageSpecification): List<SysPermissionPageView> =
         sql.createQuery(SysPermission::class) {
+            orderBy(table.id.asc())
             where(specification)
             select(
                 table.fetch(SysPermissionPageView::class)
@@ -38,20 +41,34 @@ interface SysPermissionRepository : KRepository<SysPermission, Long> {
         }.execute()
 
 
-    fun findTree(specification: SysPermissionPageSpecification) = sql.createQuery(SysPermission::class) {
-        where(table.parentId.isNull())
-        where(specification)
-        select(
-            table.fetch(SysPermissionTreeView::class)
-        )
-    }.execute()
+    fun findTree(specification: SysPermissionPageSpecification) =
+        sql.createQuery(SysPermission::class) {
+            orderBy(table.id.asc())
+            where(table.parentId.isNull())
+            where(specification)
+            select(
+                table.fetch(SysPermissionTreeView::class)
+            )
+        }.execute()
 
-    fun treeRoot(specification: SysPermissionPageSpecification) = sql.createQuery(SysPermission::class) {
-        where(table.parentId.isNull())
-        where(specification)
-        select(
-            table.fetch(SysPermissionTreeRootView::class)
-        )
-    }.execute()
+    fun treeRoot(specification: SysPermissionPageSpecification) =
+        sql.createQuery(SysPermission::class) {
+            orderBy(table.id.asc())
+            where(table.parentId.isNull())
+            where(specification)
+            select(
+                table.fetch(SysPermissionTreeRootView::class)
+            )
+        }.execute()
+
+    fun treeSelect(specification: SysPermissionPageSpecification) =
+        sql.createQuery(SysPermission::class) {
+            orderBy(table.id.asc())
+            where(specification)
+            where(table.parentId.isNull())
+            select(
+                table.fetch(SysPermissionTreeSelectView::class)
+            )
+        }.execute()
 
 }

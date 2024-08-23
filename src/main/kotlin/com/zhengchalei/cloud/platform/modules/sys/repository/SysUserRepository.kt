@@ -10,6 +10,7 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserPageView
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.spring.repository.fetchSpringPage
 import org.babyfish.jimmer.sql.DissociateAction
+import org.babyfish.jimmer.sql.kt.ast.expression.asc
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.valueIn
 import org.springframework.data.domain.Page
@@ -25,14 +26,14 @@ interface SysUserRepository : KRepository<SysUser, Long> {
         )
     }.fetchOne()
 
-    fun findPage(specification: SysUserPageSpecification, pageable: Pageable): Page<SysUserPageView> {
-        return sql.createQuery(SysUser::class) {
+    fun findPage(specification: SysUserPageSpecification, pageable: Pageable): Page<SysUserPageView> =
+        sql.createQuery(SysUser::class) {
+            orderBy(table.id.asc())
             where(specification)
             select(
                 table.fetch(SysUserPageView::class)
             )
         }.fetchSpringPage(pageable)
-    }
 
 
     fun findPage(
@@ -42,6 +43,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
     ): Page<SysUserPageView> {
         specification.departmentId = null
         return sql.createQuery(SysUser::class) {
+            orderBy(table.id.asc())
             where(specification)
             where(table.departmentId valueIn sysDepartmentIds)
             select(
@@ -51,12 +53,14 @@ interface SysUserRepository : KRepository<SysUser, Long> {
     }
 
 
-    fun findList(specification: SysUserPageSpecification): List<SysUserPageView> = sql.createQuery(SysUser::class) {
-        where(specification)
-        select(
-            table.fetch(SysUserPageView::class)
-        )
-    }.execute()
+    fun findList(specification: SysUserPageSpecification): List<SysUserPageView> =
+        sql.createQuery(SysUser::class) {
+            orderBy(table.id.asc())
+            where(specification)
+            select(
+                table.fetch(SysUserPageView::class)
+            )
+        }.execute()
 
     fun currentUserInfo(): SysUser {
         val username = SecurityUtils.getCurrentUsername()

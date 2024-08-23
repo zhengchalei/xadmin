@@ -1,10 +1,7 @@
 package com.zhengchalei.cloud.platform.modules.sys.service
 
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysDepartment
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDepartmentCreateInput
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDepartmentDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDepartmentPageSpecification
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDepartmentUpdateInput
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysDepartmentRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -86,5 +83,8 @@ class SysDepartmentService(
      */
     fun findSysDepartmentTreeRoot(specification: SysDepartmentPageSpecification) =
         this.sysDepartmentRepository.findTreeRoot(specification)
+
+    fun findSysDepartmentTreeSelect(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeSelectView> =
+        this.sysDepartmentRepository.findTreeSelect(specification)
 
 }

@@ -56,6 +56,13 @@ class SysDepartmentController(
         return R(data = data)
     }
 
+    @PreAuthorize("hasAuthority('sys:department:tree-select') or hasRole('admin')")
+    @GetMapping("/tree-select")
+    fun findSysDepartmentTreeSelect(specification: SysDepartmentPageSpecification): R<List<SysDepartmentTreeSelectView>> {
+        val data = sysDepartmentService.findSysDepartmentTreeSelect(specification)
+        return R(data = data)
+    }
+
     @PreAuthorize("hasAuthority('sys:department:create') or hasRole('admin')")
     @PostMapping("/create")
     fun createSysDepartment(@NotNull @RequestBody sysDepartmentCreateInput: SysDepartmentCreateInput): R<SysDepartmentDetailView> {

@@ -92,7 +92,7 @@ class SysUserService(
      */
     fun updateSysUserById(sysUserUpdateInput: SysUserUpdateInput): SysUserDetailView {
         val oldUser = this.sysUserRepository.findById(sysUserUpdateInput.id)
-            .orElseThrow { throw IllegalArgumentException("用户不存在") }
+            .orElseThrow { throw ServiceException("用户不存在") }
         if (oldUser.username == Const.ADMIN_USER || oldUser.username == Const.SuperAdmin) {
             throw ServiceException("${Const.ADMIN_USER} 不能修改用户名")
         }
@@ -109,7 +109,7 @@ class SysUserService(
      * @param [id] ID
      */
     fun deleteSysUserById(id: Long) {
-        val sysUser = this.sysUserRepository.findById(id).orElseThrow { throw IllegalArgumentException("用户不存在") }
+        val sysUser = this.sysUserRepository.findById(id).orElseThrow { throw ServiceException("用户不存在") }
         if (sysUser.username == Const.ADMIN_USER || sysUser.username == Const.SuperAdmin) {
             throw ServiceException("${sysUser.username} 不能删除")
         }

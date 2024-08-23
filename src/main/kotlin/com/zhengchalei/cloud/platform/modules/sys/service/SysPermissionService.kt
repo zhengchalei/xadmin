@@ -87,4 +87,7 @@ class SysPermissionService(
     fun findSysPermissionTreeRoot(specification: SysPermissionPageSpecification) =
         this.sysPermissionRepository.treeRoot(specification)
 
+    fun findSysPermissionTreeSelect(specification: SysPermissionPageSpecification) =
+        this.sysPermissionRepository.treeSelect(specification)
+
 }

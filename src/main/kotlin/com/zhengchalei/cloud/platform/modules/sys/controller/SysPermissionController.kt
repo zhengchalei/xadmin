@@ -46,6 +46,13 @@ class SysPermissionController(
         return R(data = data)
     }
 
+    @PreAuthorize("hasAuthority('sys:permission:tree-select') or hasAnyRole('admin')")
+    @GetMapping("/tree-select")
+    fun findSysPermissionTreeSelect(specification: SysPermissionPageSpecification): R<List<SysPermissionTreeSelectView>> {
+        val data = sysPermissionService.findSysPermissionTreeSelect(specification)
+        return R(data = data)
+    }
+
     @PreAuthorize("hasAuthority('sys:permission:page') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysPermissionPage(
