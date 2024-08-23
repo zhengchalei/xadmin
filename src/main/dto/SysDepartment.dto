@@ -12,6 +12,8 @@ specification SysDepartmentPageSpecification {
 
 SysDepartmentTreeView {
     #allScalars
+    id as key
+    name as title
     children*
 }
 

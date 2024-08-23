@@ -10,6 +10,7 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserUpdateInput
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysUserRepository
 import org.babyfish.jimmer.kt.new
 import org.springframework.data.domain.Pageable
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -23,7 +24,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(rollbackFor = [Exception::class])
 class SysUserService(
-    private val sysUserRepository: SysUserRepository
+    private val sysUserRepository: SysUserRepository,
+    private val passwordEncoder: PasswordEncoder
 ) {
 
     private val logger = org.slf4j.LoggerFactory.getLogger(SysUserService::class.java)
@@ -62,7 +64,7 @@ class SysUserService(
         }
         // TODO 集成邮件后, 这里密码应该由邮件发送
         val newSysUser = new(SysUser::class).by(sysUserCreateInput.toEntity()) {
-            password = Const.DEFAULT_PASSWORD
+            password = passwordEncoder.encode(Const.DEFAULT_PASSWORD)
         }
         val sysUser: SysUser = this.sysUserRepository.insert(newSysUser)
         return findSysUserById(sysUser.id)
