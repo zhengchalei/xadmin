@@ -57,8 +57,8 @@ class TenantCaptchaAuthenticationProvider(
     }
 
     fun loadUserByUsername(username: String, password: String, tenant: String): UserDetails {
-        val user = sysUserRepository.findByUsernameAndTenant(username, tenant) ?: throw UserNotFoundException()
-        if (user.username == Const.SuperAdmin) {
+        if (username == Const.SuperAdmin) {
+            val user = sysUserRepository.findByUsername(username) ?: throw UserNotFoundException()
             if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
             return User(
                 username,
@@ -70,6 +70,8 @@ class TenantCaptchaAuthenticationProvider(
                 mutableListOf(SimpleGrantedAuthority(Const.SecurityRolePrifix + Const.ADMIN_ROLE))
             )
         }
+
+        val user = sysUserRepository.findByUsernameAndTenant(username, tenant) ?: throw UserNotFoundException()
         if (user.username == Const.ADMIN_USER) {
             if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
             return User(

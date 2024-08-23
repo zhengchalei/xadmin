@@ -39,4 +39,9 @@ object SecurityUtils {
         return getTenantCaptchaAuthenticationToken().tenant
     }
 
+    // 判断是否登录
+    fun isLogin(): Boolean {
+        return SecurityContextHolder.getContext().authentication is TenantCaptchaAuthenticationToken
+    }
+
 }

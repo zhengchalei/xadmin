@@ -12,6 +12,7 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.by
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysLoginLogRepository
 import org.babyfish.jimmer.kt.makeIdOnly
 import org.babyfish.jimmer.kt.new
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
@@ -35,6 +36,8 @@ class SysAuthService(
     val jwtProvider: JwtProvider,
     val userService: SysUserService,
 ) {
+
+    private val log = LoggerFactory.getLogger(SysAuthService::class.java)
 
     /**
      * 登录
@@ -62,9 +65,11 @@ class SysAuthService(
             val token: String = jwtProvider.createAccessToken(authentication)
             return token
         } catch (e: ServiceException) {
+            log.error("登录失败", e)
             saveLoginLog(username, password, false, e.message, ip, tenant)
             throw e
         } catch (e: Exception) {
+            log.error("登录失败", e)
             saveLoginLog(username, password, false, e.message, ip, tenant)
             throw LoginFailException()
         }

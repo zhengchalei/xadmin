@@ -13,8 +13,10 @@ import java.util.*
 class TenantFilter : KCacheableFilter<TenantAware> {
 
     override fun filter(args: KFilterArgs<TenantAware>) {
-        args.apply {
-            where(table.tenant.eq(SecurityUtils.getCurrentTenant()))
+        if (SecurityUtils.isLogin()) {
+            args.apply {
+                where(table.tenant.eq(SecurityUtils.getCurrentTenant()))
+            }
         }
     }
 

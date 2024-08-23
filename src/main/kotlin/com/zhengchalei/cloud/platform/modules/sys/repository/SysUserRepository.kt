@@ -1,5 +1,6 @@
 package com.zhengchalei.cloud.platform.modules.sys.repository
 
+import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.jimmer.TenantFilter
 import com.zhengchalei.cloud.platform.config.security.SecurityUtils
 import com.zhengchalei.cloud.platform.modules.sys.domain.*
@@ -58,8 +59,33 @@ interface SysUserRepository : KRepository<SysUser, Long> {
 
     fun currentUserInfo(): SysUser {
         val username = SecurityUtils.getCurrentUsername()
-        return sql.createQuery(SysUser::class) {
+        val sqlClient = if (username == Const.SuperAdmin) sql.filters {
+            disableByTypes(TenantFilter::class)
+        } else sql
+        return sqlClient
+            .createQuery(SysUser::class) {
+                where(table.username eq username)
+                select(
+                    table.fetchBy {
+                        allScalarFields()
+                        roles {
+                            allScalarFields()
+                            permissions {
+                                allScalarFields()
+                            }
+                        }
+                    }
+                )
+            }.fetchOne()
+    }
+
+    fun findByUsernameAndTenant(username: String, tenant: String) = sql
+        .filters {
+            disableByTypes(TenantFilter::class)
+        }
+        .createQuery(SysUser::class) {
             where(table.username eq username)
+            where(table.tenant eq tenant)
             select(
                 table.fetchBy {
                     allScalarFields()
@@ -71,16 +97,14 @@ interface SysUserRepository : KRepository<SysUser, Long> {
                     }
                 }
             )
-        }.fetchOne()
-    }
+        }.fetchOneOrNull()
 
-    fun findByUsernameAndTenant(username: String, tenant: String) = sql
+    fun findByUsername(username: String) = sql
         .filters {
             disableByTypes(TenantFilter::class)
         }
         .createQuery(SysUser::class) {
             where(table.username eq username)
-            where(table.tenant eq tenant)
             select(
                 table.fetchBy {
                     allScalarFields()
