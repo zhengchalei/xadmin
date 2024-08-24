@@ -29,7 +29,7 @@ class JwtProvider(private val dictRepository: SysDictRepository) : CommandLineRu
     private var expiration: Long = 3600L
 
     override fun run(vararg args: String) {
-        val dict = this.dictRepository.findByCode("jwt")
+        val dict = this.dictRepository.findByCode("token")
         val dictItems = dict?.dictItems ?: emptyList()
         // 获取 secret
         val secret = dictItems.find { it.code == "secret" }
