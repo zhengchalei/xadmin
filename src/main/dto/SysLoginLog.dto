@@ -2,6 +2,7 @@ export com.zhengchalei.cloud.platform.modules.sys.domain.SysLoginLog
     -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
 
 specification SysLoginLogPageSpecification {
+    eq(id)
     like/i(username)
     like/i(password)
     like/i(ip)

@@ -2,6 +2,7 @@ export com.zhengchalei.cloud.platform.modules.sys.domain.SysTenant
     -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
 
 specification SysTenantPageSpecification {
+    eq(id)
     like/i(name)
     like/i(code)
     like/i(contactName)

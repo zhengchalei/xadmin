@@ -78,11 +78,12 @@
                    (2, 6);
 
             insert into sys_dict(name, code, description, status)
-            values ('JWT', 'jwt', 'JWT相关配置参数', 1);
+            values ('JWT', 'jwt', 'JWT相关配置参数', 1)
+                  , ('Gender', 'gender', '性别', 1);
 
             insert into sys_dict_item(name, code, data, description, sort, dict_id, status)
-            values ('男', 'man', '男', '男', 1, 1, 1),
-                   ('女', 'woman', '女', '女', 2, 1, 1),
+            values ('男', 'man', '男', '男', 1, 2, 1),
+                   ('女', 'woman', '女', '女', 2, 2, 1),
                    ('Secret', 'secret', 'nnaWuft6pSSKVkcuzlmqBWi3vO4Cin44', 'Jwt加密密钥', 1, 1, 1),
                    ('Expiration', 'expired', '86400', 'Jwt过期时间/秒', 2, 1, 1);
         </sql>

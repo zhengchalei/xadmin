@@ -4,6 +4,7 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.SysDepartment
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.domain.id
 import com.zhengchalei.cloud.platform.modules.sys.domain.parentId
+import com.zhengchalei.cloud.platform.modules.sys.domain.sort
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.spring.repository.fetchSpringPage
 import org.babyfish.jimmer.sql.kt.ast.expression.asc
@@ -24,7 +25,7 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
 
     fun findPage(specification: SysDepartmentPageSpecification, pageable: Pageable): Page<SysDepartmentPageView> =
         sql.createQuery(SysDepartment::class) {
-            orderBy(table.id.asc())
+            orderBy(table.sort.asc())
             where(specification)
             select(
                 table.fetch(SysDepartmentPageView::class)
@@ -33,7 +34,7 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
 
     fun findList(specification: SysDepartmentPageSpecification): List<SysDepartmentPageView> =
         sql.createQuery(SysDepartment::class) {
-            orderBy(table.id.asc())
+            orderBy(table.sort.asc())
             where(specification)
             select(
                 table.fetch(SysDepartmentPageView::class)
@@ -43,7 +44,7 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
 
     fun findTree(specification: SysDepartmentPageSpecification) =
         sql.createQuery(SysDepartment::class) {
-            orderBy(table.id.asc())
+            orderBy(table.sort.asc())
             where(table.parentId.isNull())
             where(specification)
             select(
@@ -53,7 +54,7 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
 
     fun findTreeRoot(specification: SysDepartmentPageSpecification) =
         sql.createQuery(SysDepartment::class) {
-            orderBy(table.id.asc())
+            orderBy(table.sort.asc())
             where(table.parentId.isNull())
             where(specification)
             select(
@@ -63,7 +64,7 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
 
     fun findTreeSelect(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeSelectView> =
         sql.createQuery(SysDepartment::class) {
-            orderBy(table.id.asc())
+            orderBy(table.sort.asc())
             where(table.parentId.isNull())
             where(specification)
             select(

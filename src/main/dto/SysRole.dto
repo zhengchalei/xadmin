@@ -2,12 +2,10 @@ export com.zhengchalei.cloud.platform.modules.sys.domain.SysRole
     -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
 
 specification SysRolePageSpecification {
+    eq(id)
     like/i(name)
     like/i(code)
     like/i(description)
-    flat(permissions) {
-        eq(id)
-    }
     ge(createTime) as startTime
     le(createTime) as endTime
 }

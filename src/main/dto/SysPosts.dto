@@ -2,6 +2,7 @@ export com.zhengchalei.cloud.platform.modules.sys.domain.SysPosts
     -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
 
 specification SysPostsPageSpecification {
+    eq(id)
     like/i(name)
     eq(status)
     like/i(description)

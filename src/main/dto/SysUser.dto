@@ -2,6 +2,7 @@ export com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
     -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
 
 specification SysUserPageSpecification {
+    eq(id)
     like/i(username)
     like/i(email)
     eq(status)
