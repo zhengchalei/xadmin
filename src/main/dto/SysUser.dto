@@ -17,18 +17,9 @@ specification SysUserPageSpecification {
 
 SysUserPageView {
     #allScalars
-    roles {
-        #allScalars
-        permissions {
-            #allScalars
-        }
-    }
-    department {
-        #allScalars
-    }
-    posts {
-        #allScalars
-    }
+    roleIds
+    id(department)
+    id(posts)
 }
 
 SysUserDetailView {

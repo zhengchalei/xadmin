@@ -28,4 +28,10 @@ interface SysRole : TenantAware {
 
     @ManyToMany(mappedBy = "roles")
     val users: List<SysUser>
+
+    @IdView("permissions")
+    val permissionIds: List<Long>
+
+    @IdView("users")
+    val userIds: List<Long>
 }

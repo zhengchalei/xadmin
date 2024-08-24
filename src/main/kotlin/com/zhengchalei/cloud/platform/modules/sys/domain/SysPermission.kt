@@ -20,4 +20,7 @@ interface SysPermission {
 
     @OneToMany(mappedBy = "parent")
     val children: List<SysPermission>
+
+    @IdView("children")
+    val childrenIds: List<Long>
 }

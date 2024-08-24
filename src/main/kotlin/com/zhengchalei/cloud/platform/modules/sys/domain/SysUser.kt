@@ -45,6 +45,9 @@ interface SysUser : TenantAware {
         inverseJoinColumnName = "role_id"
     )
     val roles: List<SysRole>
+
+    @IdView("roles")
+    val roleIds: List<Long>
 }
 
 @EnumType(EnumType.Strategy.NAME)
