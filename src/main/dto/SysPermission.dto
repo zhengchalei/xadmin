@@ -11,11 +11,17 @@ specification SysPermissionPageSpecification {
 SysPermissionTreeView {
     #allScalars
     children*
+    parent {
+        #allScalars
+    }
 }
 
 SysPermissionTreeSelectView {
     #allScalars
     children*
+    parent {
+        #allScalars
+    }
 }
 
 SysPermissionTreeRootView {
