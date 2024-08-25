@@ -37,8 +37,7 @@ val jimmerVersion: String by project
 
 dependencies {
 
-
-	// database
+    // database
 	runtimeOnly("com.mysql:mysql-connector-j")
 	implementation("org.liquibase:liquibase-core")
 	runtimeOnly("com.h2database:h2")
@@ -67,6 +66,9 @@ dependencies {
 	// kotlin
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+	// actuator
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 
 	//dev
 	developmentOnly("org.springframework.boot:spring-boot-devtools")

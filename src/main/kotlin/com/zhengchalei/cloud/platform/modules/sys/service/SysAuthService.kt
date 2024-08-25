@@ -1,10 +1,7 @@
 package com.zhengchalei.cloud.platform.modules.sys.service
 
 import com.zhengchalei.cloud.platform.commons.Const
-import com.zhengchalei.cloud.platform.config.IP2RegionService
-import com.zhengchalei.cloud.platform.config.LoginFailException
-import com.zhengchalei.cloud.platform.config.ServiceException
-import com.zhengchalei.cloud.platform.config.SwitchTenantException
+import com.zhengchalei.cloud.platform.config.*
 import com.zhengchalei.cloud.platform.config.security.JwtProvider
 import com.zhengchalei.cloud.platform.config.security.TenantCaptchaAuthenticationToken
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysLoginLog
@@ -36,7 +33,8 @@ class SysAuthService(
     val authenticationManager: AuthenticationManager,
     val jwtProvider: JwtProvider,
     val userService: SysUserService,
-    val ip2RegionService: IP2RegionService
+    val ip2RegionService: IP2RegionService,
+    val virtualThreadExecutor: VirtualThreadExecutor
 ) {
 
     private val log = LoggerFactory.getLogger(SysAuthService::class.java)
@@ -117,17 +115,19 @@ class SysAuthService(
         ip: String,
         tenant: String,
     ) {
-        val address = this.ip2RegionService.search(ip)
-        this.sysLoginLogRepository.save(new(SysLoginLog::class).by {
-            this.username = username
-            this.password = password
-            this.status = status
-            this.errorMessage = errorMessage
-            this.loginTime = LocalDateTime.now()
-            this.ip = ip
-            this.address = address
-            this.tenant = tenant
-            this.sysUser = if (status) makeIdOnly(SysUser::class, userService.currentUserInfo().id) else null
-        })
+        this.virtualThreadExecutor.submit {
+            val address = this.ip2RegionService.search(ip)
+            this.sysLoginLogRepository.save(new(SysLoginLog::class).by {
+                this.username = username
+                this.password = password
+                this.status = status
+                this.errorMessage = errorMessage
+                this.loginTime = LocalDateTime.now()
+                this.ip = ip
+                this.address = address
+                this.tenant = tenant
+                this.sysUser = if (status) makeIdOnly(SysUser::class, userService.currentUserInfo().id) else null
+            })
+        }
     }
 }
