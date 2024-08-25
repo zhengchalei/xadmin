@@ -12,9 +12,7 @@ specification SysRolePageSpecification {
 
 SysRolePageView {
     #allScalars
-    permissions {
-        #allScalars
-    }
+    permissionIds
 }
 
 SysRoleDetailView {
