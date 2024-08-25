@@ -47,6 +47,9 @@ dependencies {
 	implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:$jimmerVersion")
 	ksp("org.babyfish.jimmer:jimmer-ksp:latest.release")
 
+	// ip2region
+	implementation("org.lionsoul:ip2region:latest.release")
+
 	// web
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	// jackson
