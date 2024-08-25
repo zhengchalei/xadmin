@@ -17,10 +17,9 @@ import org.springframework.test.web.servlet.get
 @TestMethodOrder(OrderAnnotation::class)
 @WithMockTenantUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:department:create", "sys:department:update", "sys:department:delete", "sys:department:list", "sys:department:page", "sys:department:tree", "sys:department:tree-root", "sys:department:id"]
+    authorities = ["ROLE_admin", "sys:department:create", "sys:department:update", "sys:department:delete", "sys:department:list", "sys:department:page", "sys:department:tree", "sys:department:tree-root", "sys:department:id"],
 )
 class SysCurrentUserControllerTest {
-
     @Autowired
     lateinit var mockMvc: MockMvc
 
@@ -29,7 +28,8 @@ class SysCurrentUserControllerTest {
 
     @Test
     fun currentUserInfo() {
-        mockMvc.get("/api/user/info")
+        mockMvc
+            .get("/api/user/info")
             .andExpect {
                 status { isOk() }
                 content {

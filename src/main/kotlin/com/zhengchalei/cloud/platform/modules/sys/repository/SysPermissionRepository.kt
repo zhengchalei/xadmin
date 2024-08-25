@@ -12,63 +12,69 @@ import org.babyfish.jimmer.sql.kt.ast.expression.isNull
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
-
 interface SysPermissionRepository : KRepository<SysPermission, Long> {
+    fun findDetailById(id: Long) =
+        sql
+            .createQuery(SysPermission::class) {
+                where(table.id eq id)
+                select(
+                    table.fetch(SysPermissionDetailView::class),
+                )
+            }.fetchOne()
 
-    fun findDetailById(id: Long) = sql.createQuery(SysPermission::class) {
-        where(table.id eq id)
-        select(
-            table.fetch(SysPermissionDetailView::class)
-        )
-    }.fetchOne()
-
-    fun findPage(specification: SysPermissionPageSpecification, pageable: Pageable): Page<SysPermissionPageView> =
-        sql.createQuery(SysPermission::class) {
-            orderBy(table.id.asc())
-            where(specification)
-            select(
-                table.fetch(SysPermissionPageView::class)
-            )
-        }.fetchSpringPage(pageable)
+    fun findPage(
+        specification: SysPermissionPageSpecification,
+        pageable: Pageable,
+    ): Page<SysPermissionPageView> =
+        sql
+            .createQuery(SysPermission::class) {
+                orderBy(table.id.asc())
+                where(specification)
+                select(
+                    table.fetch(SysPermissionPageView::class),
+                )
+            }.fetchSpringPage(pageable)
 
     fun findList(specification: SysPermissionPageSpecification): List<SysPermissionPageView> =
-        sql.createQuery(SysPermission::class) {
-            orderBy(table.id.asc())
-            where(specification)
-            select(
-                table.fetch(SysPermissionPageView::class)
-            )
-        }.execute()
-
+        sql
+            .createQuery(SysPermission::class) {
+                orderBy(table.id.asc())
+                where(specification)
+                select(
+                    table.fetch(SysPermissionPageView::class),
+                )
+            }.execute()
 
     fun findTree(specification: SysPermissionPageSpecification) =
-        sql.createQuery(SysPermission::class) {
-            orderBy(table.id.asc())
-            where(table.parentId.isNull())
-            where(specification)
-            select(
-                table.fetch(SysPermissionTreeView::class)
-            )
-        }.execute()
+        sql
+            .createQuery(SysPermission::class) {
+                orderBy(table.id.asc())
+                where(table.parentId.isNull())
+                where(specification)
+                select(
+                    table.fetch(SysPermissionTreeView::class),
+                )
+            }.execute()
 
     fun treeRoot(specification: SysPermissionPageSpecification) =
-        sql.createQuery(SysPermission::class) {
-            orderBy(table.id.asc())
-            where(table.parentId.isNull())
-            where(specification)
-            select(
-                table.fetch(SysPermissionTreeRootView::class)
-            )
-        }.execute()
+        sql
+            .createQuery(SysPermission::class) {
+                orderBy(table.id.asc())
+                where(table.parentId.isNull())
+                where(specification)
+                select(
+                    table.fetch(SysPermissionTreeRootView::class),
+                )
+            }.execute()
 
     fun treeSelect(specification: SysPermissionPageSpecification) =
-        sql.createQuery(SysPermission::class) {
-            orderBy(table.id.asc())
-            where(specification)
-            where(table.parentId.isNull())
-            select(
-                table.fetch(SysPermissionTreeSelectView::class)
-            )
-        }.execute()
-
+        sql
+            .createQuery(SysPermission::class) {
+                orderBy(table.id.asc())
+                where(specification)
+                where(table.parentId.isNull())
+                select(
+                    table.fetch(SysPermissionTreeSelectView::class),
+                )
+            }.execute()
 }

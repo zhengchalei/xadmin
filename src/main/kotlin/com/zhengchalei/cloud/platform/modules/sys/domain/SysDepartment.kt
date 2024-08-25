@@ -6,7 +6,6 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "sys_department")
 interface SysDepartment : TenantAware {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long

@@ -18,16 +18,14 @@ import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(OrderAnnotation::class)
 @WithMockTenantUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:permission:create", "sys:permission:update", "sys:permission:delete", "sys:permission:list", "sys:permission:tree-root", "sys:permission:page", "sys:permission:tree", "sys:permission:id"]
+    authorities = ["ROLE_admin", "sys:permission:create", "sys:permission:update", "sys:permission:delete", "sys:permission:list", "sys:permission:tree-root", "sys:permission:page", "sys:permission:tree", "sys:permission:id"],
 )
 class SysPermissionControllerTest {
-
     @Autowired
     lateinit var mockMvc: MockMvc
 
@@ -41,46 +39,49 @@ class SysPermissionControllerTest {
     @Order(Integer.MIN_VALUE)
     @Test
     fun createSysPermission() {
-        val result = mockMvc.post("/api/sys/permission/create") {
-            content = objectMapper.writeValueAsString(
-                SysPermissionCreateInput(
-                    name = "测试权限",
-                    code = "test-permission",
-                    description = "权限",
-                    parentId = null
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
-                status { isOk() }
-                content {
-                    contentType(MediaType.APPLICATION_JSON)
-                    jsonPath("$.success") {
-                        exists()
-                        value(true)
+        val result =
+            mockMvc
+                .post("/api/sys/permission/create") {
+                    content =
+                        objectMapper.writeValueAsString(
+                            SysPermissionCreateInput(
+                                name = "测试权限",
+                                code = "test-permission",
+                                description = "权限",
+                                parentId = null,
+                            ),
+                        )
+                    contentType = MediaType.APPLICATION_JSON
+                }.andExpect {
+                    status { isOk() }
+                    content {
+                        contentType(MediaType.APPLICATION_JSON)
+                        jsonPath("$.success") {
+                            exists()
+                            value(true)
+                        }
                     }
-                }
-            }.andReturn()
+                }.andReturn()
 
         lastId = JsonPath.parse(result.response.contentAsString).read("\$.data.id")
     }
 
     @Test
     fun updateSysPermissionById() {
-        mockMvc.post("/api/sys/permission/update") {
-            content = objectMapper.writeValueAsString(
-                SysPermissionUpdateInput(
-                    id = lastId,
-                    name = "测试权限",
-                    code = "test-permission",
-                    description = "权限 update",
-                    parentId = null
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .post("/api/sys/permission/update") {
+                content =
+                    objectMapper.writeValueAsString(
+                        SysPermissionUpdateInput(
+                            id = lastId,
+                            name = "测试权限",
+                            code = "test-permission",
+                            description = "权限 update",
+                            parentId = null,
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -94,7 +95,8 @@ class SysPermissionControllerTest {
 
     @Test
     fun findSysPermissionList() {
-        mockMvc.get("/api/sys/permission/list")
+        mockMvc
+            .get("/api/sys/permission/list")
             .andExpect {
                 status { isOk() }
                 content {
@@ -109,7 +111,8 @@ class SysPermissionControllerTest {
 
     @Test
     fun findSysPermissionTreeRoot() {
-        mockMvc.get("/api/sys/permission/tree-root")
+        mockMvc
+            .get("/api/sys/permission/tree-root")
             .andExpect {
                 status { isOk() }
                 content {
@@ -124,7 +127,8 @@ class SysPermissionControllerTest {
 
     @Test
     fun findSysPermissionPage() {
-        mockMvc.get("/api/sys/permission/page")
+        mockMvc
+            .get("/api/sys/permission/page")
             .andExpect {
                 status { isOk() }
                 content {
@@ -139,7 +143,8 @@ class SysPermissionControllerTest {
 
     @Test
     fun findSysPermissionTree() {
-        mockMvc.get("/api/sys/permission/tree")
+        mockMvc
+            .get("/api/sys/permission/tree")
             .andExpect {
                 status { isOk() }
                 content {
@@ -152,10 +157,10 @@ class SysPermissionControllerTest {
             }
     }
 
-
     @Test
     fun findSysPermissionById() {
-        mockMvc.get("/api/sys/permission/id/$lastId")
+        mockMvc
+            .get("/api/sys/permission/id/$lastId")
             .andExpect {
                 status { isOk() }
                 content {
@@ -171,10 +176,10 @@ class SysPermissionControllerTest {
     @Order(Integer.MAX_VALUE)
     @Test
     fun deleteSysPermissionById() {
-        mockMvc.delete("/api/sys/permission/delete/$lastId") {
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .delete("/api/sys/permission/delete/$lastId") {
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -185,5 +190,4 @@ class SysPermissionControllerTest {
                 }
             }
     }
-
 }

@@ -5,9 +5,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 
-
 object SecurityUtils {
-
     fun getCurrentUsername(): String {
         val authentication: Authentication =
             SecurityContextHolder.getContext().authentication ?: throw NotLoginException()
@@ -35,13 +33,8 @@ object SecurityUtils {
         return SecurityContextHolder.getContext().authentication as TenantCaptchaAuthenticationToken
     }
 
-    fun getCurrentTenant(): String {
-        return getTenantCaptchaAuthenticationToken().tenant
-    }
+    fun getCurrentTenant(): String = getTenantCaptchaAuthenticationToken().tenant
 
     // 判断是否登录
-    fun isLogin(): Boolean {
-        return SecurityContextHolder.getContext().authentication is TenantCaptchaAuthenticationToken
-    }
-
+    fun isLogin(): Boolean = SecurityContextHolder.getContext().authentication is TenantCaptchaAuthenticationToken
 }

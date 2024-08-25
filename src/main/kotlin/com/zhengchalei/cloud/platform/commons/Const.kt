@@ -1,8 +1,7 @@
 package com.zhengchalei.cloud.platform.commons
 
 object Const {
-
-    const val SuperAdmin = "superAdmin";
+    const val SuperAdmin = "superAdmin"
 
     const val ADMIN_USER = "admin"
 

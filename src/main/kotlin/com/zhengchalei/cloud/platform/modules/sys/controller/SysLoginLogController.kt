@@ -17,19 +17,22 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/sys/login-log")
 class SysLoginLogController(
-    val sysLoginLogService: SysLoginLogService
+    val sysLoginLogService: SysLoginLogService,
 ) {
-
     @PreAuthorize("hasAuthority('sys:loginLog:id') or hasLoginLog('admin')")
     @GetMapping("/id/{id}")
-    fun findSysLoginLogById(@PathVariable id: Long): R<SysLoginLogDetailView> {
+    fun findSysLoginLogById(
+        @PathVariable id: Long,
+    ): R<SysLoginLogDetailView> {
         val data = sysLoginLogService.findSysLoginLogById(id)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:loginLog:list') or hasLoginLog('admin')")
     @GetMapping("/list")
-    fun findSysLoginLogList(@NotNull specification: SysLoginLogPageSpecification): R<List<SysLoginLogPageView>> {
+    fun findSysLoginLogList(
+        @NotNull specification: SysLoginLogPageSpecification,
+    ): R<List<SysLoginLogPageView>> {
         val data = sysLoginLogService.findSysLoginLogList(specification)
         return R(data = data)
     }
@@ -38,7 +41,7 @@ class SysLoginLogController(
     @GetMapping("/page")
     fun findSysLoginLogPage(
         @NotNull specification: SysLoginLogPageSpecification,
-        @NotNull pageable: QueryPage
+        @NotNull pageable: QueryPage,
     ): R<MutableList<SysLoginLogPageView>> {
         val data = sysLoginLogService.findSysLoginLogPage(specification, pageable.page())
         return R.success(data)
@@ -46,7 +49,9 @@ class SysLoginLogController(
 
     @PreAuthorize("hasAuthority('sys:loginLog:delete') or hasLoginLog('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysLoginLogById(@NotNull @PathVariable id: Long): R<Boolean> {
+    fun deleteSysLoginLogById(
+        @NotNull @PathVariable id: Long,
+    ): R<Boolean> {
         sysLoginLogService.deleteSysLoginLogById(id)
         return R()
     }

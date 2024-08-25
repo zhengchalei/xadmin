@@ -20,9 +20,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(rollbackFor = [Exception::class])
 class SysPermissionService(
-    private val sysPermissionRepository: SysPermissionRepository
+    private val sysPermissionRepository: SysPermissionRepository,
 ) {
-
     private val logger = org.slf4j.LoggerFactory.getLogger(SysPermissionService::class.java)
 
     /**
@@ -36,23 +35,23 @@ class SysPermissionService(
      * 查找系统权限列表
      * @param [specification] 查询条件构造器
      */
-    fun findSysPermissionList(specification: SysPermissionPageSpecification) =
-        this.sysPermissionRepository.findList(specification)
+    fun findSysPermissionList(specification: SysPermissionPageSpecification) = this.sysPermissionRepository.findList(specification)
 
     /**
      * 查找系统权限树
      * @param [specification] 查询条件构造器
      */
-    fun findSysPermissionTree(specification: SysPermissionPageSpecification) =
-        this.sysPermissionRepository.findTree(specification)
+    fun findSysPermissionTree(specification: SysPermissionPageSpecification) = this.sysPermissionRepository.findTree(specification)
 
     /**
      * 查找系统权限分页
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysPermissionPage(specification: SysPermissionPageSpecification, pageable: Pageable) =
-        this.sysPermissionRepository.findPage(specification, pageable)
+    fun findSysPermissionPage(
+        specification: SysPermissionPageSpecification,
+        pageable: Pageable,
+    ) = this.sysPermissionRepository.findPage(specification, pageable)
 
     /**
      * 创建系统权限
@@ -84,10 +83,7 @@ class SysPermissionService(
      * 查找系统权限树根
      * @param [specification] 查询条件构造器
      */
-    fun findSysPermissionTreeRoot(specification: SysPermissionPageSpecification) =
-        this.sysPermissionRepository.treeRoot(specification)
+    fun findSysPermissionTreeRoot(specification: SysPermissionPageSpecification) = this.sysPermissionRepository.treeRoot(specification)
 
-    fun findSysPermissionTreeSelect(specification: SysPermissionPageSpecification) =
-        this.sysPermissionRepository.treeSelect(specification)
-
+    fun findSysPermissionTreeSelect(specification: SysPermissionPageSpecification) = this.sysPermissionRepository.treeSelect(specification)
 }

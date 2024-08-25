@@ -25,10 +25,9 @@ import java.time.LocalDate
 @TestMethodOrder(OrderAnnotation::class)
 @WithMockTenantUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:user:create", "sys:user:update", "sys:user:delete", "sys:user:list", "sys:user:page", "sys:user:id"]
+    authorities = ["ROLE_admin", "sys:user:create", "sys:user:update", "sys:user:delete", "sys:user:list", "sys:user:page", "sys:user:id"],
 )
 class SysUserControllerTest {
-
     @Autowired
     lateinit var mockMvc: MockMvc
 
@@ -42,51 +41,54 @@ class SysUserControllerTest {
     @Order(Integer.MIN_VALUE)
     @Test
     fun createSysUser() {
-        val result = mockMvc.post("/api/sys/user/create") {
-            content = objectMapper.writeValueAsString(
-                SysUserCreateInput(
-                    username = "xiaoshitou",
-                    email = "xiaoshitou@163.com",
-                    status = true,
-                    roleIds = listOf(1, 2),
-                    birthday = LocalDate.now(),
-                    gender = Gender.MALE,
-                    phoneNumber = "13800000000",
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
-                status { isOk() }
-                content {
-                    contentType(MediaType.APPLICATION_JSON)
-                    jsonPath("$.success") {
-                        exists()
-                        value(true)
+        val result =
+            mockMvc
+                .post("/api/sys/user/create") {
+                    content =
+                        objectMapper.writeValueAsString(
+                            SysUserCreateInput(
+                                username = "xiaoshitou",
+                                email = "xiaoshitou@163.com",
+                                status = true,
+                                roleIds = listOf(1, 2),
+                                birthday = LocalDate.now(),
+                                gender = Gender.MALE,
+                                phoneNumber = "13800000000",
+                            ),
+                        )
+                    contentType = MediaType.APPLICATION_JSON
+                }.andExpect {
+                    status { isOk() }
+                    content {
+                        contentType(MediaType.APPLICATION_JSON)
+                        jsonPath("$.success") {
+                            exists()
+                            value(true)
+                        }
                     }
-                }
-            }.andReturn()
+                }.andReturn()
 
         lastId = JsonPath.parse(result.response.contentAsString).read("\$.data.id")
     }
 
     @Test
     fun createSysUserAdmin() {
-        mockMvc.post("/api/sys/user/create") {
-            content = objectMapper.writeValueAsString(
-                SysUserCreateInput(
-                    username = "admin",
-                    email = "xiaoshitou@163.com",
-                    status = true,
-                    roleIds = listOf(1, 2),
-                    birthday = LocalDate.now(),
-                    gender = Gender.MALE,
-                    phoneNumber = "13800000000",
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .post("/api/sys/user/create") {
+                content =
+                    objectMapper.writeValueAsString(
+                        SysUserCreateInput(
+                            username = "admin",
+                            email = "xiaoshitou@163.com",
+                            status = true,
+                            roleIds = listOf(1, 2),
+                            birthday = LocalDate.now(),
+                            gender = Gender.MALE,
+                            phoneNumber = "13800000000",
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     jsonPath("$.success") {
@@ -99,22 +101,23 @@ class SysUserControllerTest {
 
     @Test
     fun updateSysUserById() {
-        mockMvc.post("/api/sys/user/update") {
-            content = objectMapper.writeValueAsString(
-                SysUserUpdateInput(
-                    id = lastId,
-                    username = "xiaoshitou",
-                    email = "xiaoshitou@163.com",
-                    status = true,
-                    roleIds = listOf(1, 2),
-                    birthday = LocalDate.now(),
-                    gender = Gender.FEMALE,
-                    phoneNumber = "13800000000",
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .post("/api/sys/user/update") {
+                content =
+                    objectMapper.writeValueAsString(
+                        SysUserUpdateInput(
+                            id = lastId,
+                            username = "xiaoshitou",
+                            email = "xiaoshitou@163.com",
+                            status = true,
+                            roleIds = listOf(1, 2),
+                            birthday = LocalDate.now(),
+                            gender = Gender.FEMALE,
+                            phoneNumber = "13800000000",
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -128,22 +131,23 @@ class SysUserControllerTest {
 
     @Test
     fun updateAdmin() {
-        mockMvc.post("/api/sys/user/update") {
-            content = objectMapper.writeValueAsString(
-                SysUserUpdateInput(
-                    id = 1,
-                    username = "xiaoshitou",
-                    email = "xiaoshitou@163.com",
-                    status = true,
-                    roleIds = listOf(1, 2),
-                    birthday = LocalDate.now(),
-                    gender = Gender.FEMALE,
-                    phoneNumber = "13800000000",
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .post("/api/sys/user/update") {
+                content =
+                    objectMapper.writeValueAsString(
+                        SysUserUpdateInput(
+                            id = 1,
+                            username = "xiaoshitou",
+                            email = "xiaoshitou@163.com",
+                            status = true,
+                            roleIds = listOf(1, 2),
+                            birthday = LocalDate.now(),
+                            gender = Gender.FEMALE,
+                            phoneNumber = "13800000000",
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -157,7 +161,8 @@ class SysUserControllerTest {
 
     @Test
     fun findSysUserList() {
-        mockMvc.get("/api/sys/user/list")
+        mockMvc
+            .get("/api/sys/user/list")
             .andExpect {
                 status { isOk() }
                 content {
@@ -172,7 +177,8 @@ class SysUserControllerTest {
 
     @Test
     fun findSysUserPage() {
-        mockMvc.get("/api/sys/user/page")
+        mockMvc
+            .get("/api/sys/user/page")
             .andExpect {
                 status { isOk() }
                 content {
@@ -187,7 +193,8 @@ class SysUserControllerTest {
 
     @Test
     fun findSysUserById() {
-        mockMvc.get("/api/sys/user/id/$lastId")
+        mockMvc
+            .get("/api/sys/user/id/$lastId")
             .andExpect {
                 status { isOk() }
                 content {
@@ -200,14 +207,13 @@ class SysUserControllerTest {
             }
     }
 
-
     @Order(Integer.MAX_VALUE)
     @Test
     fun deleteSysUserById() {
-        mockMvc.delete("/api/sys/user/delete/$lastId") {
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .delete("/api/sys/user/delete/$lastId") {
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -221,10 +227,10 @@ class SysUserControllerTest {
 
     @Test
     fun deleteSysUserAdminById() {
-        mockMvc.delete("/api/sys/user/delete/1") {
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .delete("/api/sys/user/delete/1") {
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -235,5 +241,4 @@ class SysUserControllerTest {
                 }
             }
     }
-
 }

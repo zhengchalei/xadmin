@@ -26,9 +26,8 @@ import org.springframework.transaction.annotation.Transactional
 class SysUserService(
     private val sysUserRepository: SysUserRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val jdbcTemplate: JdbcTemplate
+    private val jdbcTemplate: JdbcTemplate,
 ) {
-
     private val logger = org.slf4j.LoggerFactory.getLogger(SysUserService::class.java)
 
     /**
@@ -36,9 +35,7 @@ class SysUserService(
      * @param [id] ID
      * @return [SysUserDetailView]
      */
-    fun findSysUserById(id: Long): SysUserDetailView {
-        return this.sysUserRepository.findDetailById(id)
-    }
+    fun findSysUserById(id: Long): SysUserDetailView = this.sysUserRepository.findDetailById(id)
 
     /**
      * 查找系统用户列表
@@ -51,7 +48,11 @@ class SysUserService(
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysUserPage(specification: SysUserPageSpecification, pageable: Pageable): Page<SysUserPageView> {
+    fun findSysUserPage(
+        specification: SysUserPageSpecification,
+        pageable: Pageable,
+    ): Page<SysUserPageView> {
+        // 此处为了查询能够查询到子节点
         val sql = """
             WITH RECURSIVE DepartmentHierarchy AS (
                 SELECT id FROM sys_department WHERE id = ?
@@ -78,9 +79,10 @@ class SysUserService(
             throw ServiceException("用户名不能为 ${Const.ADMIN_USER}")
         }
         // TODO 集成邮件后, 这里密码应该由邮件发送
-        val newSysUser = new(SysUser::class).by(sysUserCreateInput.toEntity()) {
-            password = passwordEncoder.encode(Const.DEFAULT_PASSWORD)
-        }
+        val newSysUser =
+            new(SysUser::class).by(sysUserCreateInput.toEntity()) {
+                password = passwordEncoder.encode(Const.DEFAULT_PASSWORD)
+            }
         val sysUser: SysUser = this.sysUserRepository.insert(newSysUser)
         return findSysUserById(sysUser.id)
     }
@@ -91,8 +93,10 @@ class SysUserService(
      * @return [SysUserDetailView]
      */
     fun updateSysUserById(sysUserUpdateInput: SysUserUpdateInput): SysUserDetailView {
-        val oldUser = this.sysUserRepository.findById(sysUserUpdateInput.id)
-            .orElseThrow { throw ServiceException("用户不存在") }
+        val oldUser =
+            this.sysUserRepository
+                .findById(sysUserUpdateInput.id)
+                .orElseThrow { throw ServiceException("用户不存在") }
         if (oldUser.username == Const.ADMIN_USER || oldUser.username == Const.SuperAdmin) {
             throw ServiceException("${Const.ADMIN_USER} 不能修改用户名")
         }
@@ -120,8 +124,5 @@ class SysUserService(
      * 当前用户信息
      * @return [SysUser]
      */
-    fun currentUserInfo(): SysUser {
-        return this.sysUserRepository.currentUserInfo()
-    }
-
+    fun currentUserInfo(): SysUser = this.sysUserRepository.currentUserInfo()
 }

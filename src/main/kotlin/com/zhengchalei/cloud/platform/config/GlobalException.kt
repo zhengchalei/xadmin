@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class GlobalException {
-
     private val logger = org.slf4j.LoggerFactory.getLogger(GlobalException::class.java)
 
-    data class Error(val message: String)
+    data class Error(
+        val message: String,
+    )
 
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): R<Boolean> {
@@ -66,5 +67,4 @@ class GlobalException {
         logger.error("参数错误", e)
         return R(errorMessage = e.bindingResult.allErrors[0].defaultMessage, success = false, errorCode = 500)
     }
-
 }

@@ -20,9 +20,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(rollbackFor = [Exception::class])
 class SysPostsService(
-    private val sysPostRepository: SysPostsRepository
+    private val sysPostRepository: SysPostsRepository,
 ) {
-
     private val logger = org.slf4j.LoggerFactory.getLogger(SysPostsService::class.java)
 
     /**
@@ -43,8 +42,10 @@ class SysPostsService(
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysPostsPage(specification: SysPostsPageSpecification, pageable: Pageable) =
-        this.sysPostRepository.findPage(specification, pageable)
+    fun findSysPostsPage(
+        specification: SysPostsPageSpecification,
+        pageable: Pageable,
+    ) = this.sysPostRepository.findPage(specification, pageable)
 
     /**
      * 创造系统岗位
@@ -71,5 +72,4 @@ class SysPostsService(
      * @param [id] ID
      */
     fun deleteSysPostsById(id: Long) = this.sysPostRepository.deleteById(id)
-
 }

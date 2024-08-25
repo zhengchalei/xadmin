@@ -23,10 +23,9 @@ import org.springframework.test.web.servlet.post
 @TestMethodOrder(OrderAnnotation::class)
 @WithMockTenantUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:posts:create", "sys:posts:update", "sys:posts:delete", "sys:posts:list", "sys:posts:page", "sys:posts:id"]
+    authorities = ["ROLE_admin", "sys:posts:create", "sys:posts:update", "sys:posts:delete", "sys:posts:list", "sys:posts:page", "sys:posts:id"],
 )
 class SysPostsControllerTest {
-
     @Autowired
     lateinit var mockMvc: MockMvc
 
@@ -40,46 +39,49 @@ class SysPostsControllerTest {
     @Order(Integer.MIN_VALUE)
     @Test
     fun createSysPosts() {
-        val result = mockMvc.post("/api/sys/posts/create") {
-            content = objectMapper.writeValueAsString(
-                SysPostsCreateInput(
-                    name = "测试岗位",
-                    status = true,
-                    sort = 1,
-                    description = "岗位",
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
-                status { isOk() }
-                content {
-                    contentType(MediaType.APPLICATION_JSON)
-                    jsonPath("$.success") {
-                        exists()
-                        value(true)
+        val result =
+            mockMvc
+                .post("/api/sys/posts/create") {
+                    content =
+                        objectMapper.writeValueAsString(
+                            SysPostsCreateInput(
+                                name = "测试岗位",
+                                status = true,
+                                sort = 1,
+                                description = "岗位",
+                            ),
+                        )
+                    contentType = MediaType.APPLICATION_JSON
+                }.andExpect {
+                    status { isOk() }
+                    content {
+                        contentType(MediaType.APPLICATION_JSON)
+                        jsonPath("$.success") {
+                            exists()
+                            value(true)
+                        }
                     }
-                }
-            }.andReturn()
+                }.andReturn()
 
         lastId = JsonPath.parse(result.response.contentAsString).read("\$.data.id")
     }
 
     @Test
     fun updateSysPostsById() {
-        mockMvc.post("/api/sys/posts/update") {
-            content = objectMapper.writeValueAsString(
-                SysPostsUpdateInput(
-                    id = lastId,
-                    name = "测试岗位",
-                    status = false,
-                    sort = 1,
-                    description = "岗位 update",
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .post("/api/sys/posts/update") {
+                content =
+                    objectMapper.writeValueAsString(
+                        SysPostsUpdateInput(
+                            id = lastId,
+                            name = "测试岗位",
+                            status = false,
+                            sort = 1,
+                            description = "岗位 update",
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -93,7 +95,8 @@ class SysPostsControllerTest {
 
     @Test
     fun findSysPostsList() {
-        mockMvc.get("/api/sys/posts/list")
+        mockMvc
+            .get("/api/sys/posts/list")
             .andExpect {
                 status { isOk() }
                 content {
@@ -108,7 +111,8 @@ class SysPostsControllerTest {
 
     @Test
     fun findSysPostsPage() {
-        mockMvc.get("/api/sys/posts/page")
+        mockMvc
+            .get("/api/sys/posts/page")
             .andExpect {
                 status { isOk() }
                 content {
@@ -121,10 +125,10 @@ class SysPostsControllerTest {
             }
     }
 
-
     @Test
     fun findSysPostsById() {
-        mockMvc.get("/api/sys/posts/id/$lastId")
+        mockMvc
+            .get("/api/sys/posts/id/$lastId")
             .andExpect {
                 status { isOk() }
                 content {
@@ -140,10 +144,10 @@ class SysPostsControllerTest {
     @Order(Integer.MAX_VALUE)
     @Test
     fun deleteSysPostsById() {
-        mockMvc.delete("/api/sys/posts/delete/$lastId") {
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .delete("/api/sys/posts/delete/$lastId") {
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -154,5 +158,4 @@ class SysPostsControllerTest {
                 }
             }
     }
-
 }

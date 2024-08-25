@@ -15,19 +15,22 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/sys/permission")
 class SysPermissionController(
-    val sysPermissionService: SysPermissionService
+    val sysPermissionService: SysPermissionService,
 ) {
-
     @PreAuthorize("hasAuthority('sys:permission:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
-    fun findSysPermissionById(@PathVariable id: Long): R<SysPermissionDetailView> {
+    fun findSysPermissionById(
+        @PathVariable id: Long,
+    ): R<SysPermissionDetailView> {
         val data = sysPermissionService.findSysPermissionById(id)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:permission:list') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysPermissionList(@NotNull specification: SysPermissionPageSpecification): R<List<SysPermissionPageView>> {
+    fun findSysPermissionList(
+        @NotNull specification: SysPermissionPageSpecification,
+    ): R<List<SysPermissionPageView>> {
         val data = sysPermissionService.findSysPermissionList(specification)
         return R(data = data)
     }
@@ -57,30 +60,35 @@ class SysPermissionController(
     @GetMapping("/page")
     fun findSysPermissionPage(
         @NotNull specification: SysPermissionPageSpecification,
-        @NotNull pageable: QueryPage
+        @NotNull pageable: QueryPage,
     ): R<MutableList<SysPermissionPageView>> {
         val data = sysPermissionService.findSysPermissionPage(specification, pageable.page())
         return R.success(data)
     }
 
-
     @PreAuthorize("hasAuthority('sys:permission:create') or hasAnyRole('admin')")
     @PostMapping("/create")
-    fun createSysPermission(@NotNull @RequestBody sysPermissionCreateInput: SysPermissionCreateInput): R<SysPermissionDetailView> {
+    fun createSysPermission(
+        @NotNull @RequestBody sysPermissionCreateInput: SysPermissionCreateInput,
+    ): R<SysPermissionDetailView> {
         val data = sysPermissionService.createSysPermission(sysPermissionCreateInput)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:permission:update') or hasAnyRole('admin')")
     @PostMapping("/update")
-    fun updateSysPermissionById(@NotNull @RequestBody sysPermissionUpdateInput: SysPermissionUpdateInput): R<SysPermissionDetailView> {
+    fun updateSysPermissionById(
+        @NotNull @RequestBody sysPermissionUpdateInput: SysPermissionUpdateInput,
+    ): R<SysPermissionDetailView> {
         val data = sysPermissionService.updateSysPermissionById(sysPermissionUpdateInput)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:permission:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysPermissionById(@NotNull @PathVariable id: Long): R<Boolean> {
+    fun deleteSysPermissionById(
+        @NotNull @PathVariable id: Long,
+    ): R<Boolean> {
         sysPermissionService.deleteSysPermissionById(id)
         return R()
     }

@@ -15,19 +15,22 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/sys/department")
 class SysDepartmentController(
-    val sysDepartmentService: SysDepartmentService
+    val sysDepartmentService: SysDepartmentService,
 ) {
-
     @PreAuthorize("hasAuthority('sys:department:id') or hasRole('admin')")
     @GetMapping("/id/{id}")
-    fun findSysDepartmentById(@PathVariable id: Long): R<SysDepartmentDetailView> {
+    fun findSysDepartmentById(
+        @PathVariable id: Long,
+    ): R<SysDepartmentDetailView> {
         val data = sysDepartmentService.findSysDepartmentById(id)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:department:list') or hasRole('admin')")
     @GetMapping("/list")
-    fun findSysDepartmentList(@NotNull specification: SysDepartmentPageSpecification): R<List<SysDepartmentPageView>> {
+    fun findSysDepartmentList(
+        @NotNull specification: SysDepartmentPageSpecification,
+    ): R<List<SysDepartmentPageView>> {
         val data = sysDepartmentService.findSysDepartmentList(specification)
         return R(data = data)
     }
@@ -43,7 +46,7 @@ class SysDepartmentController(
     @GetMapping("/page")
     fun findSysDepartmentPage(
         @NotNull specification: SysDepartmentPageSpecification,
-        @NotNull pageable: QueryPage
+        @NotNull pageable: QueryPage,
     ): R<MutableList<SysDepartmentPageView>> {
         val data = sysDepartmentService.findSysDepartmentPage(specification, pageable.page())
         return R.success(data)
@@ -65,21 +68,27 @@ class SysDepartmentController(
 
     @PreAuthorize("hasAuthority('sys:department:create') or hasRole('admin')")
     @PostMapping("/create")
-    fun createSysDepartment(@NotNull @RequestBody sysDepartmentCreateInput: SysDepartmentCreateInput): R<SysDepartmentDetailView> {
+    fun createSysDepartment(
+        @NotNull @RequestBody sysDepartmentCreateInput: SysDepartmentCreateInput,
+    ): R<SysDepartmentDetailView> {
         val data = sysDepartmentService.createSysDepartment(sysDepartmentCreateInput)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:department:update') or hasRole('admin')")
     @PostMapping("/update")
-    fun updateSysDepartmentById(@NotNull @RequestBody sysDepartmentUpdateInput: SysDepartmentUpdateInput): R<SysDepartmentDetailView> {
+    fun updateSysDepartmentById(
+        @NotNull @RequestBody sysDepartmentUpdateInput: SysDepartmentUpdateInput,
+    ): R<SysDepartmentDetailView> {
         val data = sysDepartmentService.updateSysDepartmentById(sysDepartmentUpdateInput)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:department:delete') or hasRole('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysDepartmentById(@NotNull @PathVariable id: Long): R<Boolean> {
+    fun deleteSysDepartmentById(
+        @NotNull @PathVariable id: Long,
+    ): R<Boolean> {
         sysDepartmentService.deleteSysDepartmentById(id)
         return R()
     }

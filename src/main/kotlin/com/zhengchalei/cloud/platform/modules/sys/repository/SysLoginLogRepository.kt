@@ -12,33 +12,36 @@ import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
-
 interface SysLoginLogRepository : KRepository<SysLoginLog, Long> {
+    fun findDetailById(id: Long) =
+        sql
+            .createQuery(SysLoginLog::class) {
+                where(table.id eq id)
+                select(
+                    table.fetch(SysLoginLogDetailView::class),
+                )
+            }.fetchOne()
 
-    fun findDetailById(id: Long) = sql.createQuery(SysLoginLog::class) {
-        where(table.id eq id)
-        select(
-            table.fetch(SysLoginLogDetailView::class)
-        )
-    }.fetchOne()
-
-    fun findPage(specification: SysLoginLogPageSpecification, pageable: Pageable): Page<SysLoginLogPageView> =
-        sql.createQuery(SysLoginLog::class) {
-            orderBy(table.id.asc())
-            where(specification)
-            select(
-                table.fetch(SysLoginLogPageView::class)
-            )
-        }.fetchSpringPage(pageable)
+    fun findPage(
+        specification: SysLoginLogPageSpecification,
+        pageable: Pageable,
+    ): Page<SysLoginLogPageView> =
+        sql
+            .createQuery(SysLoginLog::class) {
+                orderBy(table.id.asc())
+                where(specification)
+                select(
+                    table.fetch(SysLoginLogPageView::class),
+                )
+            }.fetchSpringPage(pageable)
 
     fun findList(specification: SysLoginLogPageSpecification): List<SysLoginLogPageView> =
-        sql.createQuery(SysLoginLog::class) {
-            orderBy(table.id.asc())
-            where(specification)
-            select(
-                table.fetch(SysLoginLogPageView::class)
-            )
-        }.execute()
-
-
+        sql
+            .createQuery(SysLoginLog::class) {
+                orderBy(table.id.asc())
+                where(specification)
+                select(
+                    table.fetch(SysLoginLogPageView::class),
+                )
+            }.execute()
 }

@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.task.SimpleAsyncTaskExecutor
 import org.springframework.scheduling.annotation.EnableAsync
 
-
 class VirtualThreadExecutor : SimpleAsyncTaskExecutor()
 
 @EnableAsync
@@ -22,4 +21,3 @@ class ThreadPoolConfig {
         return virtualThreadExecutor
     }
 }
-

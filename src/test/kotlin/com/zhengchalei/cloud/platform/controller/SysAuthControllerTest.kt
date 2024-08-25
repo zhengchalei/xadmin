@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.post
 @AutoConfigureMockMvc
 @TestMethodOrder(OrderAnnotation::class)
 class SysAuthControllerTest {
-
     @Autowired
     lateinit var mockMvc: MockMvc
 
@@ -27,149 +26,159 @@ class SysAuthControllerTest {
 
     @Test
     fun login() {
-        mockMvc.post("/api/auth/login") {
-            content = objectMapper.writeValueAsString(
-                LoginDTO(
-                    username = "admin",
-                    password = "123456",
-                    tenant = "default",
-                    captcha = "1234"
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }.andExpect {
-            status { isOk() }
-            content {
-                contentType(MediaType.APPLICATION_JSON)
-                jsonPath("$.data.accessToken") { exists() }
+        mockMvc
+            .post("/api/auth/login") {
+                content =
+                    objectMapper.writeValueAsString(
+                        LoginDTO(
+                            username = "admin",
+                            password = "123456",
+                            tenant = "default",
+                            captcha = "1234",
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
+                status { isOk() }
+                content {
+                    contentType(MediaType.APPLICATION_JSON)
+                    jsonPath("$.data.accessToken") { exists() }
+                }
+            }.andDo {
+                log()
             }
-        }.andDo {
-            log()
-        }
 
-        mockMvc.post("/api/auth/login") {
-            content = objectMapper.writeValueAsString(
-                LoginDTO(
-                    username = "superAdmin",
-                    password = "123456",
-                    tenant = "default",
-                    captcha = "1234"
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }.andExpect {
-            status { isOk() }
-            content {
-                contentType(MediaType.APPLICATION_JSON)
-                jsonPath("$.data.accessToken") { exists() }
+        mockMvc
+            .post("/api/auth/login") {
+                content =
+                    objectMapper.writeValueAsString(
+                        LoginDTO(
+                            username = "superAdmin",
+                            password = "123456",
+                            tenant = "default",
+                            captcha = "1234",
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
+                status { isOk() }
+                content {
+                    contentType(MediaType.APPLICATION_JSON)
+                    jsonPath("$.data.accessToken") { exists() }
+                }
+            }.andDo {
+                log()
             }
-        }.andDo {
-            log()
-        }
 
-        mockMvc.post("/api/auth/login") {
-            content = objectMapper.writeValueAsString(
-                LoginDTO(
-                    username = "superAdmin",
-                    password = "123456",
-                    tenant = "test",
-                    captcha = "1234"
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }.andExpect {
-            status { isOk() }
-            content {
-                contentType(MediaType.APPLICATION_JSON)
-                jsonPath("$.data.accessToken") { exists() }
+        mockMvc
+            .post("/api/auth/login") {
+                content =
+                    objectMapper.writeValueAsString(
+                        LoginDTO(
+                            username = "superAdmin",
+                            password = "123456",
+                            tenant = "test",
+                            captcha = "1234",
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
+                status { isOk() }
+                content {
+                    contentType(MediaType.APPLICATION_JSON)
+                    jsonPath("$.data.accessToken") { exists() }
+                }
+            }.andDo {
+                log()
             }
-        }.andDo {
-            log()
-        }
-
     }
 
     @Test
     fun loginFail() {
-        mockMvc.post("/api/auth/login") {
-            content = objectMapper.writeValueAsString(
-                LoginDTO(
-                    username = "admin",
-                    password = "1234561",
-                    tenant = "default",
-                    captcha = "1234"
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }.andExpect {
-            status { isOk() }
-            content {
-                contentType(MediaType.APPLICATION_JSON)
-                jsonPath("$.success") {
-                    exists()
-                    value(false)
+        mockMvc
+            .post("/api/auth/login") {
+                content =
+                    objectMapper.writeValueAsString(
+                        LoginDTO(
+                            username = "admin",
+                            password = "1234561",
+                            tenant = "default",
+                            captcha = "1234",
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
+                status { isOk() }
+                content {
+                    contentType(MediaType.APPLICATION_JSON)
+                    jsonPath("$.success") {
+                        exists()
+                        value(false)
+                    }
                 }
+            }.andDo {
+                log()
             }
-        }.andDo {
-            log()
-        }
     }
 
     @Test
     fun superAdminLoginLoginFail() {
-        mockMvc.post("/api/auth/login") {
-            content = objectMapper.writeValueAsString(
-                LoginDTO(
-                    username = "superAdmin",
-                    password = "error password",
-                    tenant = "default",
-                    captcha = "1234"
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }.andExpect {
-            status { isOk() }
-            content {
-                contentType(MediaType.APPLICATION_JSON)
-                jsonPath("$.success") {
-                    exists()
-                    value(false)
+        mockMvc
+            .post("/api/auth/login") {
+                content =
+                    objectMapper.writeValueAsString(
+                        LoginDTO(
+                            username = "superAdmin",
+                            password = "error password",
+                            tenant = "default",
+                            captcha = "1234",
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
+                status { isOk() }
+                content {
+                    contentType(MediaType.APPLICATION_JSON)
+                    jsonPath("$.success") {
+                        exists()
+                        value(false)
+                    }
                 }
+            }.andDo {
+                log()
             }
-        }.andDo {
-            log()
-        }
     }
 
     @Test
     fun superAdminLogin() {
-        mockMvc.post("/api/auth/login") {
-            content = objectMapper.writeValueAsString(
-                LoginDTO(
-                    username = "superAdmin",
-                    password = "123456",
-                    tenant = "default",
-                    captcha = "1234"
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }.andExpect {
-            status { isOk() }
-            content {
-                contentType(MediaType.APPLICATION_JSON)
-                jsonPath("$.success") {
-                    exists()
-                    value(true)
+        mockMvc
+            .post("/api/auth/login") {
+                content =
+                    objectMapper.writeValueAsString(
+                        LoginDTO(
+                            username = "superAdmin",
+                            password = "123456",
+                            tenant = "default",
+                            captcha = "1234",
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
+                status { isOk() }
+                content {
+                    contentType(MediaType.APPLICATION_JSON)
+                    jsonPath("$.success") {
+                        exists()
+                        value(true)
+                    }
                 }
+            }.andDo {
+                log()
             }
-        }.andDo {
-            log()
-        }
     }
 
     @Test
     fun logout() {
-
     }
 
     @Test
@@ -181,14 +190,16 @@ class SysAuthControllerTest {
         username = Const.SuperAdmin,
     )
     fun switchTenant() {
-        mockMvc.post("/api/auth/switch-tenant/default").andExpect {
-            status { isOk() }
-            content {
-                contentType(MediaType.APPLICATION_JSON)
-                jsonPath("$.data.accessToken") { exists() }
+        mockMvc
+            .post("/api/auth/switch-tenant/default")
+            .andExpect {
+                status { isOk() }
+                content {
+                    contentType(MediaType.APPLICATION_JSON)
+                    jsonPath("$.data.accessToken") { exists() }
+                }
+            }.andDo {
+                log()
             }
-        }.andDo {
-            log()
-        }
     }
 }

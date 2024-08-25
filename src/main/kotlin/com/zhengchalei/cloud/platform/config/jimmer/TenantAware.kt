@@ -5,7 +5,6 @@ import java.time.LocalDateTime
 
 @MappedSuperclass
 interface TenantAware {
-
     val tenant: String
 
     val createTime: LocalDateTime

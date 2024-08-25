@@ -11,7 +11,6 @@ import java.util.*
 
 @Component
 class TenantFilter : KCacheableFilter<TenantAware> {
-
     override fun filter(args: KFilterArgs<TenantAware>) {
         if (SecurityUtils.isLogin()) {
             args.apply {
@@ -20,12 +19,7 @@ class TenantFilter : KCacheableFilter<TenantAware> {
         }
     }
 
-    override fun getParameters(): SortedMap<String, Any>? {
-        return sortedMapOf("tenant" to SecurityUtils.getCurrentTenant())
-    }
+    override fun getParameters(): SortedMap<String, Any>? = sortedMapOf("tenant" to SecurityUtils.getCurrentTenant())
 
-
-    override fun isAffectedBy(e: EntityEvent<*>): Boolean {
-        return e.isChanged(TenantAware::tenant)
-    }
+    override fun isAffectedBy(e: EntityEvent<*>): Boolean = e.isChanged(TenantAware::tenant)
 }

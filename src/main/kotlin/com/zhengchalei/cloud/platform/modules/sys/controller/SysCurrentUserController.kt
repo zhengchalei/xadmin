@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController
 class SysCurrentUserController(
     val sysUserService: SysUserService,
 ) {
-
     @GetMapping("/info")
     fun currentUserInfo(): R<SysUser> {
         val userInfo = this.sysUserService.currentUserInfo()

@@ -23,10 +23,9 @@ import org.springframework.test.web.servlet.post
 @TestMethodOrder(OrderAnnotation::class)
 @WithMockTenantUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:role:create", "sys:role:update", "sys:role:delete", "sys:role:list", "sys:role:page", "sys:role:id"]
+    authorities = ["ROLE_admin", "sys:role:create", "sys:role:update", "sys:role:delete", "sys:role:list", "sys:role:page", "sys:role:id"],
 )
 class SysRoleControllerTest {
-
     @Autowired
     lateinit var mockMvc: MockMvc
 
@@ -40,46 +39,49 @@ class SysRoleControllerTest {
     @Order(Integer.MIN_VALUE)
     @Test
     fun createSysRole() {
-        val result = mockMvc.post("/api/sys/role/create") {
-            content = objectMapper.writeValueAsString(
-                SysRoleCreateInput(
-                    name = "测试角色",
-                    code = "test-role",
-                    description = "角色",
-                    permissionIds = listOf(1, 2, 3)
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
-                status { isOk() }
-                content {
-                    contentType(MediaType.APPLICATION_JSON)
-                    jsonPath("$.success") {
-                        exists()
-                        value(true)
+        val result =
+            mockMvc
+                .post("/api/sys/role/create") {
+                    content =
+                        objectMapper.writeValueAsString(
+                            SysRoleCreateInput(
+                                name = "测试角色",
+                                code = "test-role",
+                                description = "角色",
+                                permissionIds = listOf(1, 2, 3),
+                            ),
+                        )
+                    contentType = MediaType.APPLICATION_JSON
+                }.andExpect {
+                    status { isOk() }
+                    content {
+                        contentType(MediaType.APPLICATION_JSON)
+                        jsonPath("$.success") {
+                            exists()
+                            value(true)
+                        }
                     }
-                }
-            }.andReturn()
+                }.andReturn()
 
         lastId = JsonPath.parse(result.response.contentAsString).read("\$.data.id")
     }
 
     @Test
     fun updateSysRoleById() {
-        mockMvc.post("/api/sys/role/update") {
-            content = objectMapper.writeValueAsString(
-                SysRoleUpdateInput(
-                    id = lastId,
-                    name = "测试角色",
-                    code = "test-role",
-                    description = "角色 update",
-                    permissionIds = listOf(1, 2, 3)
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .post("/api/sys/role/update") {
+                content =
+                    objectMapper.writeValueAsString(
+                        SysRoleUpdateInput(
+                            id = lastId,
+                            name = "测试角色",
+                            code = "test-role",
+                            description = "角色 update",
+                            permissionIds = listOf(1, 2, 3),
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -93,7 +95,8 @@ class SysRoleControllerTest {
 
     @Test
     fun findSysRoleList() {
-        mockMvc.get("/api/sys/role/list")
+        mockMvc
+            .get("/api/sys/role/list")
             .andExpect {
                 status { isOk() }
                 content {
@@ -108,7 +111,8 @@ class SysRoleControllerTest {
 
     @Test
     fun findSysRolePage() {
-        mockMvc.get("/api/sys/role/page")
+        mockMvc
+            .get("/api/sys/role/page")
             .andExpect {
                 status { isOk() }
                 content {
@@ -123,7 +127,8 @@ class SysRoleControllerTest {
 
     @Test
     fun findSysRoleById() {
-        mockMvc.get("/api/sys/role/id/$lastId")
+        mockMvc
+            .get("/api/sys/role/id/$lastId")
             .andExpect {
                 status { isOk() }
                 content {
@@ -139,10 +144,10 @@ class SysRoleControllerTest {
     @Order(Integer.MAX_VALUE)
     @Test
     fun deleteSysRoleById() {
-        mockMvc.delete("/api/sys/role/delete/$lastId") {
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .delete("/api/sys/role/delete/$lastId") {
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -156,10 +161,10 @@ class SysRoleControllerTest {
 
     @Test
     fun deleteSysRoleAdminById() {
-        mockMvc.delete("/api/sys/role/delete/1") {
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .delete("/api/sys/role/delete/1") {
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -170,5 +175,4 @@ class SysRoleControllerTest {
                 }
             }
     }
-
 }

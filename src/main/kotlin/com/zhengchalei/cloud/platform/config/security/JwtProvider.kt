@@ -18,10 +18,10 @@ import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
 import java.util.*
 
-
 @Component
-class JwtProvider(private val dictRepository: SysDictRepository) : CommandLineRunner {
-
+class JwtProvider(
+    private val dictRepository: SysDictRepository,
+) : CommandLineRunner {
     private val logger = LoggerFactory.getLogger(JwtProvider::class.java)
 
     private var secret: ByteArray = "nnaWuft6pSSKVkcuzlmqBWi3vO4Cin44".toByteArray(Charsets.UTF_8)
@@ -80,27 +80,27 @@ class JwtProvider(private val dictRepository: SysDictRepository) : CommandLineRu
         val header = JWSHeader(JWSAlgorithm.HS256)
 
         // Payload
-        val claimsSet = JWTClaimsSet.Builder()
-            .subject(authentication.name)
-            .claim("username", authentication.name)
-            .claim(
-                "roles",
-                authentication.authorities
-                    .filter { it.authority.startsWith(Const.SecurityRolePrifix) }
-                    .map { it.authority }
-                    .map { it.replaceFirst(Const.SecurityRolePrifix, "") }
-                    .joinToString(",")
-            )
-            .claim(
-                "permissions",
-                authentication.authorities
-                    .filter { !it.authority.startsWith(Const.SecurityRolePrifix) }
-                    .map { it.authority }
-                    .joinToString(",")
-            )
-            .claim("tenant", authentication.tenant)
-            .expirationTime(Date(System.currentTimeMillis() + expiration)) // 1 hour from now
-            .build()
+        val claimsSet =
+            JWTClaimsSet
+                .Builder()
+                .subject(authentication.name)
+                .claim("username", authentication.name)
+                .claim(
+                    "roles",
+                    authentication.authorities
+                        .filter { it.authority.startsWith(Const.SecurityRolePrifix) }
+                        .map { it.authority }
+                        .map { it.replaceFirst(Const.SecurityRolePrifix, "") }
+                        .joinToString(","),
+                ).claim(
+                    "permissions",
+                    authentication.authorities
+                        .filter { !it.authority.startsWith(Const.SecurityRolePrifix) }
+                        .map { it.authority }
+                        .joinToString(","),
+                ).claim("tenant", authentication.tenant)
+                .expirationTime(Date(System.currentTimeMillis() + expiration)) // 1 hour from now
+                .build()
 
         val signedJWT = SignedJWT(header, claimsSet)
         val signer = MACSigner(secret)
@@ -142,7 +142,12 @@ class JwtProvider(private val dictRepository: SysDictRepository) : CommandLineRu
         val jwt: SignedJWT = parseToken(token)
         val jwtClaimsSet = jwt.jwtClaimsSet ?: throw RuntimeException("JWT ClaimsSet is null")
         val permissions = jwtClaimsSet.getStringClaim("permissions").split(",").filter { it.isNotBlank() }
-        val roles = jwtClaimsSet.getStringClaim("roles").split(",").map { Const.SecurityRolePrifix.plus(it) }.filter { it.isNotBlank() }
+        val roles =
+            jwtClaimsSet
+                .getStringClaim("roles")
+                .split(",")
+                .map { Const.SecurityRolePrifix.plus(it) }
+                .filter { it.isNotBlank() }
         val tenant = jwtClaimsSet.getStringClaim("tenant")
 
         // 构建权限
@@ -155,12 +160,15 @@ class JwtProvider(private val dictRepository: SysDictRepository) : CommandLineRu
             password = "",
             tenant = tenant,
             captcha = "",
-            authorities = authorities
+            authorities = authorities,
         )
     }
 
-    private fun getListClaimsSet(jwtClaimsSet: JWTClaimsSet, key: String): List<String> {
-        return (jwtClaimsSet.getClaim(key) as List<*>).map { it as String }
-    }
-
+    private fun getListClaimsSet(
+        jwtClaimsSet: JWTClaimsSet,
+        key: String,
+    ): List<String> =
+        (jwtClaimsSet.getClaim(key) as List<*>).map {
+            it as String
+        }
 }

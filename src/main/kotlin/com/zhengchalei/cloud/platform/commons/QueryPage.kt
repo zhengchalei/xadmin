@@ -7,12 +7,7 @@ class QueryPage(
     val currentPage: Int = 1,
     val pageSize: Int = 10,
 ) {
+    fun sort(): Sort = Sort.by(Sort.Direction.ASC, "id")
 
-    fun sort(): Sort {
-        return Sort.by(Sort.Direction.ASC, "id")
-    }
-
-    fun page(): PageRequest {
-        return PageRequest.of(currentPage - 1, pageSize, sort())
-    }
+    fun page(): PageRequest = PageRequest.of(currentPage - 1, pageSize, sort())
 }

@@ -14,9 +14,8 @@ import org.springframework.web.servlet.HandlerExceptionResolver
 
 class JwtConfigurer(
     private val jwtProvider: JwtProvider,
-    private val handlerExceptionResolver: HandlerExceptionResolver
-) :
-    SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>() {
+    private val handlerExceptionResolver: HandlerExceptionResolver,
+) : SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>() {
     override fun configure(http: HttpSecurity) {
         // 实例化 JwtFilter 拦截器, 将Token util bean 传递过来
         val customFilter = JwtAuthorizationFilter(jwtProvider, handlerExceptionResolver)
@@ -24,17 +23,17 @@ class JwtConfigurer(
         http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter::class.java)
     }
 
-
     class JwtAuthorizationFilter(
         private val jwtProvider: JwtProvider,
-        private val handlerExceptionResolver: HandlerExceptionResolver
+        private val handlerExceptionResolver: HandlerExceptionResolver,
     ) : OncePerRequestFilter() {
         private val AUTHORIZATION: String = "Authorization"
         private val ACCESS_TOKEN: String = "access_token"
+
         override fun doFilterInternal(
             request: HttpServletRequest,
             response: HttpServletResponse,
-            filterChain: FilterChain
+            filterChain: FilterChain,
         ) {
             // 这里就是获取到token
             try {
@@ -69,6 +68,5 @@ class JwtConfigurer(
             }
             return null
         }
-
     }
 }

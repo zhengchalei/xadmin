@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
-
 /**
  * 系统授权服务
  * @author 郑查磊
@@ -34,9 +33,8 @@ class SysAuthService(
     val jwtProvider: JwtProvider,
     val userService: SysUserService,
     val ip2RegionService: IP2RegionService,
-    val virtualThreadExecutor: VirtualThreadExecutor
+    val virtualThreadExecutor: VirtualThreadExecutor,
 ) {
-
     private val log = LoggerFactory.getLogger(SysAuthService::class.java)
 
     /**
@@ -48,16 +46,23 @@ class SysAuthService(
      * @param [ip] ip
      * @return [String]
      */
-    fun login(username: String, password: String, captcha: String, tenant: String, ip: String): String {
+    fun login(
+        username: String,
+        password: String,
+        captcha: String,
+        tenant: String,
+        ip: String,
+    ): String {
         try {
-            val authentication: TenantCaptchaAuthenticationToken = authenticationManager.authenticate(
-                TenantCaptchaAuthenticationToken(
-                    username = username,
-                    password = password,
-                    captcha = captcha,
-                    tenant = tenant
-                )
-            ) as TenantCaptchaAuthenticationToken
+            val authentication: TenantCaptchaAuthenticationToken =
+                authenticationManager.authenticate(
+                    TenantCaptchaAuthenticationToken(
+                        username = username,
+                        password = password,
+                        captcha = captcha,
+                        tenant = tenant,
+                    ),
+                ) as TenantCaptchaAuthenticationToken
             SecurityContextHolder.getContext().authentication = authentication
 
             saveLoginLog(username, "", true, null, ip, tenant)
@@ -83,12 +88,13 @@ class SysAuthService(
         // 判断用户名是否为 superAdmin
         if ((SecurityContextHolder.getContext().authentication.principal as User).username == Const.SuperAdmin) {
             // 切换租户
-            SecurityContextHolder.getContext().authentication = TenantCaptchaAuthenticationToken(
-                username = Const.SuperAdmin,
-                password = "",
-                captcha = "",
-                tenant = tenant
-            )
+            SecurityContextHolder.getContext().authentication =
+                TenantCaptchaAuthenticationToken(
+                    username = Const.SuperAdmin,
+                    password = "",
+                    captcha = "",
+                    tenant = tenant,
+                )
             val authentication: TenantCaptchaAuthenticationToken =
                 SecurityContextHolder.getContext().authentication as TenantCaptchaAuthenticationToken
             val token: String = jwtProvider.createAccessToken(authentication)
@@ -117,17 +123,19 @@ class SysAuthService(
     ) {
         this.virtualThreadExecutor.submit {
             val address = this.ip2RegionService.search(ip)
-            this.sysLoginLogRepository.save(new(SysLoginLog::class).by {
-                this.username = username
-                this.password = password
-                this.status = status
-                this.errorMessage = errorMessage
-                this.loginTime = LocalDateTime.now()
-                this.ip = ip
-                this.address = address
-                this.tenant = tenant
-                this.sysUser = if (status) makeIdOnly(SysUser::class, userService.currentUserInfo().id) else null
-            })
+            this.sysLoginLogRepository.save(
+                new(SysLoginLog::class).by {
+                    this.username = username
+                    this.password = password
+                    this.status = status
+                    this.errorMessage = errorMessage
+                    this.loginTime = LocalDateTime.now()
+                    this.ip = ip
+                    this.address = address
+                    this.tenant = tenant
+                    this.sysUser = if (status) makeIdOnly(SysUser::class, userService.currentUserInfo().id) else null
+                },
+            )
         }
     }
 }

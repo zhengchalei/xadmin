@@ -23,10 +23,9 @@ import org.springframework.test.web.servlet.post
 @TestMethodOrder(OrderAnnotation::class)
 @WithMockTenantUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:dict:create", "sys:dict:update", "sys:dict:delete", "sys:dict:list", "sys:dict:page", "sys:dict:id"]
+    authorities = ["ROLE_admin", "sys:dict:create", "sys:dict:update", "sys:dict:delete", "sys:dict:list", "sys:dict:page", "sys:dict:id"],
 )
 class SysDictControllerTest {
-
     @Autowired
     lateinit var mockMvc: MockMvc
 
@@ -40,48 +39,51 @@ class SysDictControllerTest {
     @Order(Integer.MIN_VALUE)
     @Test
     fun createSysDict() {
-        val result = mockMvc.post("/api/sys/dict/create") {
-            content = objectMapper.writeValueAsString(
-                SysDictCreateInput(
-                    name = "测试字典",
-                    code = "test-dict",
-                    description = "字典",
-                    sort = 1,
-                    status = true
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
-                status { isOk() }
-                content {
-                    contentType(MediaType.APPLICATION_JSON)
-                    jsonPath("$.success") {
-                        exists()
-                        value(true)
+        val result =
+            mockMvc
+                .post("/api/sys/dict/create") {
+                    content =
+                        objectMapper.writeValueAsString(
+                            SysDictCreateInput(
+                                name = "测试字典",
+                                code = "test-dict",
+                                description = "字典",
+                                sort = 1,
+                                status = true,
+                            ),
+                        )
+                    contentType = MediaType.APPLICATION_JSON
+                }.andExpect {
+                    status { isOk() }
+                    content {
+                        contentType(MediaType.APPLICATION_JSON)
+                        jsonPath("$.success") {
+                            exists()
+                            value(true)
+                        }
                     }
-                }
-            }.andReturn()
+                }.andReturn()
 
         lastId = JsonPath.parse(result.response.contentAsString).read("\$.data.id")
     }
 
     @Test
     fun updateSysDictById() {
-        mockMvc.post("/api/sys/dict/update") {
-            content = objectMapper.writeValueAsString(
-                SysDictUpdateInput(
-                    id = lastId,
-                    name = "测试字典",
-                    code = "test-dict-update",
-                    description = "字典",
-                    sort = 1,
-                    status = false
-                )
-            )
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .post("/api/sys/dict/update") {
+                content =
+                    objectMapper.writeValueAsString(
+                        SysDictUpdateInput(
+                            id = lastId,
+                            name = "测试字典",
+                            code = "test-dict-update",
+                            description = "字典",
+                            sort = 1,
+                            status = false,
+                        ),
+                    )
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -93,10 +95,10 @@ class SysDictControllerTest {
             }
     }
 
-
     @Test
     fun findSysDictList() {
-        mockMvc.get("/api/sys/dict/list")
+        mockMvc
+            .get("/api/sys/dict/list")
             .andExpect {
                 status { isOk() }
                 content {
@@ -111,7 +113,8 @@ class SysDictControllerTest {
 
     @Test
     fun findSysDictPage() {
-        mockMvc.get("/api/sys/dict/page")
+        mockMvc
+            .get("/api/sys/dict/page")
             .andExpect {
                 status { isOk() }
                 content {
@@ -124,10 +127,10 @@ class SysDictControllerTest {
             }
     }
 
-
     @Test
     fun findSysDictById() {
-        mockMvc.get("/api/sys/dict/id/$lastId")
+        mockMvc
+            .get("/api/sys/dict/id/$lastId")
             .andExpect {
                 status { isOk() }
                 content {
@@ -143,10 +146,10 @@ class SysDictControllerTest {
     @Order(Integer.MAX_VALUE)
     @Test
     fun deleteSysDictById() {
-        mockMvc.delete("/api/sys/dict/delete/$lastId") {
-            contentType = MediaType.APPLICATION_JSON
-        }
-            .andExpect {
+        mockMvc
+            .delete("/api/sys/dict/delete/$lastId") {
+                contentType = MediaType.APPLICATION_JSON
+            }.andExpect {
                 status { isOk() }
                 content {
                     contentType(MediaType.APPLICATION_JSON)
@@ -157,5 +160,4 @@ class SysDictControllerTest {
                 }
             }
     }
-
 }

@@ -13,7 +13,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Service
 import org.springframework.web.servlet.HandlerExceptionResolver
 
-
 @Service
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class SpringSecurityConfig(
@@ -21,24 +20,21 @@ class SpringSecurityConfig(
     private val profile: String,
     private val objectMapper: ObjectMapper,
     private val tenantCaptchaAuthenticationProvider: TenantCaptchaAuthenticationProvider,
-    private val handlerExceptionResolver: HandlerExceptionResolver
+    private val handlerExceptionResolver: HandlerExceptionResolver,
 ) {
-
-
     @Bean
     fun securityFilterChain(
         http: HttpSecurity,
         jwtProvider: JwtProvider,
-        authenticationManager: AuthenticationManager
+        authenticationManager: AuthenticationManager,
     ): SecurityFilterChain {
         val tenantCaptchaAuthenticationFilter = TenantCaptchaAuthenticationFilter()
         tenantCaptchaAuthenticationFilter.setAuthenticationManager(authenticationManager)
         return http
             .addFilterBefore(
                 JwtConfigurer.JwtAuthorizationFilter(jwtProvider, handlerExceptionResolver),
-                UsernamePasswordAuthenticationFilter::class.java
-            )
-            .addFilterBefore(tenantCaptchaAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+                UsernamePasswordAuthenticationFilter::class.java,
+            ).addFilterBefore(tenantCaptchaAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .authenticationProvider(tenantCaptchaAuthenticationProvider)
             .authorizeHttpRequests { authorize ->
 
@@ -54,12 +50,11 @@ class SpringSecurityConfig(
                     authorize.requestMatchers("/openapi.yml").permitAll()
                 }
                 authorize.anyRequest().permitAll()
-            }
-            .exceptionHandling {
+            }.exceptionHandling {
                 it.authenticationEntryPoint { request, response, authException ->
                     response.sendError(
                         401,
-                        objectMapper.writeValueAsString(GlobalException.Error(authException.message ?: "未登录"))
+                        objectMapper.writeValueAsString(GlobalException.Error(authException.message ?: "未登录")),
                     )
                 }
                 it.accessDeniedHandler { request, response, accessDeniedException ->
@@ -67,24 +62,18 @@ class SpringSecurityConfig(
                         403,
                         objectMapper.writeValueAsString(
                             GlobalException.Error(
-                                accessDeniedException.message ?: "无权限"
-                            )
-                        )
+                                accessDeniedException.message ?: "无权限",
+                            ),
+                        ),
                     )
                 }
-            }
-            .sessionManagement {
+            }.sessionManagement {
                 it.disable()
-            }
-            .csrf {
+            }.csrf {
                 it.disable()
-            }
-            .build()
+            }.build()
     }
 
     @Bean
-    fun authenticationManager(configuration: AuthenticationConfiguration): AuthenticationManager {
-        return configuration.authenticationManager
-    }
-
+    fun authenticationManager(configuration: AuthenticationConfiguration): AuthenticationManager = configuration.authenticationManager
 }

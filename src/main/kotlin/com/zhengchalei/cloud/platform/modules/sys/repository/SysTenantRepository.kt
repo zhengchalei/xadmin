@@ -11,33 +11,36 @@ import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
-
 interface SysTenantRepository : KRepository<SysTenant, Long> {
+    fun findDetailById(id: Long) =
+        sql
+            .createQuery(SysTenant::class) {
+                where(table.id eq id)
+                select(
+                    table.fetch(SysTenantPageView::class),
+                )
+            }.fetchOne()
 
-    fun findDetailById(id: Long) = sql.createQuery(SysTenant::class) {
-        where(table.id eq id)
-        select(
-            table.fetch(SysTenantPageView::class)
-        )
-    }.fetchOne()
-
-    fun findPage(specification: SysTenantPageSpecification, pageable: Pageable): Page<SysTenantPageView> =
-        sql.createQuery(SysTenant::class) {
-            orderBy(table.id.asc())
-            where(specification)
-            select(
-                table.fetch(SysTenantPageView::class)
-            )
-        }.fetchSpringPage(pageable)
+    fun findPage(
+        specification: SysTenantPageSpecification,
+        pageable: Pageable,
+    ): Page<SysTenantPageView> =
+        sql
+            .createQuery(SysTenant::class) {
+                orderBy(table.id.asc())
+                where(specification)
+                select(
+                    table.fetch(SysTenantPageView::class),
+                )
+            }.fetchSpringPage(pageable)
 
     fun findList(specification: SysTenantPageSpecification): List<SysTenantPageView> =
-        sql.createQuery(SysTenant::class) {
-            orderBy(table.id.asc())
-            where(specification)
-            select(
-                table.fetch(SysTenantPageView::class)
-            )
-        }.execute()
-
-
+        sql
+            .createQuery(SysTenant::class) {
+                orderBy(table.id.asc())
+                where(specification)
+                select(
+                    table.fetch(SysTenantPageView::class),
+                )
+            }.execute()
 }

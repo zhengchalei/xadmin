@@ -15,19 +15,22 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/sys/dict-item")
 class SysDictItemController(
-    val sysDictItemService: SysDictItemService
+    val sysDictItemService: SysDictItemService,
 ) {
-
     @PreAuthorize("hasAuthority('sys:dict-item:id') or hasRole('admin')")
     @GetMapping("/id/{id}")
-    fun findSysDictItemById(@PathVariable id: Long): R<SysDictItemDetailView> {
+    fun findSysDictItemById(
+        @PathVariable id: Long,
+    ): R<SysDictItemDetailView> {
         val data = sysDictItemService.findSysDictItemById(id)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:dict-item:list') or hasRole('admin')")
     @GetMapping("/list")
-    fun findSysDictItemList(@NotNull specification: SysDictItemPageSpecification): R<List<SysDictItemPageView>> {
+    fun findSysDictItemList(
+        @NotNull specification: SysDictItemPageSpecification,
+    ): R<List<SysDictItemPageView>> {
         val data = sysDictItemService.findSysDictItemList(specification)
         return R(data = data)
     }
@@ -36,7 +39,7 @@ class SysDictItemController(
     @GetMapping("/page")
     fun findSysDictItemPage(
         @NotNull specification: SysDictItemPageSpecification,
-        @NotNull pageable: QueryPage
+        @NotNull pageable: QueryPage,
     ): R<MutableList<SysDictItemPageView>> {
         val data = sysDictItemService.findSysDictItemPage(specification, pageable.page())
         return R.success(data)
@@ -44,21 +47,27 @@ class SysDictItemController(
 
     @PreAuthorize("hasAuthority('sys:dict-item:create') or hasRole('admin')")
     @PostMapping("/create")
-    fun createSysDictItem(@NotNull @RequestBody sysDictItemCreateInput: SysDictItemCreateInput): R<SysDictItemDetailView> {
+    fun createSysDictItem(
+        @NotNull @RequestBody sysDictItemCreateInput: SysDictItemCreateInput,
+    ): R<SysDictItemDetailView> {
         val data = sysDictItemService.createSysDictItem(sysDictItemCreateInput)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:dict-item:update') or hasRole('admin')")
     @PostMapping("/update")
-    fun updateSysDictItemById(@NotNull @RequestBody sysDictItemUpdateInput: SysDictItemUpdateInput): R<SysDictItemDetailView> {
+    fun updateSysDictItemById(
+        @NotNull @RequestBody sysDictItemUpdateInput: SysDictItemUpdateInput,
+    ): R<SysDictItemDetailView> {
         val data = sysDictItemService.updateSysDictItemById(sysDictItemUpdateInput)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:dict-item:delete') or hasRole('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysDictItemById(@NotNull @PathVariable id: Long): R<Boolean> {
+    fun deleteSysDictItemById(
+        @NotNull @PathVariable id: Long,
+    ): R<Boolean> {
         sysDictItemService.deleteSysDictItemById(id)
         return R()
     }

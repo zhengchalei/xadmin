@@ -22,9 +22,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(rollbackFor = [Exception::class])
 class SysRoleService(
-    private val sysRoleRepository: SysRoleRepository
+    private val sysRoleRepository: SysRoleRepository,
 ) {
-
     private val logger = org.slf4j.LoggerFactory.getLogger(SysRoleService::class.java)
 
     /**
@@ -45,8 +44,10 @@ class SysRoleService(
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysRolePage(specification: SysRolePageSpecification, pageable: Pageable) =
-        this.sysRoleRepository.findPage(specification, pageable)
+    fun findSysRolePage(
+        specification: SysRolePageSpecification,
+        pageable: Pageable,
+    ) = this.sysRoleRepository.findPage(specification, pageable)
 
     /**
      * 创造系统角色
@@ -67,8 +68,10 @@ class SysRoleService(
      * @return [SysRoleDetailView]
      */
     fun updateSysRoleById(sysRoleUpdateInput: SysRoleUpdateInput): SysRoleDetailView {
-        val oldRole = this.sysRoleRepository.findById(sysRoleUpdateInput.id)
-            .orElseThrow { ServiceException("角色不存在") }
+        val oldRole =
+            this.sysRoleRepository
+                .findById(sysRoleUpdateInput.id)
+                .orElseThrow { ServiceException("角色不存在") }
         if (oldRole.code == Const.ADMIN_ROLE) {
             throw ServiceException("${Const.ADMIN_ROLE} 不能修改")
         }
@@ -90,5 +93,4 @@ class SysRoleService(
         }
         this.sysRoleRepository.deleteById(id)
     }
-
 }

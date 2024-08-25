@@ -8,7 +8,6 @@ import java.time.LocalDate
 @Entity
 @Table(name = "sys_user")
 interface SysUser : TenantAware {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long
@@ -42,7 +41,7 @@ interface SysUser : TenantAware {
     @JoinTable(
         name = "sys_user_role",
         joinColumnName = "user_id",
-        inverseJoinColumnName = "role_id"
+        inverseJoinColumnName = "role_id",
     )
     val roles: List<SysRole>
 
@@ -52,10 +51,9 @@ interface SysUser : TenantAware {
 
 @EnumType(EnumType.Strategy.NAME)
 enum class Gender {
-
     @EnumItem(name = "MALE")
     MALE,
 
     @EnumItem(name = "FEMALE")
-    FEMALE
+    FEMALE,
 }

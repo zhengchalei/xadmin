@@ -5,7 +5,6 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "sys_dict")
 interface SysDict {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long

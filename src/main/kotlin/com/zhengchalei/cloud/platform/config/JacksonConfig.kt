@@ -12,7 +12,6 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-
 @Configuration
 class JacksonConfig : WebMvcConfigurer {
     private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -20,8 +19,8 @@ class JacksonConfig : WebMvcConfigurer {
     private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 
     @Bean
-    fun jackson2ObjectMapperBuilderCustomizer(): Jackson2ObjectMapperBuilderCustomizer {
-        return Jackson2ObjectMapperBuilderCustomizer { builder ->
+    fun jackson2ObjectMapperBuilderCustomizer(): Jackson2ObjectMapperBuilderCustomizer =
+        Jackson2ObjectMapperBuilderCustomizer { builder ->
             // LocalTime
             builder.serializerByType(LocalTime::class.java, LocalDateTimeSerializer(timeFormatter))
             builder.deserializerByType(LocalTime::class.java, LocalDateTimeDeserializer(timeFormatter))
@@ -34,45 +33,46 @@ class JacksonConfig : WebMvcConfigurer {
             builder.serializerByType(LocalDateTime::class.java, LocalDateTimeSerializer(dateTimeFormatter))
             builder.deserializerByType(LocalDateTime::class.java, LocalDateTimeDeserializer(dateTimeFormatter))
         }
-    }
-
 
     @Bean
-    fun localDateTimeFormatter(): Formatter<LocalDateTime> {
-        return object : Formatter<LocalDateTime> {
-            override fun parse(text: String, locale: java.util.Locale): LocalDateTime {
-                return LocalDateTime.parse(text, dateTimeFormatter)
-            }
+    fun localDateTimeFormatter(): Formatter<LocalDateTime> =
+        object : Formatter<LocalDateTime> {
+            override fun parse(
+                text: String,
+                locale: java.util.Locale,
+            ): LocalDateTime = LocalDateTime.parse(text, dateTimeFormatter)
 
-            override fun print(t: LocalDateTime, locale: java.util.Locale): String {
-                return t.format(dateTimeFormatter)
-            }
+            override fun print(
+                t: LocalDateTime,
+                locale: java.util.Locale,
+            ): String = t.format(dateTimeFormatter)
         }
-    }
 
     @Bean
-    fun localDateFormatter(): Formatter<LocalDate> {
-        return object : Formatter<LocalDate> {
-            override fun parse(text: String, locale: java.util.Locale): LocalDate {
-                return LocalDate.parse(text, dateFormatter)
-            }
+    fun localDateFormatter(): Formatter<LocalDate> =
+        object : Formatter<LocalDate> {
+            override fun parse(
+                text: String,
+                locale: java.util.Locale,
+            ): LocalDate = LocalDate.parse(text, dateFormatter)
 
-            override fun print(t: LocalDate, locale: java.util.Locale): String {
-                return t.format(dateFormatter)
-            }
+            override fun print(
+                t: LocalDate,
+                locale: java.util.Locale,
+            ): String = t.format(dateFormatter)
         }
-    }
 
     @Bean
-    fun localTimeFormatter(): Formatter<LocalTime> {
-        return object : Formatter<LocalTime> {
-            override fun parse(text: String, locale: java.util.Locale): LocalTime {
-                return LocalTime.parse(text, timeFormatter)
-            }
+    fun localTimeFormatter(): Formatter<LocalTime> =
+        object : Formatter<LocalTime> {
+            override fun parse(
+                text: String,
+                locale: java.util.Locale,
+            ): LocalTime = LocalTime.parse(text, timeFormatter)
 
-            override fun print(t: LocalTime, locale: java.util.Locale): String {
-                return t.format(timeFormatter)
-            }
+            override fun print(
+                t: LocalTime,
+                locale: java.util.Locale,
+            ): String = t.format(timeFormatter)
         }
-    }
 }

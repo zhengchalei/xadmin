@@ -6,7 +6,6 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "sys_tenant")
 interface SysTenant {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long

@@ -8,6 +8,5 @@ class TenantCaptchaAuthenticationToken(
     password: Any,
     val tenant: String,
     val captcha: String,
-    authorities: Collection<GrantedAuthority> = emptyList()
-) :
-    UsernamePasswordAuthenticationToken(username, password, authorities)
+    authorities: Collection<GrantedAuthority> = emptyList(),
+) : UsernamePasswordAuthenticationToken(username, password, authorities)

@@ -20,9 +20,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(rollbackFor = [Exception::class])
 class SysDictService(
-    private val sysDictRepository: SysDictRepository
+    private val sysDictRepository: SysDictRepository,
 ) {
-
     private val logger = org.slf4j.LoggerFactory.getLogger(SysDictService::class.java)
 
     /**
@@ -43,8 +42,10 @@ class SysDictService(
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysDictPage(specification: SysDictPageSpecification, pageable: Pageable) =
-        this.sysDictRepository.findPage(specification, pageable)
+    fun findSysDictPage(
+        specification: SysDictPageSpecification,
+        pageable: Pageable,
+    ) = this.sysDictRepository.findPage(specification, pageable)
 
     /**
      * 创建系统字典
@@ -71,5 +72,4 @@ class SysDictService(
      * @param [id] ID
      */
     fun deleteSysDictById(id: Long) = this.sysDictRepository.deleteById(id)
-
 }

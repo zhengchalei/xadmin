@@ -23,7 +23,6 @@ class TenantCaptchaAuthenticationProvider(
     val sysUserRepository: SysUserRepository,
     val passwordEncoder: PasswordEncoder,
 ) : AuthenticationProvider {
-
     override fun authenticate(authentication: Authentication): Authentication {
         val username = authentication.name
         val password = authentication.credentials as String
@@ -38,16 +37,15 @@ class TenantCaptchaAuthenticationProvider(
         }
     }
 
-    override fun supports(authentication: Class<*>): Boolean {
-        return TenantCaptchaAuthenticationToken::class.java.isAssignableFrom(authentication)
-    }
+    override fun supports(authentication: Class<*>): Boolean = TenantCaptchaAuthenticationToken::class.java.isAssignableFrom(authentication)
 
     private fun isValidTenant(tenant: String): Boolean {
         // 这里实现租户ID验证逻辑
-        this.sysTenantRepository.sql.createQuery(SysTenant::class) {
-            where(table.code eq tenant)
-            select(table.id)
-        }.fetchOneOrNull() ?: throw TenantNotFoundException()
+        this.sysTenantRepository.sql
+            .createQuery(SysTenant::class) {
+                where(table.code eq tenant)
+                select(table.id)
+            }.fetchOneOrNull() ?: throw TenantNotFoundException()
         return true
     }
 
@@ -56,7 +54,11 @@ class TenantCaptchaAuthenticationProvider(
         return true ?: throw CaptchaErrorException()
     }
 
-    fun loadUserByUsername(username: String, password: String, tenant: String): UserDetails {
+    fun loadUserByUsername(
+        username: String,
+        password: String,
+        tenant: String,
+    ): UserDetails {
         if (username == Const.SuperAdmin) {
             val user = sysUserRepository.findByUsername(username) ?: throw UserNotFoundException()
             if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
@@ -67,7 +69,7 @@ class TenantCaptchaAuthenticationProvider(
                 true,
                 true,
                 true,
-                mutableListOf(SimpleGrantedAuthority(Const.SecurityRolePrifix + Const.ADMIN_ROLE))
+                mutableListOf(SimpleGrantedAuthority(Const.SecurityRolePrifix + Const.ADMIN_ROLE)),
             )
         }
 
@@ -81,7 +83,7 @@ class TenantCaptchaAuthenticationProvider(
                 true,
                 true,
                 true,
-                mutableListOf(SimpleGrantedAuthority(Const.SecurityRolePrifix + Const.ADMIN_ROLE))
+                mutableListOf(SimpleGrantedAuthority(Const.SecurityRolePrifix + Const.ADMIN_ROLE)),
             )
         }
         if (!user.status) throw UserDisabledException()
@@ -90,7 +92,12 @@ class TenantCaptchaAuthenticationProvider(
         val roles = user.roles
         val permissions = user.roles.flatMap { it.permissions }
         authorityList.addAll(permissions.map { it.code }.map { SimpleGrantedAuthority(it) })
-        authorityList.addAll(roles.map { it.code }.map { Const.SecurityRolePrifix + it }.map { SimpleGrantedAuthority(it) })
+        authorityList.addAll(
+            roles
+                .map { it.code }
+                .map { Const.SecurityRolePrifix + it }
+                .map { SimpleGrantedAuthority(it) },
+        )
         return User(username, user.password, user.status, true, true, true, authorityList)
     }
 }

@@ -17,9 +17,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(rollbackFor = [Exception::class])
 class SysDepartmentService(
-    private val sysDepartmentRepository: SysDepartmentRepository
+    private val sysDepartmentRepository: SysDepartmentRepository,
 ) {
-
     private val logger = org.slf4j.LoggerFactory.getLogger(SysDepartmentService::class.java)
 
     /**
@@ -33,23 +32,23 @@ class SysDepartmentService(
      * 查找系统部门列表
      * @param [specification] 查询条件构造器
      */
-    fun findSysDepartmentList(specification: SysDepartmentPageSpecification) =
-        this.sysDepartmentRepository.findList(specification)
+    fun findSysDepartmentList(specification: SysDepartmentPageSpecification) = this.sysDepartmentRepository.findList(specification)
 
     /**
      * 查找系统部门树
      * @param [specification] 查询条件构造器
      */
-    fun findSysDepartmentTree(specification: SysDepartmentPageSpecification) =
-        this.sysDepartmentRepository.findTree(specification)
+    fun findSysDepartmentTree(specification: SysDepartmentPageSpecification) = this.sysDepartmentRepository.findTree(specification)
 
     /**
      * 查找系统部门分页
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysDepartmentPage(specification: SysDepartmentPageSpecification, pageable: Pageable) =
-        this.sysDepartmentRepository.findPage(specification, pageable)
+    fun findSysDepartmentPage(
+        specification: SysDepartmentPageSpecification,
+        pageable: Pageable,
+    ) = this.sysDepartmentRepository.findPage(specification, pageable)
 
     /**
      * 创建系统部门
@@ -81,10 +80,8 @@ class SysDepartmentService(
      * 查找系统部门树根
      * @param [specification] 查询条件构造器
      */
-    fun findSysDepartmentTreeRoot(specification: SysDepartmentPageSpecification) =
-        this.sysDepartmentRepository.findTreeRoot(specification)
+    fun findSysDepartmentTreeRoot(specification: SysDepartmentPageSpecification) = this.sysDepartmentRepository.findTreeRoot(specification)
 
     fun findSysDepartmentTreeSelect(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeSelectView> =
         this.sysDepartmentRepository.findTreeSelect(specification)
-
 }

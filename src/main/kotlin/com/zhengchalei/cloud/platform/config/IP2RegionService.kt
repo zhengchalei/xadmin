@@ -11,9 +11,8 @@ import org.springframework.stereotype.Component
 // Spring 容器销毁事件
 @Component
 class IP2RegionService(
-    private val sysDictRepository: SysDictRepository
+    private val sysDictRepository: SysDictRepository,
 ) : ApplicationRunner {
-
     private val log = LoggerFactory.getLogger(IP2RegionService::class.java)
 
     private var searcher: Searcher? = null
@@ -56,10 +55,11 @@ class IP2RegionService(
     }
 
     fun search(ip: String): String {
-        val searcher = this.searcher ?: run {
-            log.warn("ip2region.xdb 存储库未初始化")
-            return ""
-        }
+        val searcher =
+            this.searcher ?: run {
+                log.warn("ip2region.xdb 存储库未初始化")
+                return ""
+            }
 
         return try {
             if (this.unsafeInit) {
