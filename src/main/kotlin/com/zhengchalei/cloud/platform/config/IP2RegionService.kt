@@ -1,6 +1,5 @@
 package com.zhengchalei.cloud.platform.config
 
-import com.zhengchalei.cloud.platform.modules.sys.repository.SysDictRepository
 import jakarta.annotation.PreDestroy
 import org.lionsoul.ip2region.xdb.Searcher
 import org.slf4j.LoggerFactory
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class IP2RegionService(
-    private val sysDictRepository: SysDictRepository,
     private val iP2RegionConfigProperties: IP2RegionConfigProperties
 ) : ApplicationRunner {
     private val log = LoggerFactory.getLogger(IP2RegionService::class.java)
