@@ -9,7 +9,7 @@ import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.InvalidTokenException
-import com.zhengchalei.cloud.platform.modules.sys.repository.SysDictRepository
+import com.zhengchalei.cloud.platform.config.JwtConfigurationProperties
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.security.core.Authentication
@@ -20,51 +20,22 @@ import java.util.*
 
 @Component
 class JwtProvider(
-    private val dictRepository: SysDictRepository,
+    private val jwtConfigurationProperties: JwtConfigurationProperties,
 ) : CommandLineRunner {
     private val logger = LoggerFactory.getLogger(JwtProvider::class.java)
 
-    private var secret: ByteArray = "nnaWuft6pSSKVkcuzlmqBWi3vO4Cin44".toByteArray(Charsets.UTF_8)
+    private var secret: ByteArray = "".toByteArray(Charsets.UTF_8)
 
     private var expiration: Long = 3600L
 
     override fun run(vararg args: String) {
-        val dict = this.dictRepository.findByCode("token")
-        val dictItems = dict?.dictItems ?: emptyList()
         // 获取 secret
-        val secret = dictItems.find { it.code == "secret" }
+        val secret = jwtConfigurationProperties.secret.toByteArray(Charsets.UTF_8)
         // 获取 expired
-        val expired = dictItems.find { it.code == "expired" }
+        val expired = jwtConfigurationProperties.expired * 1000 // 转换为毫秒
 
-        when {
-            secret == null -> {
-                logger.error("JWT 参数初始化失败, 缺少 'secret', 正在使用默认值: 危险")
-                this.secret = "default-secret".toByteArray(Charsets.UTF_8)
-            }
-
-            secret.data.toByteArray(Charsets.UTF_8).size < 32 -> {
-                logger.error("JWT 参数错误, 'secret' 必须大于 32 个字符, 正在使用默认值: 危险")
-            }
-
-            else -> {
-                this.secret = secret.data.toByteArray(Charsets.UTF_8)
-            }
-        }
-
-        when {
-            expired == null -> {
-                logger.warn("JWT 参数初始化失败, 缺少 'expired'")
-                this.expiration = 3600L // 默认过期时间为 1 小时
-            }
-
-            expired.data.toLong() < 0 -> {
-                logger.warn("JWT 参数初始化错误, 'expired' 必须大于 0 , 正在使用默认值: 危险")
-            }
-
-            else -> {
-                this.expiration = expired.data.toLong() * 1000 // 转换为毫秒
-            }
-        }
+        this.secret = secret
+        this.expiration = expired
 
         logger.info("jwt 参数初始化完毕")
     }

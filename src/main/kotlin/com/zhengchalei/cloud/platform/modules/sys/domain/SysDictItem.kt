@@ -21,6 +21,8 @@ interface SysDictItem {
 
     val status: Boolean
 
+    @OnDissociate(DissociateAction.DELETE)
     @ManyToOne
+    @JoinColumn(name = "dict_id")
     val dict: SysDict
 }
