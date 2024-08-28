@@ -8,26 +8,26 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
 
-// Spring 容器销毁事件
 @Component
 class IP2RegionService(
     private val sysDictRepository: SysDictRepository,
+    private val iP2RegionConfigProperties: IP2RegionConfigProperties
 ) : ApplicationRunner {
     private val log = LoggerFactory.getLogger(IP2RegionService::class.java)
 
     private var searcher: Searcher? = null
 
-    private var unsafeInit: Boolean = false
+    private var safe: Boolean = true
 
     // 部分缓存, 线程不安全
     fun notThreadSafeInit(dbPath: String) {
         try {
             val vIndex = Searcher.loadVectorIndexFromFile(dbPath)
             val searcher = Searcher.newWithVectorIndex(dbPath, vIndex)
-            this.unsafeInit = true
+            this.safe = false
             this.searcher = searcher
         } catch (e: Exception) {
-            System.out.printf("failed to load vector index from `%s`: %s\n", dbPath, e)
+            log.error("加载 ip2region.xdb 存储库失败 path: $dbPath", e)
             return
         }
     }
@@ -44,25 +44,24 @@ class IP2RegionService(
     }
 
     override fun run(args: ApplicationArguments) {
-        val dictDetailView = this.sysDictRepository.findByCode("ip2region")
-        val filePath = dictDetailView?.dictItems?.find { it.code == "filePath" }?.data
-        if (!filePath.isNullOrEmpty()) {
-            defaultInit(filePath)
-            this.unsafeInit = false
+        if (iP2RegionConfigProperties.enable) {
+            defaultInit(iP2RegionConfigProperties.dbPath)
+            this.safe = true
             return
         }
-        log.warn("未配置 ip2region.xdb 存储库")
     }
 
-    fun search(ip: String): String {
-        val searcher =
-            this.searcher ?: run {
-                log.warn("ip2region.xdb 存储库未初始化")
-                return ""
-            }
-
+    fun search(ip: String): String? {
+        if (!iP2RegionConfigProperties.enable) {
+            log.warn("未启动 ip2region ")
+            return null
+        }
+        val searcher = this.searcher ?: run {
+            log.warn("未配置 ip2region.xdb 存储库")
+            return null
+        }
         return try {
-            if (this.unsafeInit) {
+            if (this.safe) {
                 synchronized(this) {
                     searcher.search(ip)
                 }
@@ -71,7 +70,7 @@ class IP2RegionService(
             }
         } catch (e: Exception) {
             log.error("ip2region.xdb 存储库查询失败", e)
-            return ""
+            return null
         }
     }
 
