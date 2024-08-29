@@ -74,7 +74,7 @@ class SysDepartmentService(
      * 删除系统部门通过ID
      * @param [id] ID
      */
-    fun deleteSysDepartmentById(id: Long) = this.sysDepartmentRepository.deleteById(id)
+    fun deleteSysDepartmentById(id: Long) = this.sysDepartmentRepository.deleteSysDepartmentById(id)
 
     /**
      * 查找系统部门树根

@@ -1,5 +1,6 @@
 package com.zhengchalei.cloud.platform.modules.sys.repository
 
+import com.zhengchalei.cloud.platform.config.HasChildrenException
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysDepartment
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.domain.id
@@ -8,6 +9,7 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.sort
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.spring.repository.fetchSpringPage
 import org.babyfish.jimmer.sql.kt.ast.expression.asc
+import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.isNull
 import org.springframework.data.domain.Page
@@ -78,4 +80,18 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
                     table.fetch(SysDepartmentTreeSelectView::class),
                 )
             }.execute()
+
+    fun deleteSysDepartmentById(id: Long) {
+        val count = sql
+            .createQuery(SysDepartment::class) {
+                where(table.parentId eq id)
+                select(
+                    count(table.id)
+                )
+            }.fetchOne()
+        if (count != 0L) {
+            throw HasChildrenException()
+        }
+        return deleteById(id = id)
+    }
 }

@@ -69,12 +69,12 @@ class TenantCaptchaAuthenticationProvider(
                 true,
                 true,
                 true,
-                mutableListOf(SimpleGrantedAuthority(Const.SecurityRolePrifix + Const.ADMIN_ROLE)),
+                mutableListOf(SimpleGrantedAuthority(Const.SecurityRolePrifix + Const.AdminRole)),
             )
         }
 
         val user = sysUserRepository.findByUsernameAndTenant(username, tenant) ?: throw UserNotFoundException()
-        if (user.username == Const.ADMIN_USER) {
+        if (user.username == Const.AdminUser) {
             if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
             return User(
                 username,
@@ -83,7 +83,7 @@ class TenantCaptchaAuthenticationProvider(
                 true,
                 true,
                 true,
-                mutableListOf(SimpleGrantedAuthority(Const.SecurityRolePrifix + Const.ADMIN_ROLE)),
+                mutableListOf(SimpleGrantedAuthority(Const.SecurityRolePrifix + Const.AdminRole)),
             )
         }
         if (!user.status) throw UserDisabledException()

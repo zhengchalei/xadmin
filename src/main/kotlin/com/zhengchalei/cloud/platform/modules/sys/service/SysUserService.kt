@@ -75,13 +75,13 @@ class SysUserService(
      * @return [SysUserDetailView]
      */
     fun createSysUser(sysUserCreateInput: SysUserCreateInput): SysUserDetailView {
-        if (sysUserCreateInput.username == Const.ADMIN_USER || sysUserCreateInput.username == Const.SuperAdmin) {
-            throw ServiceException("用户名不能为 ${Const.ADMIN_USER}")
+        if (sysUserCreateInput.username == Const.AdminUser || sysUserCreateInput.username == Const.SuperAdmin) {
+            throw ServiceException("用户名不能为 ${Const.AdminUser}")
         }
         // TODO 集成邮件后, 这里密码应该由邮件发送
         val newSysUser =
             new(SysUser::class).by(sysUserCreateInput.toEntity()) {
-                password = passwordEncoder.encode(Const.DEFAULT_PASSWORD)
+                password = passwordEncoder.encode(Const.DefaultPassword)
             }
         val sysUser: SysUser = this.sysUserRepository.insert(newSysUser)
         return findSysUserById(sysUser.id)
@@ -97,8 +97,8 @@ class SysUserService(
             this.sysUserRepository
                 .findById(sysUserUpdateInput.id)
                 .orElseThrow { throw ServiceException("用户不存在") }
-        if (oldUser.username == Const.ADMIN_USER || oldUser.username == Const.SuperAdmin) {
-            throw ServiceException("${Const.ADMIN_USER} 不能修改用户名")
+        if (oldUser.username == Const.AdminUser || oldUser.username == Const.SuperAdmin) {
+            throw ServiceException("${Const.AdminUser} 不能修改用户名")
         }
         // avatar
         if (sysUserUpdateInput.avatar == null) {
@@ -114,7 +114,7 @@ class SysUserService(
      */
     fun deleteSysUserById(id: Long) {
         val sysUser = this.sysUserRepository.findById(id).orElseThrow { throw ServiceException("用户不存在") }
-        if (sysUser.username == Const.ADMIN_USER || sysUser.username == Const.SuperAdmin) {
+        if (sysUser.username == Const.AdminUser || sysUser.username == Const.SuperAdmin) {
             throw ServiceException("${sysUser.username} 不能删除")
         }
         this.sysUserRepository.deleteById(id)
