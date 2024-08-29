@@ -1,5 +1,6 @@
 package com.zhengchalei.cloud.platform.modules.sys.repository
 
+import com.zhengchalei.cloud.platform.config.HasChildrenException
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysPermission
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.domain.id
@@ -7,6 +8,7 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.parentId
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.spring.repository.fetchSpringPage
 import org.babyfish.jimmer.sql.kt.ast.expression.asc
+import org.babyfish.jimmer.sql.kt.ast.expression.count
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.isNull
 import org.springframework.data.domain.Page
@@ -77,4 +79,18 @@ interface SysPermissionRepository : KRepository<SysPermission, Long> {
                     table.fetch(SysPermissionTreeSelectView::class),
                 )
             }.execute()
+
+    fun deleteSysPermissionById(id: Long) {
+        val count = sql
+            .createQuery(SysPermission::class) {
+                where(table.parentId eq id)
+                select(
+                    count(table.id)
+                )
+            }.fetchOne()
+        if (count != 0L) {
+            throw HasChildrenException()
+        }
+        return deleteById(id = id)
+    }
 }

@@ -23,4 +23,8 @@ interface SysPermission {
 
     @IdView("children")
     val childrenIds: List<Long>
+
+    @ManyToMany(mappedBy = "permissions")
+    val roles: List<SysRole>
+
 }

@@ -82,6 +82,11 @@ class SysDepartmentService(
      */
     fun findSysDepartmentTreeRoot(specification: SysDepartmentPageSpecification) = this.sysDepartmentRepository.findTreeRoot(specification)
 
+    /**
+     * 查找系统部门树选择
+     * @param [specification] 查询条件构造器
+     * @return [List<SysDepartmentTreeSelectView>]
+     */
     fun findSysDepartmentTreeSelect(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeSelectView> =
         this.sysDepartmentRepository.findTreeSelect(specification)
 }

@@ -43,3 +43,7 @@ class SwitchTenantException(
 class InvalidTokenException(
     message: String = "无效的令牌",
 ) : ServiceException(message)
+
+class HasChildrenException(
+    message: String = "当前节点存在子权限，无法删除"
+) : ServiceException(message)

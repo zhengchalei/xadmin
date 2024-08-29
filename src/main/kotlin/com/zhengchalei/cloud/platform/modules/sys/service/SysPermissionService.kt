@@ -77,7 +77,7 @@ class SysPermissionService(
      * 删除系统权限通过ID
      * @param [id] ID
      */
-    fun deleteSysPermissionById(id: Long) = this.sysPermissionRepository.deleteById(id)
+    fun deleteSysPermissionById(id: Long) = this.sysPermissionRepository.deleteSysPermissionById(id)
 
     /**
      * 查找系统权限树根
@@ -86,7 +86,7 @@ class SysPermissionService(
     fun findSysPermissionTreeRoot(specification: SysPermissionPageSpecification) = this.sysPermissionRepository.treeRoot(specification)
 
     /**
-     * 查找系统权限树select
+     * 查找系统权限树选择
      * @param [specification] 查询条件构造器
      */
     fun findSysPermissionTreeSelect(specification: SysPermissionPageSpecification) = this.sysPermissionRepository.treeSelect(specification)
