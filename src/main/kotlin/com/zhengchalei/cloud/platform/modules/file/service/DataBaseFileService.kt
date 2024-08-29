@@ -1,18 +1,50 @@
 package com.zhengchalei.cloud.platform.modules.file.service
 
+import com.zhengchalei.cloud.platform.config.EmptyFileException
+import com.zhengchalei.cloud.platform.modules.file.domain.DataBaseFile
+import com.zhengchalei.cloud.platform.modules.file.domain.by
+import com.zhengchalei.cloud.platform.modules.file.repository.DataBaseFileRepository
+import org.babyfish.jimmer.kt.new
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.io.ByteArrayInputStream
+import java.util.*
 
 @ConditionalOnProperty(prefix = "file", name = ["storage"], havingValue = "database")
 @Service
-class DataBaseFileService : FileService {
+class DataBaseFileService(
+    private val dataBaseFileRepository: DataBaseFileRepository,
+) : FileService {
     /**
      * 上传图片
      * @param [multipartFile] 文件
      * @return [String]
      */
     override fun uploadFile(multipartFile: MultipartFile): String {
-        return ""
+        if (multipartFile.size > 0) {
+
+            val baseFile =
+                new(DataBaseFile::class).by {
+                    this.uid = UUID.randomUUID().toString()
+                    this.originalName = multipartFile.originalFilename ?: UUID.randomUUID().toString()
+                    this.type = getFileType(multipartFile)
+                    this.fileData = ByteArrayInputStream(multipartFile.bytes)
+//                    this.fileData = multipartFile.bytes
+                }
+            dataBaseFileRepository.insert(baseFile)
+            return baseFile.uid
+        }
+        throw EmptyFileException("文件不能为空")
+    }
+
+    /**
+     * 获取文件
+     * @param [fileName]
+     * @return [Pair<String, ByteArray>]
+     */
+    override fun getFile(fileName: String): Pair<String, ByteArrayInputStream> {
+        val dataBaseFile = dataBaseFileRepository.findByUid(fileName)
+        return dataBaseFile.originalName to ByteArrayInputStream(dataBaseFile.fileData.readAllBytes())
     }
 }
