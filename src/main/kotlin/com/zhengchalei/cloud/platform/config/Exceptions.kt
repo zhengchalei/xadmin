@@ -47,3 +47,7 @@ class InvalidTokenException(
 class HasChildrenException(
     message: String = "当前节点存在子权限，无法删除",
 ) : ServiceException(message)
+
+class EmptyFileException(
+    message: String = "空文件不能上传",
+) : ServiceException(message)
