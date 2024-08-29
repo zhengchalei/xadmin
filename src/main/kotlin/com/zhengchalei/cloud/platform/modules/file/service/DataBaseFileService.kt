@@ -23,14 +23,12 @@ class DataBaseFileService(
      */
     override fun uploadFile(multipartFile: MultipartFile): String {
         if (multipartFile.size > 0) {
-
             val baseFile =
                 new(DataBaseFile::class).by {
                     this.uid = UUID.randomUUID().toString()
                     this.originalName = multipartFile.originalFilename ?: UUID.randomUUID().toString()
                     this.type = getFileType(multipartFile)
                     this.fileData = ByteArrayInputStream(multipartFile.bytes)
-//                    this.fileData = multipartFile.bytes
                 }
             dataBaseFileRepository.insert(baseFile)
             return baseFile.uid

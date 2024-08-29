@@ -47,15 +47,12 @@ class FileController(
         response: HttpServletResponse,
     ) {
         val readAllBytes = stream.readAllBytes()
-
         // 设置响应头
         response.contentType = "application/octet-stream"
         response.setHeader("Content-Disposition", "attachment; filename=\"$fileName\"")
         response.setContentLength(readAllBytes.size)
-
         // 获取 ServletOutputStream 对象
         val servletOutputStream: OutputStream = response.outputStream
-
         // 直接写入数据
         servletOutputStream.write(readAllBytes)
         servletOutputStream.flush() // 确保数据被完全写出

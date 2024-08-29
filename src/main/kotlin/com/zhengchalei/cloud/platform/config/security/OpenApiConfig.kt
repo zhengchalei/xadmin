@@ -8,16 +8,14 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.filter.ForwardedHeaderFilter
 
-
 @Configuration
 class OpenApiConfig {
-
     @Bean
     fun customOpenAPI(): OpenAPI {
         return OpenAPI()
             .addSecurityItem(
                 SecurityRequirement()
-                    .addList("Authentication")
+                    .addList("Authentication"),
             )
             .components(
                 Components()
@@ -26,8 +24,8 @@ class OpenApiConfig {
                         SecurityScheme()
                             .type(SecurityScheme.Type.HTTP)
                             .scheme("bearer")
-                            .bearerFormat("JWT")
-                    )
+                            .bearerFormat("JWT"),
+                    ),
             )
     }
 

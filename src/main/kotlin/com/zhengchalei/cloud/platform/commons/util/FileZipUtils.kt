@@ -6,6 +6,7 @@ import java.util.zip.Inflater
 
 object FileZipUtils {
     const val BITE_SIZE: Int = 4 * 1024
+
     fun compress(data: ByteArray): ByteArray {
         val deflater = Deflater()
         deflater.setLevel(Deflater.BEST_COMPRESSION)
