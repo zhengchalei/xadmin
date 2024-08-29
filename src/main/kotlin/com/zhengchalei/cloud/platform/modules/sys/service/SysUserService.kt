@@ -125,4 +125,10 @@ class SysUserService(
      * @return [SysUser]
      */
     fun currentUserInfo(): SysUser = this.sysUserRepository.currentUserInfo()
+
+    /**
+     * 当前用户 ID
+     * @return [Long]
+     */
+    fun currentUserId(): Long = this.sysUserRepository.currentUserId()
 }

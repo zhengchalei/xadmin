@@ -64,9 +64,6 @@ class SysAuthService(
                     ),
                 ) as TenantCaptchaAuthenticationToken
             SecurityContextHolder.getContext().authentication = authentication
-
-            saveLoginLog(username, "", true, null, ip, tenant)
-
             val token: String = jwtProvider.createAccessToken(authentication)
             return token
         } catch (e: ServiceException) {
@@ -77,6 +74,8 @@ class SysAuthService(
             log.error("登录失败", e)
             saveLoginLog(username, password, false, e.message, ip, tenant)
             throw LoginFailException()
+        } finally {
+            saveLoginLog(username, "", true, null, ip, tenant)
         }
     }
 
@@ -121,9 +120,9 @@ class SysAuthService(
         ip: String,
         tenant: String,
     ) {
-        this.virtualThreadExecutor.submit {
+        this.virtualThreadExecutor.execute {
             val address = this.ip2RegionService.search(ip)
-            this.sysLoginLogRepository.save(
+            this.sysLoginLogRepository.insert(
                 new(SysLoginLog::class).by {
                     this.username = username
                     this.password = password
@@ -133,7 +132,7 @@ class SysAuthService(
                     this.ip = ip
                     this.address = address
                     this.tenant = tenant
-                    this.sysUser = if (status) makeIdOnly(SysUser::class, userService.currentUserInfo().id) else null
+                    this.sysUser = if (status) makeIdOnly(SysUser::class, userService.currentUserId()) else null
                 },
             )
         }

@@ -44,7 +44,7 @@ dependencies {
 
     // orm
     implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:$jimmerVersion")
-    ksp("org.babyfish.jimmer:jimmer-ksp:latest.release")
+    ksp("org.babyfish.jimmer:jimmer-ksp:$jimmerVersion")
 
     // ip2region
     implementation("org.lionsoul:ip2region:latest.release")

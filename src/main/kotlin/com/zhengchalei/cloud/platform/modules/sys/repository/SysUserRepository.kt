@@ -132,4 +132,25 @@ interface SysUserRepository : KRepository<SysUser, Long> {
                     },
                 )
             }.fetchOneOrNull()
+
+    fun currentUserId(): Long {
+        val username = SecurityUtils.getCurrentUsername()
+        val sqlClient =
+            if (username == Const.SuperAdmin) {
+                sql.filters {
+                    disableByTypes(TenantFilter::class)
+                }
+            } else {
+                sql
+            }
+        return sqlClient
+            .createQuery(SysUser::class) {
+                where(table.username eq username)
+                select(
+                    table.fetchBy {
+                        table.id
+                    },
+                )
+            }.fetchOne().id
+    }
 }
