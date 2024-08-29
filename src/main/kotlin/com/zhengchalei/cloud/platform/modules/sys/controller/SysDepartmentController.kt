@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 class SysDepartmentController(
     val sysDepartmentService: SysDepartmentService,
 ) {
-    @PreAuthorize("hasAuthority('sys:department:id') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysDepartmentById(
         @PathVariable id: Long,
@@ -26,7 +26,7 @@ class SysDepartmentController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:list') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysDepartmentList(
         @NotNull specification: SysDepartmentPageSpecification,
@@ -35,14 +35,14 @@ class SysDepartmentController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:tree-root') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:tree-root') or hasAnyRole('admin')")
     @GetMapping("/tree-root")
     fun findSysDepartmentTreeRoot(specification: SysDepartmentPageSpecification): R<List<SysDepartmentTreeRootView>> {
         val data = sysDepartmentService.findSysDepartmentTreeRoot(specification)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:page') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:page') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysDepartmentPage(
         @NotNull specification: SysDepartmentPageSpecification,
@@ -52,21 +52,21 @@ class SysDepartmentController(
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:tree') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:tree') or hasAnyRole('admin')")
     @GetMapping("/tree")
     fun findSysDepartmentTree(specification: SysDepartmentPageSpecification): R<List<SysDepartmentTreeView>> {
         val data = sysDepartmentService.findSysDepartmentTree(specification)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:tree-select') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:tree-select') or hasAnyRole('admin')")
     @GetMapping("/tree-select")
     fun findSysDepartmentTreeSelect(specification: SysDepartmentPageSpecification): R<List<SysDepartmentTreeSelectView>> {
         val data = sysDepartmentService.findSysDepartmentTreeSelect(specification)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:create') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysDepartment(
         @NotNull @RequestBody sysDepartmentCreateInput: SysDepartmentCreateInput,
@@ -75,7 +75,7 @@ class SysDepartmentController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:update') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysDepartmentById(
         @NotNull @RequestBody sysDepartmentUpdateInput: SysDepartmentUpdateInput,
@@ -84,7 +84,7 @@ class SysDepartmentController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:delete') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysDepartmentById(
         @NotNull @PathVariable id: Long,

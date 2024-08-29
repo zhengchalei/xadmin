@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 class SysDictItemController(
     val sysDictItemService: SysDictItemService,
 ) {
-    @PreAuthorize("hasAuthority('sys:dict-item:id') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict-item:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysDictItemById(
         @PathVariable id: Long,
@@ -26,7 +26,7 @@ class SysDictItemController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict-item:list') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict-item:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysDictItemList(
         @NotNull specification: SysDictItemPageSpecification,
@@ -35,7 +35,7 @@ class SysDictItemController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict-item:page') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict-item:page') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysDictItemPage(
         @NotNull specification: SysDictItemPageSpecification,
@@ -45,7 +45,7 @@ class SysDictItemController(
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict-item:create') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict-item:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysDictItem(
         @NotNull @RequestBody sysDictItemCreateInput: SysDictItemCreateInput,
@@ -54,7 +54,7 @@ class SysDictItemController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict-item:update') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict-item:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysDictItemById(
         @NotNull @RequestBody sysDictItemUpdateInput: SysDictItemUpdateInput,
@@ -63,7 +63,7 @@ class SysDictItemController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict-item:delete') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict-item:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysDictItemById(
         @NotNull @PathVariable id: Long,

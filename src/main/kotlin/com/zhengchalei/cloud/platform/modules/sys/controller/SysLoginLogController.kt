@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*
 class SysLoginLogController(
     val sysLoginLogService: SysLoginLogService,
 ) {
-    @PreAuthorize("hasAuthority('sys:loginLog:id') or hasLoginLog('admin')")
+    @PreAuthorize("hasAuthority('sys:loginLog:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysLoginLogById(
         @PathVariable id: Long,
@@ -28,7 +28,7 @@ class SysLoginLogController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:loginLog:list') or hasLoginLog('admin')")
+    @PreAuthorize("hasAuthority('sys:loginLog:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysLoginLogList(
         @NotNull specification: SysLoginLogPageSpecification,
@@ -37,7 +37,7 @@ class SysLoginLogController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:loginLog:page') or hasLoginLog('admin')")
+    @PreAuthorize("hasAuthority('sys:loginLog:page') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysLoginLogPage(
         @NotNull specification: SysLoginLogPageSpecification,
@@ -47,7 +47,7 @@ class SysLoginLogController(
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:loginLog:delete') or hasLoginLog('admin')")
+    @PreAuthorize("hasAuthority('sys:loginLog:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysLoginLogById(
         @NotNull @PathVariable id: Long,

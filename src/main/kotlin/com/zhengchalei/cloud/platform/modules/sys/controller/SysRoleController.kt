@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 class SysRoleController(
     val sysRoleService: SysRoleService,
 ) {
-    @PreAuthorize("hasAuthority('sys:role:id') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:role:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysRoleById(
         @PathVariable id: Long,
@@ -26,7 +26,7 @@ class SysRoleController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:role:list') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:role:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysRoleList(
         @NotNull specification: SysRolePageSpecification,
@@ -35,7 +35,7 @@ class SysRoleController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:role:page') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:role:page') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysRolePage(
         @NotNull specification: SysRolePageSpecification,
@@ -45,7 +45,7 @@ class SysRoleController(
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:role:create') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:role:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysRole(
         @NotNull @RequestBody sysRoleCreateInput: SysRoleCreateInput,
@@ -54,7 +54,7 @@ class SysRoleController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:role:update') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:role:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysRoleById(
         @NotNull @RequestBody sysRoleUpdateInput: SysRoleUpdateInput,
@@ -63,7 +63,7 @@ class SysRoleController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:role:delete') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:role:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysRoleById(
         @NotNull @PathVariable id: Long,

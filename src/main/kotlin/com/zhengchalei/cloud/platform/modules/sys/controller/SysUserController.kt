@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 class SysUserController(
     val sysUserService: SysUserService,
 ) {
-    @PreAuthorize("hasAuthority('sys:user:id') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:user:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysUserById(
         @PathVariable id: Long,
@@ -26,7 +26,7 @@ class SysUserController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:user:list') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:user:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysUserList(
         @NotNull specification: SysUserPageSpecification,
@@ -35,7 +35,7 @@ class SysUserController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:user:page') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:user:page') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysUserPage(
         @NotNull specification: SysUserPageSpecification,
@@ -45,7 +45,7 @@ class SysUserController(
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:user:create') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:user:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysUser(
         @NotNull @RequestBody sysUserCreateInput: SysUserCreateInput,
@@ -54,7 +54,7 @@ class SysUserController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:user:update') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:user:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysUserById(
         @NotNull @RequestBody sysUserUpdateInput: SysUserUpdateInput,
@@ -63,7 +63,7 @@ class SysUserController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:user:delete') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:user:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysUserById(
         @NotNull @PathVariable id: Long,

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 class SysPostsController(
     val sysPostsService: SysPostsService,
 ) {
-    @PreAuthorize("hasAuthority('sys:post:id') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:post:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysPostsById(
         @PathVariable id: Long,
@@ -26,7 +26,7 @@ class SysPostsController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:list') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:post:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysPostsList(
         @NotNull specification: SysPostsPageSpecification,
@@ -35,7 +35,7 @@ class SysPostsController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:page') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:post:page') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysPostsPage(
         @NotNull specification: SysPostsPageSpecification,
@@ -45,7 +45,7 @@ class SysPostsController(
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:create') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:post:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysPosts(
         @NotNull @RequestBody sysPostsCreateInput: SysPostsCreateInput,
@@ -54,7 +54,7 @@ class SysPostsController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:update') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:post:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysPostsById(
         @NotNull @RequestBody sysPostsUpdateInput: SysPostsUpdateInput,
@@ -63,7 +63,7 @@ class SysPostsController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:delete') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:post:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysPostsById(
         @NotNull @PathVariable id: Long,

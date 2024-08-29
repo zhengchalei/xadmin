@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 class SysDictController(
     val sysDictService: SysDictService,
 ) {
-    @PreAuthorize("hasAuthority('sys:dict:id') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysDictById(
         @PathVariable id: Long,
@@ -26,7 +26,7 @@ class SysDictController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict:list') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysDictList(
         @NotNull specification: SysDictPageSpecification,
@@ -35,7 +35,7 @@ class SysDictController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict:page') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict:page') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysDictPage(
         @NotNull specification: SysDictPageSpecification,
@@ -45,7 +45,7 @@ class SysDictController(
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict:create') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysDict(
         @NotNull @RequestBody sysDictCreateInput: SysDictCreateInput,
@@ -54,7 +54,7 @@ class SysDictController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict:update') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysDictById(
         @NotNull @RequestBody sysDictUpdateInput: SysDictUpdateInput,
@@ -63,7 +63,7 @@ class SysDictController(
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict:delete') or hasRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysDictById(
         @NotNull @PathVariable id: Long,
