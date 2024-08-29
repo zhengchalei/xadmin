@@ -82,13 +82,14 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
             }.execute()
 
     fun deleteSysDepartmentById(id: Long) {
-        val count = sql
-            .createQuery(SysDepartment::class) {
-                where(table.parentId eq id)
-                select(
-                    count(table.id)
-                )
-            }.fetchOne()
+        val count =
+            sql
+                .createQuery(SysDepartment::class) {
+                    where(table.parentId eq id)
+                    select(
+                        count(table.id),
+                    )
+                }.fetchOne()
         if (count != 0L) {
             throw HasChildrenException()
         }

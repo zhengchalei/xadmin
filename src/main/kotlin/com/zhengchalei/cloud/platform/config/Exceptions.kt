@@ -45,5 +45,5 @@ class InvalidTokenException(
 ) : ServiceException(message)
 
 class HasChildrenException(
-    message: String = "当前节点存在子权限，无法删除"
+    message: String = "当前节点存在子权限，无法删除",
 ) : ServiceException(message)

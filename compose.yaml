@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=cloud-platform'
+      - 'POSTGRES_PASSWORD=cloud-platform'
+      - 'POSTGRES_USER=cloud-platform'
+    ports:
+      - '5432:5432'

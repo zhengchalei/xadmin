@@ -1,6 +1,7 @@
 package com.zhengchalei.cloud.platform.modules.sys.repository
 
 import com.zhengchalei.cloud.platform.commons.Const
+import com.zhengchalei.cloud.platform.config.jimmer.SuperAdminFilter
 import com.zhengchalei.cloud.platform.config.jimmer.TenantFilter
 import com.zhengchalei.cloud.platform.config.security.SecurityUtils
 import com.zhengchalei.cloud.platform.modules.sys.domain.*
@@ -70,7 +71,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
         val sqlClient =
             if (username == Const.SuperAdmin) {
                 sql.filters {
-                    disableByTypes(TenantFilter::class)
+                    disableByTypes(TenantFilter::class, SuperAdminFilter::class)
                 }
             } else {
                 sql
@@ -114,10 +115,10 @@ interface SysUserRepository : KRepository<SysUser, Long> {
             )
         }.fetchOneOrNull()
 
-    fun findByUsername(username: String) =
+    fun findByUsernameForLogin(username: String) =
         sql
             .filters {
-                disableByTypes(TenantFilter::class)
+                disableByTypes(TenantFilter::class, SuperAdminFilter::class)
             }.createQuery(SysUser::class) {
                 where(table.username eq username)
                 select(

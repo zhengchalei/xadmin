@@ -1,36 +1,48 @@
 package com.zhengchalei.cloud.platform.modules.file.service
 
 import com.zhengchalei.cloud.platform.config.properties.FileConfigurationProperties
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
 
+@ConditionalOnProperty(prefix = "file", name = ["storage"], havingValue = "local")
 @Service
 class LocalFileService(
     private val fileConfigProperties: FileConfigurationProperties,
-) {
-    fun uploadImage(multipartFile: MultipartFile): String {
-        val localConfig = fileConfigProperties.localConfig
-        if (localConfig.path.isBlank()) {
-            throw RuntimeException("本地存储路径未配置")
+) : FileService {
+    /**
+     * 上传图片
+     * @param [multipartFile] 多部分文件
+     * @return [String]
+     */
+    override fun uploadFile(multipartFile: MultipartFile): String {
+        val localConfig = fileConfigProperties.getConfig()
+
+        if (localConfig is FileConfigurationProperties.LocalStorageConfigurationProperties) {
+            if (localConfig.storagePath.isBlank()) {
+                throw RuntimeException("本地存储路径未配置")
+            }
+            if (multipartFile.isEmpty) {
+                throw RuntimeException("文件为空")
+            }
+            if (multipartFile.size > 1024 * 1024 * 10) {
+                throw RuntimeException("文件大小不能超过10M")
+            }
+            // 判断存储位置是否存在文件夹, 否则创建文件夹
+            if (!File(localConfig.storagePath).exists()) {
+                File(localConfig.storagePath).mkdirs()
+            }
+            val fileName =
+                System.currentTimeMillis().toString() + "." + multipartFile.originalFilename?.substringAfterLast(".")
+            val filePath = localConfig.storagePath + "/" + fileName
+            try {
+                multipartFile.transferTo(File(filePath))
+            } catch (e: Exception) {
+                throw RuntimeException("文件上传失败")
+            }
+            return fileName
         }
-        if (multipartFile.isEmpty) {
-            throw RuntimeException("文件为空")
-        }
-        if (multipartFile.size > 1024 * 1024 * 10) {
-            throw RuntimeException("文件大小不能超过10M")
-        }
-        // 判断存储位置是否存在文件夹, 否则创建文件夹
-        if (!File(localConfig.path).exists()) {
-            File(localConfig.path).mkdirs()
-        }
-        val fileName = System.currentTimeMillis().toString() + "." + multipartFile.originalFilename?.substringAfterLast(".")
-        val filePath = localConfig.path + "/" + fileName
-        try {
-            multipartFile.transferTo(File(filePath))
-        } catch (e: Exception) {
-            throw RuntimeException("文件上传失败")
-        }
-        return fileName
+        throw RuntimeException("配置错误")
     }
 }

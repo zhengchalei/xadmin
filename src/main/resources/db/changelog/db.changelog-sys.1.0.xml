@@ -13,7 +13,7 @@
             <column name="code" remarks="租户编码" type="VARCHAR(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+            <column name="status" remarks="状态  false：停用   true：正常" type="boolean" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
             <column name="contact_name" remarks="负责人" type="VARCHAR(255)"/>
@@ -44,7 +44,7 @@
             <column defaultValueNumeric="0" name="sort" remarks="排序" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueNumeric="1" name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+            <column defaultValueBoolean="true" name="status" remarks="状态  false：停用   true：正常" type="boolean">
                 <constraints nullable="false"/>
             </column>
             <column name="description" remarks="描述" type="VARCHAR(255)"/>
@@ -85,7 +85,7 @@
             <column defaultValueNumeric="0" name="sort" remarks="排序" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueNumeric="1" name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+            <column defaultValueBoolean="true" name="status" remarks="状态  false：停用   true：正常" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
@@ -118,7 +118,7 @@
             <column defaultValueNumeric="0" name="dict_id" remarks="字典id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueNumeric="1" name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+            <column defaultValueBoolean="true" name="status" remarks="状态  false：停用   true：正常" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
@@ -150,7 +150,7 @@
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="parent_id" remarks="父级ID" type="BIGINT"/>
-            <column defaultValueNumeric="1" name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+            <column defaultValueBoolean="true" name="status" remarks="状态  false：停用   true：正常" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
             <column name="description" remarks="备注" type="VARCHAR(255)"/>
@@ -180,7 +180,7 @@
             <column defaultValueNumeric="0" name="sort" remarks="排序" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueNumeric="1" name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+            <column defaultValueBoolean="true" name="status" remarks="状态  false：停用   true：正常" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
             <column name="description" remarks="描述" type="VARCHAR(255)"/>
@@ -211,7 +211,7 @@
             <column name="code" remarks="角色标识" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueNumeric="1" name="status" remarks="状态  false：停用   true：正常" type="BIT(1)">
+            <column defaultValueBoolean="true" name="status" remarks="状态  false：停用   true：正常" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
             <column name="description" remarks="备注" type="VARCHAR(255)"/>
@@ -275,7 +275,7 @@
             <column name="posts_id" remarks="岗位ID" type="BIGINT"/>
             <column name="department_id" remarks="部门ID" type="BIGINT"/>
             <column name="avatar" remarks="头像" type="VARCHAR(255)"/>
-            <column defaultValueNumeric="1" name="status" remarks="状态  false：禁用   true：正常" type="BIT(1)">
+            <column defaultValueBoolean="true" name="status" remarks="状态  false：禁用   true：正常" type="boolean">
                 <constraints nullable="false"/>
             </column>
             <column name="tenant" remarks="租户" type="VARCHAR(255)">
@@ -351,7 +351,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="address" remarks="操作地点" type="VARCHAR(255)"/>
-            <column name="status" remarks="状态" type="bit(1)" defaultValueComputed="1">
+            <column name="status" remarks="状态" type="boolean" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
             <column name="error_stack" remarks="异常堆栈" type="text"/>
@@ -397,7 +397,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="address" remarks="操作地点" type="VARCHAR(255)"/>
-            <column name="status" remarks="登录状态 (0: 失败, 1: 成功)" type="bit(1)" defaultValueNumeric="1">
+            <column name="status" remarks="登录状态 (true: 成功, false: 失败)" type="boolean" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
             <column name="error_message" remarks="失败原因" type="VARCHAR(255)"/>

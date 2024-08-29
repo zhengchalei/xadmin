@@ -81,13 +81,14 @@ interface SysPermissionRepository : KRepository<SysPermission, Long> {
             }.execute()
 
     fun deleteSysPermissionById(id: Long) {
-        val count = sql
-            .createQuery(SysPermission::class) {
-                where(table.parentId eq id)
-                select(
-                    count(table.id)
-                )
-            }.fetchOne()
+        val count =
+            sql
+                .createQuery(SysPermission::class) {
+                    where(table.parentId eq id)
+                    select(
+                        count(table.id),
+                    )
+                }.fetchOne()
         if (count != 0L) {
             throw HasChildrenException()
         }

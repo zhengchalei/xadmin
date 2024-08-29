@@ -6,45 +6,45 @@
     <changeSet id="初始化Default租户数据" author="郑查磊">
         <sql>
             insert into sys_tenant(name, code, status, description)
-            values ('默认租户', 'default', 1, '默认租户');
+            values ('默认租户', 'default', true, '默认租户');
 
 
             insert into sys_department(name, parent_id, sort, status, description, tenant)
-            values ('研发部', null, 1, 1, '研发部门', 'default'),
-                   ('产品部', null, 2, 1, '产品部门', 'default'),
-                   ('市场部', null, 3, 1, '市场部门', 'default'),
-                   ('研发一组', 1, 1, 1, '研发一组', 'default'),
-                   ('研发二组', 1, 2, 1, '研发二组', 'default'),
-                   ('产品一组', 2, 1, 1, '产品一组', 'default'),
-                   ('产品二组', 2, 2, 1, '产品二组', 'default'),
-                   ('市场一组', 3, 1, 1, '市场一组', 'default'),
-                   ('市场二组', 3, 2, 1, '市场二组', 'default');
+            values ('研发部', null, 1, true, '研发部门', 'default'),
+                   ('产品部', null, 2, true, '产品部门', 'default'),
+                   ('市场部', null, 3, true, '市场部门', 'default'),
+                   ('研发一组', 1, 1, true, '研发一组', 'default'),
+                   ('研发二组', 1, 2, true, '研发二组', 'default'),
+                   ('产品一组', 2, 1, true, '产品一组', 'default'),
+                   ('产品二组', 2, 2, true, '产品二组', 'default'),
+                   ('市场一组', 3, 1, true, '市场一组', 'default'),
+                   ('市场二组', 3, 2, true, '市场二组', 'default');
 
             insert into sys_posts(name, sort, status, description, tenant)
-            values ('董事长', 1, 1, '董事长', 'default'),
-                   ('项目经理', 2, 1, '项目经理', 'default'),
-                   ('部门经理', 3, 1, '部门经理', 'default'),
-                   ('普通员工', 4, 1, '普通员工', 'default');
+            values ('董事长', 1, true, '董事长', 'default'),
+                   ('项目经理', 2, true, '项目经理', 'default'),
+                   ('部门经理', 3, true, '部门经理', 'default'),
+                   ('普通员工', 4, true, '普通员工', 'default');
 
             insert into sys_role(name, code, status, description, tenant)
-            values ('超级管理员', 'admin', 1, '超级管理员', 'default'),
-                   ('普通用户', 'user', 1, '普通用户', 'default');
+            values ('超级管理员', 'admin', true, '超级管理员', 'default'),
+                   ('普通用户', 'user', true, '普通用户', 'default');
 
 
             insert into sys_permission(name, code, parent_id, status)
-            values ('系统管理', 'sys:manage', null, 1),
-                   ('用户管理', 'sys:user:manage', 1, 1),
-                   ('角色管理', 'sys:role:manage', 1, 1),
-                   ('权限管理', 'sys:permission:manage', 1, 1),
-                   ('用户新增', 'sys:user:add', 2, 1),
-                   ('用户修改', 'sys:user:edit', 2, 1),
-                   ('用户删除', 'sys:user:delete', 2, 1),
-                   ('角色新增', 'sys:role:add', 3, 1),
-                   ('角色修改', 'sys:role:edit', 3, 1),
-                   ('角色删除', 'sys:role:delete', 3, 1),
-                   ('权限新增', 'sys:permission:add', 4, 1),
-                   ('权限修改', 'sys:permission:edit', 4, 1),
-                   ('权限删除', 'sys:permission:delete', 4, 1);
+            values ('系统管理', 'sys:manage', null, true),
+                   ('用户管理', 'sys:user:manage', 1, true),
+                   ('角色管理', 'sys:role:manage', 1, true),
+                   ('权限管理', 'sys:permission:manage', 1, true),
+                   ('用户新增', 'sys:user:add', 2, true),
+                   ('用户修改', 'sys:user:edit', 2, true),
+                   ('用户删除', 'sys:user:delete', 2, true),
+                   ('角色新增', 'sys:role:add', 3, true),
+                   ('角色修改', 'sys:role:edit', 3, true),
+                   ('角色删除', 'sys:role:delete', 3, true),
+                   ('权限新增', 'sys:permission:add', 4, true),
+                   ('权限修改', 'sys:permission:edit', 4, true),
+                   ('权限删除', 'sys:permission:delete', 4, true);
 
             insert into sys_role_permission(role_id, permission_id)
             values (1, 1),
@@ -62,27 +62,27 @@
                    (2, 6);
 
             insert into sys_dict(name, code, description, status)
-            values ('性别', 'gender', '性别', 1);
+            values ('性别', 'gender', '性别', true);
 
             insert into sys_dict_item(name, code, data, description, sort, dict_id, status)
-            values ('男', 'man', '男', '男', 1, 1, 1),
-                   ('女', 'woman', '女', '女', 2, 1, 1);
+            values ('男', 'man', '男', '男', 1, 1, true),
+                   ('女', 'woman', '女', '女', 2, 1, true);
 
 
             insert into sys_user(id, username, email, password, avatar, status, department_id, posts_id, gender,
                                  birthday,
                                  phone_number, tenant)
             values (-1, 'superAdmin', 'mail@gmail.com', '$2a$10$teGAavoNRwk36qcJQX9IaOHQoOYtnxnkakCMQKJwtDGMbULkVd5e2',
-                    'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 1, null, null, 'MALE',
+                    'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', true, null, null, 'MALE',
                     '2019-01-01', '16255198881', 'default');
 
             insert into sys_user(username, email, password, avatar, status, department_id, posts_id, gender, birthday,
                                  phone_number, tenant)
             values ('admin', 'mail@163.com', '$2a$10$teGAavoNRwk36qcJQX9IaOHQoOYtnxnkakCMQKJwtDGMbULkVd5e2',
-                    'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 1, 1, 1, 'MALE',
+                    'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', true, 1, 1, 'MALE',
                     '2019-01-01', '16255198882', 'default'),
                    ('editor', 'mail2@163.com', '$2a$10$teGAavoNRwk36qcJQX9IaOHQoOYtnxnkakCMQKJwtDGMbULkVd5e2',
-                    'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 1, 1, 1, 'MALE',
+                    'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', true, 1, 1, 'MALE',
                     '2019-01-01', '16255198883', 'default');
 
             insert into sys_user_role(user_id, role_id)

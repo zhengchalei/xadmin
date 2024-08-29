@@ -29,15 +29,16 @@ class JwtProvider(
     private var expiration: Long = 3600L
 
     override fun run(vararg args: String) {
+        if (jwtConfigurationProperties.secret.isBlank()) {
+            throw RuntimeException("JWT secret is empty")
+        }
+        if (jwtConfigurationProperties.expired <= 0) {
+            throw RuntimeException("JWT expired must be greater than 0")
+        }
         // 获取 secret
-        val secret = jwtConfigurationProperties.secret.toByteArray(Charsets.UTF_8)
+        this.secret = jwtConfigurationProperties.secret.toByteArray(Charsets.UTF_8)
         // 获取 expired
-        val expired = jwtConfigurationProperties.expired * 1000 // 转换为毫秒
-
-        this.secret = secret
-        this.expiration = expired
-
-        logger.info("jwt 参数初始化完毕")
+        this.expiration = jwtConfigurationProperties.expired * 1000 // 转换为毫秒
     }
 
     /**

@@ -60,7 +60,7 @@ class TenantCaptchaAuthenticationProvider(
         tenant: String,
     ): UserDetails {
         if (username == Const.SuperAdmin) {
-            val user = sysUserRepository.findByUsername(username) ?: throw UserNotFoundException()
+            val user = sysUserRepository.findByUsernameForLogin(username) ?: throw UserNotFoundException()
             if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
             return User(
                 username,

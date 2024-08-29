@@ -1,5 +1,5 @@
 plugins {
-    id("org.springframework.boot") version "3.3.2"
+    id("org.springframework.boot") version "3.3.3"
     id("io.spring.dependency-management") version "1.1.6"
     kotlin("jvm") version "1.9.24"
     kotlin("plugin.spring") version "1.9.24"
@@ -44,9 +44,8 @@ val jimmerVersion: String by project
 
 dependencies {
     // database
-    runtimeOnly("com.mysql:mysql-connector-j")
+    runtimeOnly("org.postgresql:postgresql")
     implementation("org.liquibase:liquibase-core")
-    runtimeOnly("com.h2database:h2")
 
     // orm
     implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:$jimmerVersion")
@@ -80,6 +79,7 @@ dependencies {
 
     // dev
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

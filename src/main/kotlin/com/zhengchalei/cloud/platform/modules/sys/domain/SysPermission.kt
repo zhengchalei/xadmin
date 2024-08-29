@@ -26,5 +26,4 @@ interface SysPermission {
 
     @ManyToMany(mappedBy = "permissions")
     val roles: List<SysRole>
-
 }
