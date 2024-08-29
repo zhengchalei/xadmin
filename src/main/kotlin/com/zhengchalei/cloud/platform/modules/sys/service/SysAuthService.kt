@@ -120,7 +120,7 @@ class SysAuthService(
         ip: String,
         tenant: String,
     ) {
-        this.virtualThreadExecutor.execute {
+        this.virtualThreadExecutor.submit {
             val address = this.ip2RegionService.search(ip)
             this.sysLoginLogRepository.insert(
                 new(SysLoginLog::class).by {
