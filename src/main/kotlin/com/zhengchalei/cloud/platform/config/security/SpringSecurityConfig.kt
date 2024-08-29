@@ -48,8 +48,10 @@ class SpringSecurityConfig(
                 if (profile == "dev" || profile == "test") {
                     authorize.requestMatchers("/openapi.html").permitAll()
                     authorize.requestMatchers("/openapi.yml").permitAll()
+                    authorize.requestMatchers("/swagger-ui/**").permitAll()
+                    authorize.requestMatchers("/v3/**").permitAll()
                 }
-                authorize.anyRequest().permitAll()
+                authorize.anyRequest().authenticated()
             }.exceptionHandling {
                 it.authenticationEntryPoint { request, response, authException ->
                     response.sendError(
