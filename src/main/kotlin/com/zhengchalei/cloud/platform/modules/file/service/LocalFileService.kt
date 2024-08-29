@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
 import java.io.File
+import java.util.*
 
 @ConditionalOnProperty(prefix = "file", name = ["storage"], havingValue = "local")
 @Service
@@ -35,7 +36,7 @@ class LocalFileService(
                 File(localConfig.storagePath).mkdirs()
             }
             val fileName =
-                System.currentTimeMillis().toString() + "." + multipartFile.originalFilename?.substringAfterLast(".")
+                UUID.randomUUID().toString() + "." + multipartFile.originalFilename?.substringAfterLast(".")
             val filePath = localConfig.storagePath + "/" + fileName
             try {
                 multipartFile.transferTo(File(filePath))
