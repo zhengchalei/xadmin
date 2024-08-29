@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 
 class SecurityContextTaskDecorator : TaskDecorator {
-
     private val log = LoggerFactory.getLogger(SecurityContextTaskDecorator::class.java)
 
     override fun decorate(runnable: Runnable): Runnable {

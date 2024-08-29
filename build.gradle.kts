@@ -34,6 +34,12 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    compileOnly {
+        extendsFrom(configurations.annotationProcessor.get())
+    }
+}
+
 val jimmerVersion: String by project
 
 dependencies {
@@ -62,6 +68,8 @@ dependencies {
 
     // openapi
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:latest.release")
+    // configuration processor
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     // kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

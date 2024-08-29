@@ -85,5 +85,9 @@ class SysPermissionService(
      */
     fun findSysPermissionTreeRoot(specification: SysPermissionPageSpecification) = this.sysPermissionRepository.treeRoot(specification)
 
+    /**
+     * 查找系统权限树select
+     * @param [specification] 查询条件构造器
+     */
     fun findSysPermissionTreeSelect(specification: SysPermissionPageSpecification) = this.sysPermissionRepository.treeSelect(specification)
 }

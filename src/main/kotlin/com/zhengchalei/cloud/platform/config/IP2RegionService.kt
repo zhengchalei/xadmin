@@ -1,5 +1,6 @@
 package com.zhengchalei.cloud.platform.config
 
+import com.zhengchalei.cloud.platform.config.properties.IP2RegionConfigurationProperties
 import jakarta.annotation.PreDestroy
 import org.lionsoul.ip2region.xdb.Searcher
 import org.slf4j.LoggerFactory
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class IP2RegionService(
-    private val iP2RegionConfigProperties: IP2RegionConfigProperties
+    private val iP2RegionConfigurationProperties: IP2RegionConfigurationProperties,
 ) : ApplicationRunner {
     private val log = LoggerFactory.getLogger(IP2RegionService::class.java)
 
@@ -42,22 +43,23 @@ class IP2RegionService(
     }
 
     override fun run(args: ApplicationArguments) {
-        if (iP2RegionConfigProperties.enable) {
-            defaultInit(iP2RegionConfigProperties.dbPath)
+        if (iP2RegionConfigurationProperties.enable) {
+            defaultInit(iP2RegionConfigurationProperties.dbPath)
             this.safe = true
             return
         }
     }
 
     fun search(ip: String): String? {
-        if (!iP2RegionConfigProperties.enable) {
+        if (!iP2RegionConfigurationProperties.enable) {
             log.warn("未启动 ip2region ")
             return null
         }
-        val searcher = this.searcher ?: run {
-            log.warn("未配置 ip2region.xdb 存储库")
-            return null
-        }
+        val searcher =
+            this.searcher ?: run {
+                log.warn("未配置 ip2region.xdb 存储库")
+                return null
+            }
         return try {
             if (this.safe) {
                 synchronized(this) {

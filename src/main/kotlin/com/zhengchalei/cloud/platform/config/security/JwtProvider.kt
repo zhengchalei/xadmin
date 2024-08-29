@@ -9,7 +9,7 @@ import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.InvalidTokenException
-import com.zhengchalei.cloud.platform.config.JwtConfigurationProperties
+import com.zhengchalei.cloud.platform.config.properties.JwtConfigurationProperties
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.security.core.Authentication

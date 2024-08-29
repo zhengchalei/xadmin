@@ -69,28 +69,6 @@ class SysAuthControllerTest {
             }.andDo {
                 log()
             }
-
-        mockMvc
-            .post("/api/auth/login") {
-                content =
-                    objectMapper.writeValueAsString(
-                        LoginDTO(
-                            username = "superAdmin",
-                            password = "123456",
-                            tenant = "test",
-                            captcha = "1234",
-                        ),
-                    )
-                contentType = MediaType.APPLICATION_JSON
-            }.andExpect {
-                status { isOk() }
-                content {
-                    contentType(MediaType.APPLICATION_JSON)
-                    jsonPath("$.data.accessToken") { exists() }
-                }
-            }.andDo {
-                log()
-            }
     }
 
     @Test

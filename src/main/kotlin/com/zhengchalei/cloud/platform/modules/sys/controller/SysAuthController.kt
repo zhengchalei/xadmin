@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
-
 @Api("sys")
 @Validated
 @RestController
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*
 class SysAuthController(
     private val sysAuthService: SysAuthService,
 ) {
-
     private val log = LoggerFactory.getLogger(SysAuthController::class.java)
 
     @PostMapping("/login")
@@ -64,7 +62,6 @@ class SysAuthController(
         }
         return ""
     }
-
 
     @PostMapping("/logout")
     fun logout() {
