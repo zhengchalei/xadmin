@@ -78,7 +78,7 @@ class SysAuthController(
     ): R<LoginResponse> {
         val token = sysAuthService.switchTenant(tenant)
         return R(
-            data = LoginResponse(accessToken = token, refreshToken = token, username = Const.SuperAdmin),
+            data = LoginResponse(accessToken = token, refreshToken = token, username = Const.Root),
         )
     }
 }

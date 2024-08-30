@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component
 class SuperAdminFilter : KFilter<SysUser> {
     override fun filter(args: KFilterArgs<SysUser>) {
         args.apply {
-            where(table.username.ne(Const.SuperAdmin))
+            where(table.username.ne(Const.Root))
         }
     }
 }

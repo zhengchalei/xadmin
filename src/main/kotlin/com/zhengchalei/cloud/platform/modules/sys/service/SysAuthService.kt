@@ -85,11 +85,11 @@ class SysAuthService(
      */
     fun switchTenant(tenant: String): String {
         // 判断用户名是否为 superAdmin
-        if ((SecurityContextHolder.getContext().authentication.principal as User).username == Const.SuperAdmin) {
+        if ((SecurityContextHolder.getContext().authentication.principal as User).username == Const.Root) {
             // 切换租户
             SecurityContextHolder.getContext().authentication =
                 TenantCaptchaAuthenticationToken(
-                    username = Const.SuperAdmin,
+                    username = Const.Root,
                     password = "",
                     captcha = "",
                     tenant = tenant,

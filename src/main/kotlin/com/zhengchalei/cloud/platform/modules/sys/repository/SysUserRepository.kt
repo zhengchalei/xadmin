@@ -68,7 +68,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
     fun currentUserInfo(): SysUser {
         val username = SecurityUtils.getCurrentUsername()
         val sqlClient =
-            if (username == Const.SuperAdmin) {
+            if (username == Const.Root) {
                 sql.filters {
                     disableByTypes(TenantFilter::class, SuperAdminFilter::class)
                 }
@@ -136,7 +136,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
     fun currentUserId(): Long {
         val username = SecurityUtils.getCurrentUsername()
         val sqlClient =
-            if (username == Const.SuperAdmin) {
+            if (username == Const.Root) {
                 sql.filters {
                     disableByTypes(TenantFilter::class)
                 }

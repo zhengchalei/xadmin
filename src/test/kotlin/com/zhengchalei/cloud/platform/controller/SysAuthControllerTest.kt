@@ -53,7 +53,7 @@ class SysAuthControllerTest {
                 content =
                     objectMapper.writeValueAsString(
                         LoginDTO(
-                            username = "superAdmin",
+                            username = "root",
                             password = "123456",
                             tenant = "default",
                             captcha = "1234",
@@ -165,7 +165,7 @@ class SysAuthControllerTest {
 
     @Test
     @WithMockTenantUser(
-        username = Const.SuperAdmin,
+        username = Const.Root,
     )
     fun switchTenant() {
         mockMvc
