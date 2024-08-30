@@ -44,7 +44,6 @@ interface SysUserRepository : KRepository<SysUser, Long> {
         pageable: Pageable,
         sysDepartmentIds: List<Long>,
     ): Page<SysUserPageView> {
-        specification.departmentId = null
         return sql
             .createQuery(SysUser::class) {
                 orderBy(table.id.asc())

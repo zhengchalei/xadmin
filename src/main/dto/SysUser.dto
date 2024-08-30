@@ -8,11 +8,11 @@ specification SysUserPageSpecification {
     eq(status)
     like/i(phoneNumber)
     eq(gender)
-    id(department)
     id(posts)
     id(roles) as roleIds
     ge(createTime) as startTime
     le(createTime) as endTime
+    departmentId: Long?
 }
 
 SysUserPageView {
@@ -55,4 +55,5 @@ input SysUserUpdateInput {
     id(posts)
     id(roles) as roleIds
     -password
+    -avatar
 }

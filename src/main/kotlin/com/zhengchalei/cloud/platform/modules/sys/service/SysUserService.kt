@@ -100,10 +100,6 @@ class SysUserService(
         if (oldUser.username == Const.AdminUser || oldUser.username == Const.SuperAdmin) {
             throw ServiceException("${Const.AdminUser} 不能修改用户名")
         }
-        // avatar
-        if (sysUserUpdateInput.avatar == null) {
-            sysUserUpdateInput.avatar = oldUser.avatar
-        }
         val sysUser = this.sysUserRepository.update(sysUserUpdateInput)
         return findSysUserById(sysUser.id)
     }

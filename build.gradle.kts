@@ -26,7 +26,7 @@ kotlin {
 jimmer {
     version = "latest.release"
     dto {
-        mutable = true
+        mutable = false
     }
 }
 
