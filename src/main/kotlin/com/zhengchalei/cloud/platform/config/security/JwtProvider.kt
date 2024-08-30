@@ -22,7 +22,7 @@ import java.util.*
 class JwtProvider(
     private val jwtConfigurationProperties: JwtConfigurationProperties,
 ) : CommandLineRunner {
-    private val logger = LoggerFactory.getLogger(JwtProvider::class.java)
+    private val log = LoggerFactory.getLogger(JwtProvider::class.java)
 
     private var secret: ByteArray = "".toByteArray(Charsets.UTF_8)
 

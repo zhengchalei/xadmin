@@ -26,7 +26,7 @@ object SecurityUtils {
         }
     }
 
-    fun getTenantCaptchaAuthenticationToken(): TenantCaptchaAuthenticationToken {
+    private fun getTenantCaptchaAuthenticationToken(): TenantCaptchaAuthenticationToken {
         if ((SecurityContextHolder.getContext().authentication is TenantCaptchaAuthenticationToken).not()) {
             throw NotLoginException()
         }
