@@ -17,7 +17,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="contact_name" remarks="负责人" type="text"/>
-            <column name="contact_phone_number" remarks="租户电话" type="text"/>
+            <column name="contact_phone" remarks="租户电话" type="text"/>
             <column name="domain" remarks="域名" type="text"/>
             <column name="logo" remarks="logo" type="text"/>
             <column name="address" remarks="地址" type="text"/>

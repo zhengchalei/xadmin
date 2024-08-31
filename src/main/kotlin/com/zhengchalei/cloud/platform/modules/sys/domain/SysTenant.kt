@@ -20,7 +20,7 @@ interface SysTenant {
 
     val contactName: String?
 
-    val contactPhoneNumber: String?
+    val contactPhone: String?
 
     val domain: String?
 

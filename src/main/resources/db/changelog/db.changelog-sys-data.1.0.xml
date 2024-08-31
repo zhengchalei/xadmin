@@ -5,8 +5,9 @@
 
     <changeSet id="初始化Default租户数据" author="郑查磊">
         <sql>
-            insert into sys_tenant(name, code, status, description)
-            values ('默认租户', 'default', true, '默认租户');
+            insert into sys_tenant(name, code, status, description, contact_name, contact_phone, domain, logo, address)
+            values ('默认租户', 'default', true, '默认租户', '郑查磊', '16255198881', 'https://zhengchalei.github.io', null,
+                    '上海市黄浦区汇泉路99999号');
 
 
             insert into sys_department(name, parent_id, sort, status, description, tenant)

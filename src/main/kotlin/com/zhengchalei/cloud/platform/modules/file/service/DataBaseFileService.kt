@@ -25,7 +25,7 @@ class DataBaseFileService(
         if (multipartFile.size > 0) {
             val baseFile =
                 new(DataBaseFile::class).by {
-                    this.uid = UUID.randomUUID().toString()
+                    this.uid = UUID.randomUUID().toString() + "." + multipartFile.originalFilename?.substringAfterLast(".")
                     this.originalName = multipartFile.originalFilename ?: UUID.randomUUID().toString()
                     this.type = getFileType(multipartFile)
                     this.fileData = ByteArrayInputStream(multipartFile.bytes)

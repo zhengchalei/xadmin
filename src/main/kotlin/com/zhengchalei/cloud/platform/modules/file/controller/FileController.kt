@@ -20,23 +20,23 @@ class FileController(
      * @param [file] 文件
      * @return [R<String>]
      */
-    @PostMapping(path = ["/upload/file"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PostMapping(path = ["/upload"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun uploadFile(
         @RequestParam("file") file: MultipartFile,
     ): R<String> {
-        val uploadImage = this.fileService.uploadFile(file)
-        return R.success(data = uploadImage)
+        val uuid = this.fileService.uploadFile(file)
+        return R.success(data = "/api/external/file/download/$uuid")
     }
 
     // 下载文件
 
-    @GetMapping("/download/file")
+    @GetMapping("/download/{uuid}")
     fun downloadFile(
-        @RequestParam(name = "uid") uid: String,
+        @PathVariable(name = "uuid") uuid: String,
         request: HttpServletRequest,
         response: HttpServletResponse,
     ) {
-        val data = this.fileService.getFile(uid)
+        val data = this.fileService.getFile(uuid)
         writeFileToResponse(data.first, data.second, request, response)
     }
 

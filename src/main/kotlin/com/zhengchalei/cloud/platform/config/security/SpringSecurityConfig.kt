@@ -51,6 +51,9 @@ class SpringSecurityConfig(
                     authorize.requestMatchers("/swagger-ui/**").permitAll()
                     authorize.requestMatchers("/v3/**").permitAll()
                 }
+                // 图片资源忽略鉴权
+                authorize.requestMatchers("/api/external/file/download/**").permitAll()
+
                 authorize.anyRequest().authenticated()
             }.exceptionHandling {
                 it.authenticationEntryPoint { request, response, authException ->

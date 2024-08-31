@@ -6,7 +6,7 @@ specification SysTenantPageSpecification {
     like/i(name)
     like/i(code)
     like/i(contactName)
-    like/i(contactPhoneNumber)
+    like/i(contactPhone)
     like/i(domain)
     like/i(address)
     eq(status)
