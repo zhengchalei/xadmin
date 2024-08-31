@@ -26,9 +26,13 @@ SysTenantDetailView {
 input SysTenantCreateInput {
     #allScalars(this)
     -id
+    -createTime
+    -updateTime
 }
 
 input SysTenantUpdateInput {
     #allScalars(this)
     id!
+    -createTime
+    -updateTime
 }

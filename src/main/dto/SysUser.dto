@@ -8,8 +8,8 @@ specification SysUserPageSpecification {
     eq(status)
     like/i(phoneNumber)
     eq(gender)
-    id(posts)
-    id(roles) as roleIds
+    associatedIdEq(posts)
+    associatedIdEq(roles) as roleIds
     ge(createTime) as startTime
     le(createTime) as endTime
     departmentId: Long?

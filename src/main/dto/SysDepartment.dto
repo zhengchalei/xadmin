@@ -6,7 +6,7 @@ specification SysDepartmentPageSpecification {
     like/i(name)
     eq(status)
     like/i(description)
-    id(parent)
+    associatedIdEq(parent)
     ge(createTime) as startTime
     le(createTime) as endTime
 }

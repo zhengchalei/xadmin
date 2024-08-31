@@ -8,7 +8,7 @@ specification SysDictItemPageSpecification {
     like/i(data)
     like/i(description)
     eq(status)
-    id(dict) as dictId
+    associatedIdEq(dict) as dictId
 }
 
 SysDictItemPageView {

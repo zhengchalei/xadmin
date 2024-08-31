@@ -7,21 +7,21 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" remarks="租户名称" type="VARCHAR(255)" >
+            <column name="name" remarks="租户名称" type="text" >
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="code" remarks="租户编码" type="VARCHAR(255)">
+            <column name="code" remarks="租户编码" type="text">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="status" remarks="状态  false：停用   true：正常" type="boolean" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
-            <column name="contact_name" remarks="负责人" type="VARCHAR(255)"/>
-            <column name="contact_phone_number" remarks="租户电话" type="VARCHAR(255)"/>
-            <column name="domain" remarks="域名" type="VARCHAR(255)"/>
-            <column name="logo" remarks="logo" type="VARCHAR(255)"/>
-            <column name="address" remarks="地址" type="VARCHAR(255)"/>
-            <column name="description" remarks="描述" type="VARCHAR(255)"/>
+            <column name="contact_name" remarks="负责人" type="text"/>
+            <column name="contact_phone_number" remarks="租户电话" type="text"/>
+            <column name="domain" remarks="域名" type="text"/>
+            <column name="logo" remarks="logo" type="text"/>
+            <column name="address" remarks="地址" type="text"/>
+            <column name="description" remarks="描述" type="text"/>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -37,7 +37,7 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" remarks="部门名称" type="VARCHAR(255)">
+            <column name="name" remarks="部门名称" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="parent_id" remarks="父级ID" type="BIGINT"/>
@@ -47,8 +47,8 @@
             <column defaultValueBoolean="true" name="status" remarks="状态  false：停用   true：正常" type="boolean">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" remarks="描述" type="VARCHAR(255)"/>
-            <column name="tenant" remarks="租户" type="VARCHAR(255)">
+            <column name="description" remarks="描述" type="text"/>
+            <column name="tenant" remarks="租户" type="text">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
@@ -75,13 +75,13 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" remarks="字典名称" type="VARCHAR(255)">
+            <column name="name" remarks="字典名称" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="code" remarks="字典编码" type="VARCHAR(255)">
+            <column name="code" remarks="字典编码" type="text">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="description" remarks="描述" type="VARCHAR(255)"/>
+            <column name="description" remarks="描述" type="text"/>
             <column defaultValueNumeric="0" name="sort" remarks="排序" type="INT">
                 <constraints nullable="false"/>
             </column>
@@ -102,16 +102,16 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" remarks="字典名称" type="VARCHAR(255)">
+            <column name="name" remarks="字典名称" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="code" remarks="字典编码" type="VARCHAR(255)">
+            <column name="code" remarks="字典编码" type="text">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="data" remarks="字典值" type="VARCHAR(255)">
+            <column name="data" remarks="字典值" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" remarks="描述" type="VARCHAR(255)"/>
+            <column name="description" remarks="描述" type="text"/>
             <column defaultValueNumeric="0" name="sort" remarks="排序" type="INT">
                 <constraints nullable="false"/>
             </column>
@@ -143,17 +143,17 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" remarks="权限名称" type="VARCHAR(255)">
+            <column name="name" remarks="权限名称" type="text">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="code" remarks="权限标识" type="VARCHAR(255)">
+            <column name="code" remarks="权限标识" type="text">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="parent_id" remarks="父级ID" type="BIGINT"/>
             <column defaultValueBoolean="true" name="status" remarks="状态  false：停用   true：正常" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" remarks="备注" type="VARCHAR(255)"/>
+            <column name="description" remarks="备注" type="text"/>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -174,7 +174,7 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" remarks="岗位名称" type="VARCHAR(255)">
+            <column name="name" remarks="岗位名称" type="text">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueNumeric="0" name="sort" remarks="排序" type="INT">
@@ -183,8 +183,8 @@
             <column defaultValueBoolean="true" name="status" remarks="状态  false：停用   true：正常" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" remarks="描述" type="VARCHAR(255)"/>
-            <column name="tenant" remarks="租户" type="VARCHAR(255)">
+            <column name="description" remarks="描述" type="text"/>
+            <column name="tenant" remarks="租户" type="text">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
@@ -205,17 +205,17 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" remarks="角色名称" type="VARCHAR(255)">
+            <column name="name" remarks="角色名称" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="code" remarks="角色标识" type="VARCHAR(255)">
+            <column name="code" remarks="角色标识" type="text">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueBoolean="true" name="status" remarks="状态  false：停用   true：正常" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" remarks="备注" type="VARCHAR(255)"/>
-            <column name="tenant" remarks="租户" type="VARCHAR(255)">
+            <column name="description" remarks="备注" type="text"/>
+            <column name="tenant" remarks="租户" type="text">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
@@ -257,28 +257,28 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="username" remarks="用户名" type="VARCHAR(255)">
+            <column name="username" remarks="用户名" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="password" remarks="密码" type="VARCHAR(255)">
+            <column name="password" remarks="密码" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="email" remarks="邮箱" type="VARCHAR(255)">
+            <column name="email" remarks="邮箱" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="phone_number" remarks="手机号" type="VARCHAR(20)">
+            <column name="phone_number" remarks="手机号" type="text">
                 <constraints/>
             </column>
-            <column name="gender" remarks="性别" type="VARCHAR(20)"/>
+            <column name="gender" remarks="性别" type="text"/>
             <column name="birthday" remarks="生日" type="DATE"/>
             <!--      岗位      -->
             <column name="posts_id" remarks="岗位ID" type="BIGINT"/>
             <column name="department_id" remarks="部门ID" type="BIGINT"/>
-            <column name="avatar" remarks="头像" type="VARCHAR(255)"/>
+            <column name="avatar" remarks="头像" type="text"/>
             <column defaultValueBoolean="true" name="status" remarks="状态  false：禁用   true：正常" type="boolean">
                 <constraints nullable="false"/>
             </column>
-            <column name="tenant" remarks="租户" type="VARCHAR(255)">
+            <column name="tenant" remarks="租户" type="text">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
@@ -328,18 +328,18 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" remarks="日志名称" type="VARCHAR(255)">
+            <column name="name" remarks="日志名称" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="user_id" remarks="用户id" type="BIGINT"/>
             <column name="department_id" remarks="部门id" type="BIGINT"/>
-            <column name="method" remarks="请求方法" type="VARCHAR(255)">
+            <column name="method" remarks="请求方法" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="http_method" remarks="http method" type="VARCHAR(255)">
+            <column name="http_method" remarks="http method" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="url" remarks="请求路径" type="VARCHAR(255)">
+            <column name="url" remarks="请求路径" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="request_data" remarks="请求参数" type="json"/>
@@ -347,15 +347,15 @@
             <column name="time" remarks="请求耗时" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="ip" remarks="IP地址" type="VARCHAR(255)">
+            <column name="ip" remarks="IP地址" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="address" remarks="操作地点" type="VARCHAR(255)"/>
+            <column name="address" remarks="操作地点" type="text"/>
             <column name="status" remarks="状态" type="boolean" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
             <column name="error_stack" remarks="异常堆栈" type="text"/>
-            <column name="tenant" remarks="租户" type="VARCHAR(255)">
+            <column name="tenant" remarks="租户" type="text">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
@@ -384,25 +384,25 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="username" remarks="用户名" type="VARCHAR(255)">
+            <column name="username" remarks="用户名" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="password" remarks="密码" type="VARCHAR(255)">
+            <column name="password" remarks="密码" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="login_time" remarks="登录时间" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-            <column name="ip" remarks="IP地址" type="VARCHAR(255)">
+            <column name="ip" remarks="IP地址" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="address" remarks="操作地点" type="VARCHAR(255)"/>
+            <column name="address" remarks="操作地点" type="text"/>
             <column name="status" remarks="登录状态 (true: 成功, false: 失败)" type="boolean" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
-            <column name="error_message" remarks="失败原因" type="VARCHAR(255)"/>
+            <column name="error_message" remarks="失败原因" type="text"/>
             <column name="user_id" remarks="用户id" type="BIGINT"/>
-            <column name="tenant" remarks="租户" type="VARCHAR(255)">
+            <column name="tenant" remarks="租户" type="text">
                 <constraints nullable="false"/>
             </column>
         </createTable>

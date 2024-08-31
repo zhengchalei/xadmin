@@ -6,7 +6,7 @@ specification SysPermissionPageSpecification {
     like/i(name)
     like/i(code)
     like/i(description)
-    id(parent)
+    associatedIdEq(parent)
 }
 
 SysPermissionTreeView {
