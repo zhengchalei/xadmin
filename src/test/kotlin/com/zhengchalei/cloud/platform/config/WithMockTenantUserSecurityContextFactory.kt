@@ -1,7 +1,7 @@
 package com.zhengchalei.cloud.platform.config
 
 import com.zhengchalei.cloud.platform.commons.Const
-import com.zhengchalei.cloud.platform.config.security.TenantCaptchaAuthenticationToken
+import com.zhengchalei.cloud.platform.config.security.TenantAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -31,7 +31,7 @@ class WithMockTenantUserSecurityContextFactory : WithSecurityContextFactory<With
         )
         val principal: UserDetails = User(annotation.username, annotation.password, authorities)
         val auth: Authentication =
-            TenantCaptchaAuthenticationToken(principal, annotation.password, annotation.tenant, "", authorities)
+            TenantAuthenticationToken(principal, annotation.password, annotation.tenant, "", authorities)
         context.authentication = auth
         return context
     }

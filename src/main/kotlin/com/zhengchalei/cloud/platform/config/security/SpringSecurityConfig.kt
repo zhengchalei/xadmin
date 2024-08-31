@@ -19,7 +19,7 @@ class SpringSecurityConfig(
     @Value("\${spring.profiles.active}")
     private val profile: String,
     private val objectMapper: ObjectMapper,
-    private val tenantCaptchaAuthenticationProvider: TenantCaptchaAuthenticationProvider,
+    private val tenantAuthenticationProvider: TenantAuthenticationProvider,
     private val handlerExceptionResolver: HandlerExceptionResolver,
 ) {
     @Bean
@@ -28,14 +28,14 @@ class SpringSecurityConfig(
         jwtProvider: JwtProvider,
         authenticationManager: AuthenticationManager,
     ): SecurityFilterChain {
-        val tenantCaptchaAuthenticationFilter = TenantCaptchaAuthenticationFilter()
-        tenantCaptchaAuthenticationFilter.setAuthenticationManager(authenticationManager)
+        val tenantAuthenticationFilter = TenantAuthenticationFilter()
+        tenantAuthenticationFilter.setAuthenticationManager(authenticationManager)
         return http
             .addFilterBefore(
                 JwtConfigurer.JwtAuthorizationFilter(jwtProvider, handlerExceptionResolver),
                 UsernamePasswordAuthenticationFilter::class.java,
-            ).addFilterBefore(tenantCaptchaAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .authenticationProvider(tenantCaptchaAuthenticationProvider)
+            ).addFilterBefore(tenantAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .authenticationProvider(tenantAuthenticationProvider)
             .authorizeHttpRequests { authorize ->
 
                 // favicon.ico

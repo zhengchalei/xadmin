@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
-class TenantCaptchaAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
+class TenantAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
     override fun attemptAuthentication(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -16,7 +16,7 @@ class TenantCaptchaAuthenticationFilter : UsernamePasswordAuthenticationFilter()
         val captcha = request.getParameter("captcha")
 
         val authRequest =
-            TenantCaptchaAuthenticationToken(
+            TenantAuthenticationToken(
                 username,
                 password,
                 tenantId,

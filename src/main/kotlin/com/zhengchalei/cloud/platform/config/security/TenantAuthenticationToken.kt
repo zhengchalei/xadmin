@@ -3,7 +3,7 @@ package com.zhengchalei.cloud.platform.config.security
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
-class TenantCaptchaAuthenticationToken(
+class TenantAuthenticationToken(
     username: Any,
     password: Any,
     val tenant: String,

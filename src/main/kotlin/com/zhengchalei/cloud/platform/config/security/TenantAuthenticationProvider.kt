@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component
-class TenantCaptchaAuthenticationProvider(
+class TenantAuthenticationProvider(
     val sysTenantRepository: SysTenantRepository,
     val sysUserRepository: SysUserRepository,
     val passwordEncoder: PasswordEncoder,
@@ -26,18 +26,18 @@ class TenantCaptchaAuthenticationProvider(
     override fun authenticate(authentication: Authentication): Authentication {
         val username = authentication.name
         val password = authentication.credentials as String
-        val tenant = (authentication as TenantCaptchaAuthenticationToken).tenant
+        val tenant = (authentication as TenantAuthenticationToken).tenant
         val captcha = authentication.captcha
         // 验证租户ID、验证码和用户密码的逻辑
         if (isValidTenant(tenant) && isValidCaptcha(captcha)) {
             val userDetails = loadUserByUsername(username, password, tenant)
-            return TenantCaptchaAuthenticationToken(username, password, tenant, captcha, userDetails.authorities)
+            return TenantAuthenticationToken(username, password, tenant, captcha, userDetails.authorities)
         } else {
             throw UserPasswordErrorException()
         }
     }
 
-    override fun supports(authentication: Class<*>): Boolean = TenantCaptchaAuthenticationToken::class.java.isAssignableFrom(authentication)
+    override fun supports(authentication: Class<*>): Boolean = TenantAuthenticationToken::class.java.isAssignableFrom(authentication)
 
     private fun isValidTenant(tenant: String): Boolean {
         // 这里实现租户ID验证逻辑

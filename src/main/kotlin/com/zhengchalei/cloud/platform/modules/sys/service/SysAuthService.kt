@@ -1,9 +1,12 @@
 package com.zhengchalei.cloud.platform.modules.sys.service
 
-import com.zhengchalei.cloud.platform.commons.Const
-import com.zhengchalei.cloud.platform.config.*
+import com.zhengchalei.cloud.platform.config.IP2RegionService
+import com.zhengchalei.cloud.platform.config.LoginFailException
+import com.zhengchalei.cloud.platform.config.ServiceException
+import com.zhengchalei.cloud.platform.config.VirtualThreadExecutor
 import com.zhengchalei.cloud.platform.config.security.JwtProvider
-import com.zhengchalei.cloud.platform.config.security.TenantCaptchaAuthenticationToken
+import com.zhengchalei.cloud.platform.config.security.SecurityUtils
+import com.zhengchalei.cloud.platform.config.security.TenantAuthenticationToken
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysLoginLog
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.by
@@ -13,7 +16,6 @@ import org.babyfish.jimmer.kt.new
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -54,15 +56,15 @@ class SysAuthService(
         ip: String,
     ): String {
         try {
-            val authentication: TenantCaptchaAuthenticationToken =
+            val authentication: TenantAuthenticationToken =
                 authenticationManager.authenticate(
-                    TenantCaptchaAuthenticationToken(
+                    TenantAuthenticationToken(
                         username = username,
                         password = password,
                         captcha = captcha,
                         tenant = tenant,
                     ),
-                ) as TenantCaptchaAuthenticationToken
+                ) as TenantAuthenticationToken
             SecurityContextHolder.getContext().authentication = authentication
             val token: String = jwtProvider.createAccessToken(authentication)
             return token
@@ -79,29 +81,6 @@ class SysAuthService(
         }
     }
 
-    /**
-     * 切换租户
-     * @param [tenant] 租户
-     */
-    fun switchTenant(tenant: String): String {
-        // 判断用户名是否为 superAdmin
-        if ((SecurityContextHolder.getContext().authentication.principal as User).username == Const.Root) {
-            // 切换租户
-            SecurityContextHolder.getContext().authentication =
-                TenantCaptchaAuthenticationToken(
-                    username = Const.Root,
-                    password = "",
-                    captcha = "",
-                    tenant = tenant,
-                )
-            val authentication: TenantCaptchaAuthenticationToken =
-                SecurityContextHolder.getContext().authentication as TenantCaptchaAuthenticationToken
-            val token: String = jwtProvider.createAccessToken(authentication)
-            return token
-        } else {
-            throw SwitchTenantException()
-        }
-    }
 
     /**
      * 保存登录日志
@@ -136,5 +115,9 @@ class SysAuthService(
                 },
             )
         }
+    }
+
+    fun switchTenant(tenant: String): String {
+        return SecurityUtils.switchTenant(tenant, jwtProvider)
     }
 }

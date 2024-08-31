@@ -47,7 +47,7 @@ class JwtProvider(
      * @return 签名后的 JWT 对象
      * @throws JOSEException 如果签名过程中出现错误
      */
-    fun createAccessToken(authentication: TenantCaptchaAuthenticationToken): String {
+    fun createAccessToken(authentication: TenantAuthenticationToken): String {
         // Header
         val header = JWSHeader(JWSAlgorithm.HS256)
 
@@ -127,7 +127,7 @@ class JwtProvider(
 
         val principal = User(jwtClaimsSet.subject, "", authorities)
 
-        return TenantCaptchaAuthenticationToken(
+        return TenantAuthenticationToken(
             username = principal,
             password = "",
             tenant = tenant,

@@ -100,13 +100,13 @@ class SysAuthControllerTest {
     }
 
     @Test
-    fun superAdminLoginLoginFail() {
+    fun rootLoginLoginFail() {
         mockMvc
             .post("/api/auth/login") {
                 content =
                     objectMapper.writeValueAsString(
                         LoginDTO(
-                            username = "superAdmin",
+                            username = "root",
                             password = "error password",
                             tenant = "default",
                             captcha = "1234",
@@ -128,13 +128,13 @@ class SysAuthControllerTest {
     }
 
     @Test
-    fun superAdminLogin() {
+    fun rootLogin() {
         mockMvc
             .post("/api/auth/login") {
                 content =
                     objectMapper.writeValueAsString(
                         LoginDTO(
-                            username = "superAdmin",
+                            username = "root",
                             password = "123456",
                             tenant = "default",
                             captcha = "1234",
@@ -175,6 +175,27 @@ class SysAuthControllerTest {
                 content {
                     contentType(MediaType.APPLICATION_JSON)
                     jsonPath("$.data.accessToken") { exists() }
+                }
+            }.andDo {
+                log()
+            }
+    }
+
+    @Test
+    @WithMockTenantUser(
+        username = Const.AdminUser,
+    )
+    fun switchTenantFail() {
+        mockMvc
+            .post("/api/auth/switch-tenant/default")
+            .andExpect {
+                status { isOk() }
+                content {
+                    contentType(MediaType.APPLICATION_JSON)
+                    jsonPath("$.success") {
+                        exists()
+                        value(false)
+                    }
                 }
             }.andDo {
                 log()
