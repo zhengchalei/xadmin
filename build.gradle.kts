@@ -47,6 +47,8 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     implementation("org.liquibase:liquibase-core")
 
+    implementation("org.springframework.boot:spring-boot-starter-quartz")
+
     // orm
     implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:$jimmerVersion")
     ksp("org.babyfish.jimmer:jimmer-ksp:$jimmerVersion")

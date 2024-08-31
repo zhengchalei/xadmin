@@ -12,12 +12,17 @@ class VirtualThreadExecutor : SimpleAsyncTaskExecutor()
 @Configuration
 class ThreadPoolConfig {
     @Bean
-    fun virtualThreadExecutor(): VirtualThreadExecutor {
-        val virtualThreadExecutor = VirtualThreadExecutor()
-        virtualThreadExecutor.setVirtualThreads(true)
-        virtualThreadExecutor.setTaskDecorator(SecurityContextTaskDecorator())
-        virtualThreadExecutor.threadFactory = Thread.ofVirtual().name("virtual-business-executor-", 0).factory()
-        virtualThreadExecutor.setTaskTerminationTimeout(5000)
-        return virtualThreadExecutor
+    fun businessVirtualThreadExecutor(): VirtualThreadExecutor {
+        return virtualThreadExecutor("business")
     }
+
+}
+
+fun virtualThreadExecutor(name: String = ""): VirtualThreadExecutor {
+    val virtualThreadExecutor = VirtualThreadExecutor()
+    virtualThreadExecutor.setVirtualThreads(true)
+    virtualThreadExecutor.setTaskDecorator(SecurityContextTaskDecorator())
+    virtualThreadExecutor.threadFactory = Thread.ofVirtual().name("virtual-$name-executor", 0).factory()
+    virtualThreadExecutor.setTaskTerminationTimeout(5000)
+    return virtualThreadExecutor
 }
