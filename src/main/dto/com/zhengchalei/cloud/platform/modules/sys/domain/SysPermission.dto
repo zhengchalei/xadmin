@@ -1,17 +1,12 @@
-export com.zhengchalei.cloud.platform.modules.sys.domain.SysDepartment
-    -> package com.zhengchalei.cloud.platform.modules.sys.domain.dto
-
-specification SysDepartmentPageSpecification {
+specification SysPermissionPageSpecification {
     eq(id)
     like/i(name)
-    eq(status)
+    like/i(code)
     like/i(description)
     associatedIdEq(parent)
-    ge(createTime) as startTime
-    le(createTime) as endTime
 }
 
-SysDepartmentTreeView {
+SysPermissionTreeView {
     #allScalars
     children*
     parent {
@@ -19,7 +14,7 @@ SysDepartmentTreeView {
     }
 }
 
-SysDepartmentTreeSelectView {
+SysPermissionTreeSelectView {
     #allScalars
     children*
     parent {
@@ -27,34 +22,34 @@ SysDepartmentTreeSelectView {
     }
 }
 
-SysDepartmentTreeRootView {
+SysPermissionTreeRootView {
     #allScalars
     parent {
         #allScalars
     }
 }
 
-SysDepartmentPageView {
+SysPermissionPageView {
     #allScalars
     parent {
         #allScalars
     }
 }
 
-SysDepartmentDetailView {
+SysPermissionDetailView {
     #allScalars
     parent {
         #allScalars
     }
 }
 
-input SysDepartmentCreateInput {
+input SysPermissionCreateInput {
     #allScalars(this)
     id(parent)
     -id
 }
 
-input SysDepartmentUpdateInput {
+input SysPermissionUpdateInput {
     #allScalars(this)
     id!
     id(parent)
