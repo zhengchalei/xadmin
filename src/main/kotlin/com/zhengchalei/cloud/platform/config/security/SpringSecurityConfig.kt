@@ -1,6 +1,7 @@
 package com.zhengchalei.cloud.platform.config.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.GlobalException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -45,7 +46,7 @@ class SpringSecurityConfig(
                 authorize.requestMatchers("/api/auth/register").permitAll()
                 authorize.requestMatchers("/api/auth/captcha").permitAll()
                 // dev
-                if (profile == "dev" || profile == "test") {
+                if (profile != Const.ENV_PROD) {
                     authorize.requestMatchers("/openapi.html").permitAll()
                     authorize.requestMatchers("/openapi.yml").permitAll()
                     authorize.requestMatchers("/swagger-ui/**").permitAll()
@@ -56,13 +57,13 @@ class SpringSecurityConfig(
 
                 authorize.anyRequest().authenticated()
             }.exceptionHandling {
-                it.authenticationEntryPoint { request, response, authException ->
+                it.authenticationEntryPoint { _, response, authException ->
                     response.sendError(
                         401,
                         objectMapper.writeValueAsString(GlobalException.Error(authException.message ?: "未登录")),
                     )
                 }
-                it.accessDeniedHandler { request, response, accessDeniedException ->
+                it.accessDeniedHandler { _, response, accessDeniedException ->
                     response.sendError(
                         403,
                         objectMapper.writeValueAsString(
@@ -80,5 +81,6 @@ class SpringSecurityConfig(
     }
 
     @Bean
-    fun authenticationManager(configuration: AuthenticationConfiguration): AuthenticationManager = configuration.authenticationManager
+    fun authenticationManager(configuration: AuthenticationConfiguration): AuthenticationManager =
+        configuration.authenticationManager
 }

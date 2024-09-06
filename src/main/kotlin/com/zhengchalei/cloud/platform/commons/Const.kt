@@ -14,4 +14,10 @@ object Const {
     const val DefaultTenant = "default"
 
     const val SecurityRolePrifix = "ROLE_"
+
+    // env
+    const val ENV_PROD = "prod"
+    const val ENV_DEV = "dev"
+    const val ENV_TEST = "test"
+
 }

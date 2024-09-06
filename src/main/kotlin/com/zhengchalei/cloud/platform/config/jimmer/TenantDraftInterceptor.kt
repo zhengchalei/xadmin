@@ -14,10 +14,8 @@ class TenantDraftInterceptor : DraftInterceptor<TenantAware, TenantAwareDraft> {
         if (!isLoaded(draft, TenantAware::tenant)) {
             draft.tenant = SecurityUtils.getCurrentTenant()
         }
-        if (original === null) {
-            if (!isLoaded(draft, TenantAware::tenant)) {
-                draft.tenant = SecurityUtils.getCurrentTenant()
-            }
+        if (original === null && !isLoaded(draft, TenantAware::tenant)) {
+            draft.tenant = SecurityUtils.getCurrentTenant()
         }
     }
 }

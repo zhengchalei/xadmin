@@ -120,4 +120,9 @@ class SysAuthService(
     fun switchTenant(tenant: String): String {
         return SecurityUtils.switchTenant(tenant, jwtProvider)
     }
+
+    fun logout() {
+        // TODO 期望值， 如果有Redis,使用Redis 存储JWT -》 User
+        // 否则为 DB PG 存储
+    }
 }

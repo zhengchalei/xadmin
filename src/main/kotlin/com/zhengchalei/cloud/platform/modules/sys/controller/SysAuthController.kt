@@ -8,8 +8,10 @@ import com.zhengchalei.cloud.platform.modules.sys.service.SysAuthService
 import jakarta.servlet.http.HttpServletRequest
 import org.babyfish.jimmer.client.meta.Api
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import java.net.InetAddress
 
 @Api("sys")
 @Validated
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/auth")
 class SysAuthController(
     private val sysAuthService: SysAuthService,
+    @Value("\${spring.profiles.active}") private val profile: String,
 ) {
     private val log = LoggerFactory.getLogger(SysAuthController::class.java)
 
@@ -45,16 +48,12 @@ class SysAuthController(
                 ipAddress = request.remoteAddr
                 if (ipAddress == "0:0:0:0:0:0:0:1") {
                     // 根据网卡取本机配置的IP
-//                    val inet: InetAddress = InetAddress.getLocalHost()
-//                    ipAddress = inet.hostAddress
-                    ipAddress = "127.0.0.1"
+                    ipAddress = if (profile == Const.ENV_PROD) InetAddress.getLocalHost().hostAddress else "127.0.0.1"
                 }
             }
             // 对于通过多个代理的情况，第一个IP为客户端真实IP，多个IP按照','分割
-            if (ipAddress.isNotEmpty() && ipAddress.length > 15) {
-                if (ipAddress.indexOf(",") > 0) {
-                    ipAddress = ipAddress.substring(0, ipAddress.indexOf(","))
-                }
+            if (ipAddress.isNotEmpty() && ipAddress.length > 15 && ipAddress.indexOf(",") > 0) {
+                ipAddress = ipAddress.substring(0, ipAddress.indexOf(","))
             }
             return ipAddress
         } catch (e: Exception) {
@@ -64,11 +63,9 @@ class SysAuthController(
     }
 
     @PostMapping("/logout")
-    fun logout() {
-    }
-
-    @PostMapping("/register")
-    fun register() {
+    fun logout(): R<Boolean> {
+        this.sysAuthService.logout()
+        return R.success(data = true)
     }
 
     // 至于 SUPER_ADMIN 可以切换租户

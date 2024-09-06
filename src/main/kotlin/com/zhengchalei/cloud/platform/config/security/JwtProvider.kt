@@ -136,11 +136,4 @@ class JwtProvider(
         )
     }
 
-    private fun getListClaimsSet(
-        jwtClaimsSet: JWTClaimsSet,
-        key: String,
-    ): List<String> =
-        (jwtClaimsSet.getClaim(key) as List<*>).map {
-            it as String
-        }
 }

@@ -17,6 +17,14 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
+/**
+ * Tenant authentication provider
+ *
+ * @property sysTenantRepository
+ * @property sysUserRepository
+ * @property passwordEncoder
+ * @constructor Create empty Tenant authentication provider
+ */
 @Component
 class TenantAuthenticationProvider(
     val sysTenantRepository: SysTenantRepository,
@@ -32,9 +40,8 @@ class TenantAuthenticationProvider(
         if (isValidTenant(tenant) && isValidCaptcha(captcha)) {
             val userDetails = loadUserByUsername(username, password, tenant)
             return TenantAuthenticationToken(username, password, tenant, captcha, userDetails.authorities)
-        } else {
-            throw UserPasswordErrorException()
         }
+        throw UserPasswordErrorException()
     }
 
     override fun supports(authentication: Class<*>): Boolean = TenantAuthenticationToken::class.java.isAssignableFrom(authentication)
