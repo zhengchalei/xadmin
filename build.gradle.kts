@@ -1,10 +1,9 @@
 plugins {
+    kotlin("jvm") version "2.0.20"
+    kotlin("plugin.spring") version "2.0.20"
     id("org.springframework.boot") version "3.3.3"
     id("io.spring.dependency-management") version "1.1.6"
-    kotlin("jvm") version "1.9.24"
-    kotlin("plugin.spring") version "1.9.24"
-    id("com.google.devtools.ksp") version "1.9.24-1.0.20"
-    id("tech.argonariod.gradle-plugin-jimmer") version "latest.release"
+    id("com.google.devtools.ksp") version "2.0.20-1.0.24"
     id("org.jlleitschuh.gradle.ktlint") version "latest.release"
 }
 
@@ -20,13 +19,6 @@ java {
 kotlin {
     sourceSets.main {
         kotlin.srcDir("build/generated/ksp/main/kotlin")
-    }
-}
-
-jimmer {
-    version = "latest.release"
-    dto {
-        mutable = false
     }
 }
 
