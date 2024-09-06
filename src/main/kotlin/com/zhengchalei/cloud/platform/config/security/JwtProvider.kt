@@ -9,7 +9,7 @@ import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.InvalidTokenException
-import com.zhengchalei.cloud.platform.config.properties.JwtConfigurationProperties
+import com.zhengchalei.cloud.platform.config.properties.AuthConfigurationProperties
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.security.core.Authentication
@@ -20,7 +20,7 @@ import java.util.*
 
 @Component
 class JwtProvider(
-    private val jwtConfigurationProperties: JwtConfigurationProperties,
+    private val authConfigurationProperties: AuthConfigurationProperties,
 ) : CommandLineRunner {
     private val log = LoggerFactory.getLogger(JwtProvider::class.java)
 
@@ -29,6 +29,7 @@ class JwtProvider(
     private var expiration: Long = 3600L
 
     override fun run(vararg args: String) {
+        val jwtConfigurationProperties = authConfigurationProperties.jwt
         if (jwtConfigurationProperties.secret.isBlank()) {
             throw RuntimeException("JWT secret is empty")
         }
