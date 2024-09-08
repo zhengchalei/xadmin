@@ -39,6 +39,9 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     implementation("org.liquibase:liquibase-core")
 
+    // coffee
+    implementation("com.github.ben-manes.caffeine:caffeine")
+
     implementation("org.springframework.boot:spring-boot-starter-quartz")
 
     // orm
