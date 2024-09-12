@@ -14,14 +14,10 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RestController
 @RequestMapping("/api/sys/dict-item")
-class SysDictItemController(
-    val sysDictItemService: SysDictItemService,
-) {
+class SysDictItemController(val sysDictItemService: SysDictItemService) {
     @PreAuthorize("hasAuthority('sys:dict-item:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
-    fun findSysDictItemById(
-        @PathVariable id: Long,
-    ): R<SysDictItemDetailView> {
+    fun findSysDictItemById(@PathVariable id: Long): R<SysDictItemDetailView> {
         val data = sysDictItemService.findSysDictItemById(id)
         return R(data = data)
     }
@@ -29,7 +25,7 @@ class SysDictItemController(
     @PreAuthorize("hasAuthority('sys:dict-item:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysDictItemList(
-        @NotNull specification: SysDictItemPageSpecification,
+        @NotNull specification: SysDictItemPageSpecification
     ): R<List<SysDictItemPageView>> {
         val data = sysDictItemService.findSysDictItemList(specification)
         return R(data = data)
@@ -48,7 +44,7 @@ class SysDictItemController(
     @PreAuthorize("hasAuthority('sys:dict-item:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysDictItem(
-        @NotNull @RequestBody sysDictItemCreateInput: SysDictItemCreateInput,
+        @NotNull @RequestBody sysDictItemCreateInput: SysDictItemCreateInput
     ): R<SysDictItemDetailView> {
         val data = sysDictItemService.createSysDictItem(sysDictItemCreateInput)
         return R(data = data)
@@ -57,7 +53,7 @@ class SysDictItemController(
     @PreAuthorize("hasAuthority('sys:dict-item:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysDictItemById(
-        @NotNull @RequestBody sysDictItemUpdateInput: SysDictItemUpdateInput,
+        @NotNull @RequestBody sysDictItemUpdateInput: SysDictItemUpdateInput
     ): R<SysDictItemDetailView> {
         val data = sysDictItemService.updateSysDictItemById(sysDictItemUpdateInput)
         return R(data = data)
@@ -65,9 +61,7 @@ class SysDictItemController(
 
     @PreAuthorize("hasAuthority('sys:dict-item:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysDictItemById(
-        @NotNull @PathVariable id: Long,
-    ): R<Boolean> {
+    fun deleteSysDictItemById(@NotNull @PathVariable id: Long): R<Boolean> {
         sysDictItemService.deleteSysDictItemById(id)
         return R()
     }

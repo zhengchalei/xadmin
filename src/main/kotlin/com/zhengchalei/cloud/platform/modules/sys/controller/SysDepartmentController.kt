@@ -14,14 +14,10 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RestController
 @RequestMapping("/api/sys/department")
-class SysDepartmentController(
-    val sysDepartmentService: SysDepartmentService,
-) {
+class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
     @PreAuthorize("hasAuthority('sys:department:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
-    fun findSysDepartmentById(
-        @PathVariable id: Long,
-    ): R<SysDepartmentDetailView> {
+    fun findSysDepartmentById(@PathVariable id: Long): R<SysDepartmentDetailView> {
         val data = sysDepartmentService.findSysDepartmentById(id)
         return R(data = data)
     }
@@ -29,7 +25,7 @@ class SysDepartmentController(
     @PreAuthorize("hasAuthority('sys:department:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysDepartmentList(
-        @NotNull specification: SysDepartmentPageSpecification,
+        @NotNull specification: SysDepartmentPageSpecification
     ): R<List<SysDepartmentPageView>> {
         val data = sysDepartmentService.findSysDepartmentList(specification)
         return R(data = data)
@@ -37,7 +33,9 @@ class SysDepartmentController(
 
     @PreAuthorize("hasAuthority('sys:department:tree-root') or hasAnyRole('admin')")
     @GetMapping("/tree-root")
-    fun findSysDepartmentTreeRoot(specification: SysDepartmentPageSpecification): R<List<SysDepartmentTreeRootView>> {
+    fun findSysDepartmentTreeRoot(
+        specification: SysDepartmentPageSpecification
+    ): R<List<SysDepartmentTreeRootView>> {
         val data = sysDepartmentService.findSysDepartmentTreeRoot(specification)
         return R(data = data)
     }
@@ -54,14 +52,18 @@ class SysDepartmentController(
 
     @PreAuthorize("hasAuthority('sys:department:tree') or hasAnyRole('admin')")
     @GetMapping("/tree")
-    fun findSysDepartmentTree(specification: SysDepartmentPageSpecification): R<List<SysDepartmentTreeView>> {
+    fun findSysDepartmentTree(
+        specification: SysDepartmentPageSpecification
+    ): R<List<SysDepartmentTreeView>> {
         val data = sysDepartmentService.findSysDepartmentTree(specification)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:department:tree-select') or hasAnyRole('admin')")
     @GetMapping("/tree-select")
-    fun findSysDepartmentTreeSelect(specification: SysDepartmentPageSpecification): R<List<SysDepartmentTreeSelectView>> {
+    fun findSysDepartmentTreeSelect(
+        specification: SysDepartmentPageSpecification
+    ): R<List<SysDepartmentTreeSelectView>> {
         val data = sysDepartmentService.findSysDepartmentTreeSelect(specification)
         return R(data = data)
     }
@@ -69,7 +71,7 @@ class SysDepartmentController(
     @PreAuthorize("hasAuthority('sys:department:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysDepartment(
-        @NotNull @RequestBody sysDepartmentCreateInput: SysDepartmentCreateInput,
+        @NotNull @RequestBody sysDepartmentCreateInput: SysDepartmentCreateInput
     ): R<SysDepartmentDetailView> {
         val data = sysDepartmentService.createSysDepartment(sysDepartmentCreateInput)
         return R(data = data)
@@ -78,7 +80,7 @@ class SysDepartmentController(
     @PreAuthorize("hasAuthority('sys:department:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysDepartmentById(
-        @NotNull @RequestBody sysDepartmentUpdateInput: SysDepartmentUpdateInput,
+        @NotNull @RequestBody sysDepartmentUpdateInput: SysDepartmentUpdateInput
     ): R<SysDepartmentDetailView> {
         val data = sysDepartmentService.updateSysDepartmentById(sysDepartmentUpdateInput)
         return R(data = data)
@@ -86,9 +88,7 @@ class SysDepartmentController(
 
     @PreAuthorize("hasAuthority('sys:department:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysDepartmentById(
-        @NotNull @PathVariable id: Long,
-    ): R<Boolean> {
+    fun deleteSysDepartmentById(@NotNull @PathVariable id: Long): R<Boolean> {
         sysDepartmentService.deleteSysDepartmentById(id)
         return R()
     }

@@ -1,20 +1,20 @@
 package com.zhengchalei.cloud.platform.modules.file.service
 
 import com.zhengchalei.cloud.platform.config.properties.FileConfigurationProperties
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import org.springframework.stereotype.Service
-import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.util.*
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 @ConditionalOnProperty(prefix = "file", name = ["storage"], havingValue = "local")
 @Service
-class LocalFileService(
-    private val fileConfigProperties: FileConfigurationProperties,
-) : FileService {
+class LocalFileService(private val fileConfigProperties: FileConfigurationProperties) :
+    FileService {
     /**
      * 上传图片
+     *
      * @param [multipartFile] 多部分文件
      * @return [String]
      */
@@ -36,7 +36,9 @@ class LocalFileService(
                 File(localConfig.storagePath).mkdirs()
             }
             val fileName =
-                UUID.randomUUID().toString() + "." + multipartFile.originalFilename?.substringAfterLast(".")
+                UUID.randomUUID().toString() +
+                    "." +
+                    multipartFile.originalFilename?.substringAfterLast(".")
             val filePath = localConfig.storagePath + "/" + fileName
             try {
                 multipartFile.transferTo(File(filePath))
@@ -50,6 +52,7 @@ class LocalFileService(
 
     /**
      * 获取文件
+     *
      * @param [fileName]
      * @return [Pair<String, ByteArray>]
      */

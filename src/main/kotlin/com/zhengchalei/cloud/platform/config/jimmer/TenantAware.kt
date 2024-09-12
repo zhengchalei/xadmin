@@ -1,7 +1,7 @@
 package com.zhengchalei.cloud.platform.config.jimmer
 
-import org.babyfish.jimmer.sql.MappedSuperclass
 import java.time.LocalDateTime
+import org.babyfish.jimmer.sql.MappedSuperclass
 
 @MappedSuperclass
 interface TenantAware {

@@ -1,14 +1,12 @@
 package com.zhengchalei.cloud.platform.modules.sys.domain
 
-import org.babyfish.jimmer.sql.*
 import java.time.LocalDateTime
+import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_tenant")
 interface SysTenant {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val name: String
 

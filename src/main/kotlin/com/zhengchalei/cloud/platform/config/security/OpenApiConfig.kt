@@ -13,10 +13,7 @@ class OpenApiConfig {
     @Bean
     fun customOpenAPI(): OpenAPI {
         return OpenAPI()
-            .addSecurityItem(
-                SecurityRequirement()
-                    .addList("Authentication"),
-            )
+            .addSecurityItem(SecurityRequirement().addList("Authentication"))
             .components(
                 Components()
                     .addSecuritySchemes(
@@ -25,7 +22,7 @@ class OpenApiConfig {
                             .type(SecurityScheme.Type.HTTP)
                             .scheme("bearer")
                             .bearerFormat("JWT"),
-                    ),
+                    )
             )
     }
 

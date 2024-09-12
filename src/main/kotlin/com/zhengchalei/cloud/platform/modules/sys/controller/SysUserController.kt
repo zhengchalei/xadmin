@@ -14,14 +14,10 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RestController
 @RequestMapping("/api/sys/user")
-class SysUserController(
-    val sysUserService: SysUserService,
-) {
+class SysUserController(val sysUserService: SysUserService) {
     @PreAuthorize("hasAuthority('sys:user:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
-    fun findSysUserById(
-        @PathVariable id: Long,
-    ): R<SysUserDetailView> {
+    fun findSysUserById(@PathVariable id: Long): R<SysUserDetailView> {
         val data = sysUserService.findSysUserById(id)
         return R(data = data)
     }
@@ -29,7 +25,7 @@ class SysUserController(
     @PreAuthorize("hasAuthority('sys:user:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysUserList(
-        @NotNull specification: SysUserPageSpecification,
+        @NotNull specification: SysUserPageSpecification
     ): R<List<SysUserPageView>> {
         val data = sysUserService.findSysUserList(specification)
         return R(data = data)
@@ -48,7 +44,7 @@ class SysUserController(
     @PreAuthorize("hasAuthority('sys:user:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysUser(
-        @NotNull @RequestBody sysUserCreateInput: SysUserCreateInput,
+        @NotNull @RequestBody sysUserCreateInput: SysUserCreateInput
     ): R<SysUserDetailView> {
         val data = sysUserService.createSysUser(sysUserCreateInput)
         return R(data = data)
@@ -57,7 +53,7 @@ class SysUserController(
     @PreAuthorize("hasAuthority('sys:user:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysUserById(
-        @NotNull @RequestBody sysUserUpdateInput: SysUserUpdateInput,
+        @NotNull @RequestBody sysUserUpdateInput: SysUserUpdateInput
     ): R<SysUserDetailView> {
         val data = sysUserService.updateSysUserById(sysUserUpdateInput)
         return R(data = data)
@@ -65,9 +61,7 @@ class SysUserController(
 
     @PreAuthorize("hasAuthority('sys:user:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysUserById(
-        @NotNull @PathVariable id: Long,
-    ): R<Boolean> {
+    fun deleteSysUserById(@NotNull @PathVariable id: Long): R<Boolean> {
         sysUserService.deleteSysUserById(id)
         return R()
     }

@@ -11,22 +11,23 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.SysLoginLog
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.by
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysLoginLogRepository
+import java.time.LocalDateTime
 import org.babyfish.jimmer.kt.makeIdOnly
 import org.babyfish.jimmer.kt.new
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 
 /**
  * 系统授权服务
- * @author 郑查磊
- * @date 2024-08-17
- * @constructor 创建[SysAuthService]
+ *
  * @param [sysLoginLogRepository] 系统登录日志存储库
  * @param [authenticationManager] 认证管理器
  * @param [jwtProvider] jwt 提供商
+ * @constructor 创建[SysAuthService]
+ * @author 郑查磊
+ * @date 2024-08-17
  */
 @Service
 class SysAuthService(
@@ -41,6 +42,7 @@ class SysAuthService(
 
     /**
      * 登录
+     *
      * @param [username] 用户名
      * @param [password] 密码
      * @param [captcha] 验证码
@@ -63,7 +65,7 @@ class SysAuthService(
                         password = password,
                         captcha = captcha,
                         tenant = tenant,
-                    ),
+                    )
                 ) as TenantAuthenticationToken
             SecurityContextHolder.getContext().authentication = authentication
             val token: String = jwtProvider.createAccessToken(authentication)
@@ -81,9 +83,9 @@ class SysAuthService(
         }
     }
 
-
     /**
      * 保存登录日志
+     *
      * @param [username] 用户名
      * @param [password] 密码
      * @param [status] 地位
@@ -111,8 +113,10 @@ class SysAuthService(
                     this.ip = ip
                     this.address = address
                     this.tenant = tenant
-                    this.sysUser = if (status) makeIdOnly(SysUser::class, userService.currentUserId()) else null
-                },
+                    this.sysUser =
+                        if (status) makeIdOnly(SysUser::class, userService.currentUserId())
+                        else null
+                }
             )
         }
     }

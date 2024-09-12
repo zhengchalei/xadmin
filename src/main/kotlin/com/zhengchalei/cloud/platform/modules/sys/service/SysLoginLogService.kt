@@ -11,32 +11,36 @@ import org.springframework.transaction.annotation.Transactional
 
 /**
  * 系统登录日志服务
+ *
+ * @constructor 创建[SysLoginLogService]
  * @author 郑查磊
  * @date 2024-08-17
- * @constructor 创建[SysLoginLogService]
  */
 @Service
 @Transactional(rollbackFor = [Exception::class])
-class SysLoginLogService(
-    val sysLoginLogRepository: SysLoginLogRepository,
-) {
+class SysLoginLogService(val sysLoginLogRepository: SysLoginLogRepository) {
     /**
      * 查找系统登录日志通过ID
+     *
      * @param [id] ID
      * @return [SysLoginLogPageView]
      */
-    fun findSysLoginLogById(id: Long): SysLoginLogDetailView = this.sysLoginLogRepository.findDetailById(id)
+    fun findSysLoginLogById(id: Long): SysLoginLogDetailView =
+        this.sysLoginLogRepository.findDetailById(id)
 
     /**
      * 查找系统登录日志列表
+     *
      * @param [specification] 查询条件构造器
      * @return [List<SysLoginLogPageView>?]
      */
-    fun findSysLoginLogList(specification: SysLoginLogPageSpecification): List<SysLoginLogPageView>? =
-        this.sysLoginLogRepository.findList(specification)
+    fun findSysLoginLogList(
+        specification: SysLoginLogPageSpecification
+    ): List<SysLoginLogPageView>? = this.sysLoginLogRepository.findList(specification)
 
     /**
      * 查找系统登录日志分页
+     *
      * @param [specification] 查询条件构造器
      * @param [page] 分页
      * @return [Page<SysLoginLogPageView>]
@@ -48,6 +52,7 @@ class SysLoginLogService(
 
     /**
      * 删除系统登录日志通过ID
+     *
      * @param [id] ID
      */
     fun deleteSysLoginLogById(id: Long) {

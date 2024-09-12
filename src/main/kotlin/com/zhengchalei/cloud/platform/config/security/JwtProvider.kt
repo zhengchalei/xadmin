@@ -10,18 +10,17 @@ import com.nimbusds.jwt.SignedJWT
 import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.InvalidTokenException
 import com.zhengchalei.cloud.platform.config.properties.AuthConfigurationProperties
+import java.util.*
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
-import java.util.*
 
 @Component
-class JwtProvider(
-    private val authConfigurationProperties: AuthConfigurationProperties,
-) : CommandLineRunner {
+class JwtProvider(private val authConfigurationProperties: AuthConfigurationProperties) :
+    CommandLineRunner {
     private val log = LoggerFactory.getLogger(JwtProvider::class.java)
 
     private var secret: ByteArray = "".toByteArray(Charsets.UTF_8)
@@ -54,8 +53,7 @@ class JwtProvider(
 
         // Payload
         val claimsSet =
-            JWTClaimsSet
-                .Builder()
+            JWTClaimsSet.Builder()
                 .subject(authentication.name)
                 .claim("username", authentication.name)
                 .claim(
@@ -65,13 +63,15 @@ class JwtProvider(
                         .map { it.authority }
                         .map { it.replaceFirst(Const.SecurityRolePrifix, "") }
                         .joinToString(","),
-                ).claim(
+                )
+                .claim(
                     "permissions",
                     authentication.authorities
                         .filter { !it.authority.startsWith(Const.SecurityRolePrifix) }
                         .map { it.authority }
                         .joinToString(","),
-                ).claim("tenant", authentication.tenant)
+                )
+                .claim("tenant", authentication.tenant)
                 .expirationTime(Date(System.currentTimeMillis() + expiration)) // 1 hour from now
                 .build()
 
@@ -114,7 +114,8 @@ class JwtProvider(
     fun getAuthentication(token: String): Authentication {
         val jwt: SignedJWT = parseToken(token)
         val jwtClaimsSet = jwt.jwtClaimsSet ?: throw RuntimeException("JWT ClaimsSet is null")
-        val permissions = jwtClaimsSet.getStringClaim("permissions").split(",").filter { it.isNotBlank() }
+        val permissions =
+            jwtClaimsSet.getStringClaim("permissions").split(",").filter { it.isNotBlank() }
         val roles =
             jwtClaimsSet
                 .getStringClaim("roles")
@@ -124,7 +125,8 @@ class JwtProvider(
         val tenant = jwtClaimsSet.getStringClaim("tenant")
 
         // 构建权限
-        val authorities = mutableListOf(permissions, roles).flatten().map { SimpleGrantedAuthority(it) }
+        val authorities =
+            mutableListOf(permissions, roles).flatten().map { SimpleGrantedAuthority(it) }
 
         val principal = User(jwtClaimsSet.subject, "", authorities)
 
@@ -136,5 +138,4 @@ class JwtProvider(
             authorities = authorities,
         )
     }
-
 }

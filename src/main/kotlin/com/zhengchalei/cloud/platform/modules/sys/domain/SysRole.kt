@@ -6,9 +6,7 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "sys_role")
 interface SysRole : TenantAware {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val name: String
 
@@ -24,12 +22,9 @@ interface SysRole : TenantAware {
     )
     val permissions: List<SysPermission>
 
-    @ManyToMany(mappedBy = "roles")
-    val users: List<SysUser>
+    @ManyToMany(mappedBy = "roles") val users: List<SysUser>
 
-    @IdView("permissions")
-    val permissionIds: List<Long>
+    @IdView("permissions") val permissionIds: List<Long>
 
-    @IdView("users")
-    val userIds: List<Long>
+    @IdView("users") val userIds: List<Long>
 }

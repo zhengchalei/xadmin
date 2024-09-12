@@ -6,18 +6,14 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "sys_log")
 interface SysLog : TenantAware {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
-    @ManyToOne
-    val user: SysUser?
+    @ManyToOne val user: SysUser?
 
     // 操作名称
     val name: String
 
-    @ManyToOne
-    val department: SysDepartment?
+    @ManyToOne val department: SysDepartment?
 
     val method: MethodType
 

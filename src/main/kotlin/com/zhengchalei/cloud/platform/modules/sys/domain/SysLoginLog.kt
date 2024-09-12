@@ -1,14 +1,12 @@
 package com.zhengchalei.cloud.platform.modules.sys.domain
 
-import org.babyfish.jimmer.sql.*
 import java.time.LocalDateTime
+import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_login_log")
 interface SysLoginLog {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val username: String
 
@@ -24,9 +22,7 @@ interface SysLoginLog {
 
     val errorMessage: String?
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    val sysUser: SysUser?
+    @ManyToOne @JoinColumn(name = "user_id") val sysUser: SysUser?
 
     val tenant: String
 }

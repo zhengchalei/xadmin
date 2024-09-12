@@ -14,14 +14,10 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RestController
 @RequestMapping("/api/sys/dict")
-class SysDictController(
-    val sysDictService: SysDictService,
-) {
+class SysDictController(val sysDictService: SysDictService) {
     @PreAuthorize("hasAuthority('sys:dict:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
-    fun findSysDictById(
-        @PathVariable id: Long,
-    ): R<SysDictDetailView> {
+    fun findSysDictById(@PathVariable id: Long): R<SysDictDetailView> {
         val data = sysDictService.findSysDictById(id)
         return R(data = data)
     }
@@ -29,7 +25,7 @@ class SysDictController(
     @PreAuthorize("hasAuthority('sys:dict:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysDictList(
-        @NotNull specification: SysDictPageSpecification,
+        @NotNull specification: SysDictPageSpecification
     ): R<List<SysDictPageView>> {
         val data = sysDictService.findSysDictList(specification)
         return R(data = data)
@@ -48,7 +44,7 @@ class SysDictController(
     @PreAuthorize("hasAuthority('sys:dict:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysDict(
-        @NotNull @RequestBody sysDictCreateInput: SysDictCreateInput,
+        @NotNull @RequestBody sysDictCreateInput: SysDictCreateInput
     ): R<SysDictDetailView> {
         val data = sysDictService.createSysDict(sysDictCreateInput)
         return R(data = data)
@@ -57,7 +53,7 @@ class SysDictController(
     @PreAuthorize("hasAuthority('sys:dict:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysDictById(
-        @NotNull @RequestBody sysDictUpdateInput: SysDictUpdateInput,
+        @NotNull @RequestBody sysDictUpdateInput: SysDictUpdateInput
     ): R<SysDictDetailView> {
         val data = sysDictService.updateSysDictById(sysDictUpdateInput)
         return R(data = data)
@@ -65,9 +61,7 @@ class SysDictController(
 
     @PreAuthorize("hasAuthority('sys:dict:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysDictById(
-        @NotNull @PathVariable id: Long,
-    ): R<Boolean> {
+    fun deleteSysDictById(@NotNull @PathVariable id: Long): R<Boolean> {
         sysDictService.deleteSysDictById(id)
         return R()
     }

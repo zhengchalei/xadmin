@@ -14,34 +14,28 @@ import org.springframework.data.domain.Pageable
 
 interface SysRoleRepository : KRepository<SysRole, Long> {
     fun findDetailById(id: Long) =
-        sql
-            .createQuery(SysRole::class) {
+        sql.createQuery(SysRole::class) {
                 where(table.id eq id)
-                select(
-                    table.fetch(SysRoleDetailView::class),
-                )
-            }.fetchOne()
+                select(table.fetch(SysRoleDetailView::class))
+            }
+            .fetchOne()
 
     fun findPage(
         specification: SysRolePageSpecification,
         pageable: Pageable,
     ): Page<SysRolePageView> =
-        sql
-            .createQuery(SysRole::class) {
+        sql.createQuery(SysRole::class) {
                 orderBy(table.id.asc())
                 where(specification)
-                select(
-                    table.fetch(SysRolePageView::class),
-                )
-            }.fetchSpringPage(pageable)
+                select(table.fetch(SysRolePageView::class))
+            }
+            .fetchSpringPage(pageable)
 
     fun findList(specification: SysRolePageSpecification): List<SysRolePageView> =
-        sql
-            .createQuery(SysRole::class) {
+        sql.createQuery(SysRole::class) {
                 orderBy(table.id.asc())
                 where(specification)
-                select(
-                    table.fetch(SysRolePageView::class),
-                )
-            }.execute()
+                select(table.fetch(SysRolePageView::class))
+            }
+            .execute()
 }

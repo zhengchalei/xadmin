@@ -24,10 +24,10 @@ class JwtConfigurationProperties {
 enum class StoreType {
     MEMORY,
     REDIS,
-    DATABASE
+    DATABASE,
 }
 
 enum class AuthTokenType {
     JWT,
-    UUID
+    UUID,
 }

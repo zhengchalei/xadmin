@@ -16,14 +16,10 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RestController
 @RequestMapping("/api/sys/login-log")
-class SysLoginLogController(
-    val sysLoginLogService: SysLoginLogService,
-) {
+class SysLoginLogController(val sysLoginLogService: SysLoginLogService) {
     @PreAuthorize("hasAuthority('sys:loginLog:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
-    fun findSysLoginLogById(
-        @PathVariable id: Long,
-    ): R<SysLoginLogDetailView> {
+    fun findSysLoginLogById(@PathVariable id: Long): R<SysLoginLogDetailView> {
         val data = sysLoginLogService.findSysLoginLogById(id)
         return R(data = data)
     }
@@ -31,7 +27,7 @@ class SysLoginLogController(
     @PreAuthorize("hasAuthority('sys:loginLog:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysLoginLogList(
-        @NotNull specification: SysLoginLogPageSpecification,
+        @NotNull specification: SysLoginLogPageSpecification
     ): R<List<SysLoginLogPageView>> {
         val data = sysLoginLogService.findSysLoginLogList(specification)
         return R(data = data)
@@ -49,9 +45,7 @@ class SysLoginLogController(
 
     @PreAuthorize("hasAuthority('sys:loginLog:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysLoginLogById(
-        @NotNull @PathVariable id: Long,
-    ): R<Boolean> {
+    fun deleteSysLoginLogById(@NotNull @PathVariable id: Long): R<Boolean> {
         sysLoginLogService.deleteSysLoginLogById(id)
         return R()
     }

@@ -15,13 +15,7 @@ class TenantAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
         val tenantId = request.getParameter("tenant")
         val captcha = request.getParameter("captcha")
 
-        val authRequest =
-            TenantAuthenticationToken(
-                username,
-                password,
-                tenantId,
-                captcha,
-            )
+        val authRequest = TenantAuthenticationToken(username, password, tenantId, captcha)
         super.setDetails(request, authRequest)
         return authenticationManager.authenticate(authRequest)
     }

@@ -9,8 +9,9 @@ import org.springframework.stereotype.Component
 class DemoTask {
     private val log: Logger = org.slf4j.LoggerFactory.getLogger(DemoTask::class.java)
 
-    class DemoJob: Job {
+    class DemoJob : Job {
         private val log: Logger = org.slf4j.LoggerFactory.getLogger(DemoJob::class.java)
+
         override fun execute(context: JobExecutionContext) {
             // 判断当前是否为虚拟线程
 
@@ -34,5 +35,4 @@ class DemoTask {
             )
             .build()
     }
-
 }

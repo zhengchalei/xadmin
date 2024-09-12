@@ -15,25 +15,19 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RestController
 @RequestMapping("/api/sys/tenant")
-class SysTenantController(
-    val sysTenantService: SysTenantService,
-) {
-
+class SysTenantController(val sysTenantService: SysTenantService) {
 
     @PreAuthorize(Const.ONLY_ROOT_AUTHORIZE_EL)
     @GetMapping("/id/{id}")
-    fun findSysTenantById(
-        @PathVariable id: Long,
-    ): R<SysTenantDetailView> {
+    fun findSysTenantById(@PathVariable id: Long): R<SysTenantDetailView> {
         val data = sysTenantService.findSysTenantById(id)
         return R(data = data)
     }
 
-
     @PreAuthorize(Const.ONLY_ROOT_AUTHORIZE_EL)
     @GetMapping("/list")
     fun findSysTenantList(
-        @NotNull specification: SysTenantPageSpecification,
+        @NotNull specification: SysTenantPageSpecification
     ): R<List<SysTenantPageView>> {
         val data = sysTenantService.findSysTenantList(specification)
         return R(data = data)
@@ -52,7 +46,7 @@ class SysTenantController(
     @PreAuthorize(Const.ONLY_ROOT_AUTHORIZE_EL)
     @PostMapping("/create")
     fun createSysTenant(
-        @NotNull @RequestBody sysTenantCreateInput: SysTenantCreateInput,
+        @NotNull @RequestBody sysTenantCreateInput: SysTenantCreateInput
     ): R<SysTenantDetailView> {
         val data = sysTenantService.createSysTenant(sysTenantCreateInput)
         return R(data = data)
@@ -61,7 +55,7 @@ class SysTenantController(
     @PreAuthorize(Const.ONLY_ROOT_AUTHORIZE_EL)
     @PostMapping("/update")
     fun updateSysTenantById(
-        @NotNull @RequestBody sysTenantUpdateInput: SysTenantUpdateInput,
+        @NotNull @RequestBody sysTenantUpdateInput: SysTenantUpdateInput
     ): R<SysTenantDetailView> {
         val data = sysTenantService.updateSysTenantById(sysTenantUpdateInput)
         return R(data = data)
@@ -69,18 +63,14 @@ class SysTenantController(
 
     @PreAuthorize(Const.ONLY_ROOT_AUTHORIZE_EL)
     @PostMapping("/disable/{id}")
-    fun disableSysTenantById(
-        @PathVariable id: Long,
-    ): R<Boolean> {
+    fun disableSysTenantById(@PathVariable id: Long): R<Boolean> {
         sysTenantService.disableSysTenantById(id)
         return R.success(data = true)
     }
 
     @PreAuthorize(Const.ONLY_ROOT_AUTHORIZE_EL)
     @PostMapping("/enable/{id}")
-    fun enableSysTenantById(
-        @PathVariable id: Long,
-    ): R<Boolean> {
+    fun enableSysTenantById(@PathVariable id: Long): R<Boolean> {
         sysTenantService.enableSysTenantById(id)
         return R.success(data = true)
     }

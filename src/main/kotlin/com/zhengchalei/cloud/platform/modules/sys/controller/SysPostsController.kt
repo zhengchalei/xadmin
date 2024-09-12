@@ -14,14 +14,10 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RestController
 @RequestMapping("/api/sys/posts")
-class SysPostsController(
-    val sysPostsService: SysPostsService,
-) {
+class SysPostsController(val sysPostsService: SysPostsService) {
     @PreAuthorize("hasAuthority('sys:post:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
-    fun findSysPostsById(
-        @PathVariable id: Long,
-    ): R<SysPostsDetailView> {
+    fun findSysPostsById(@PathVariable id: Long): R<SysPostsDetailView> {
         val data = sysPostsService.findSysPostsById(id)
         return R(data = data)
     }
@@ -29,7 +25,7 @@ class SysPostsController(
     @PreAuthorize("hasAuthority('sys:post:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysPostsList(
-        @NotNull specification: SysPostsPageSpecification,
+        @NotNull specification: SysPostsPageSpecification
     ): R<List<SysPostsPageView>> {
         val data = sysPostsService.findSysPostsList(specification)
         return R(data = data)
@@ -48,7 +44,7 @@ class SysPostsController(
     @PreAuthorize("hasAuthority('sys:post:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysPosts(
-        @NotNull @RequestBody sysPostsCreateInput: SysPostsCreateInput,
+        @NotNull @RequestBody sysPostsCreateInput: SysPostsCreateInput
     ): R<SysPostsDetailView> {
         val data = sysPostsService.createSysPosts(sysPostsCreateInput)
         return R(data = data)
@@ -57,7 +53,7 @@ class SysPostsController(
     @PreAuthorize("hasAuthority('sys:post:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysPostsById(
-        @NotNull @RequestBody sysPostsUpdateInput: SysPostsUpdateInput,
+        @NotNull @RequestBody sysPostsUpdateInput: SysPostsUpdateInput
     ): R<SysPostsDetailView> {
         val data = sysPostsService.updateSysPostsById(sysPostsUpdateInput)
         return R(data = data)
@@ -65,9 +61,7 @@ class SysPostsController(
 
     @PreAuthorize("hasAuthority('sys:post:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysPostsById(
-        @NotNull @PathVariable id: Long,
-    ): R<Boolean> {
+    fun deleteSysPostsById(@NotNull @PathVariable id: Long): R<Boolean> {
         sysPostsService.deleteSysPostsById(id)
         return R()
     }

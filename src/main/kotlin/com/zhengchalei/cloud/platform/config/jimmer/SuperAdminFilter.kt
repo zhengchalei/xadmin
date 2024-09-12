@@ -10,15 +10,14 @@ import org.springframework.stereotype.Component
 
 /**
  * 超级管理员过滤器, 这个是一个超级管理员的角色, 不会被查询到
+ *
+ * @constructor 创建[SuperAdminFilter]
  * @author 郑查磊
  * @date 2024-08-29
- * @constructor 创建[SuperAdminFilter]
  */
 @Component
 class SuperAdminFilter : KFilter<SysUser> {
     override fun filter(args: KFilterArgs<SysUser>) {
-        args.apply {
-            where(table.username.ne(Const.Root))
-        }
+        args.apply { where(table.username.ne(Const.Root)) }
     }
 }

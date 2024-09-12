@@ -14,14 +14,10 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RestController
 @RequestMapping("/api/sys/role")
-class SysRoleController(
-    val sysRoleService: SysRoleService,
-) {
+class SysRoleController(val sysRoleService: SysRoleService) {
     @PreAuthorize("hasAuthority('sys:role:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
-    fun findSysRoleById(
-        @PathVariable id: Long,
-    ): R<SysRoleDetailView> {
+    fun findSysRoleById(@PathVariable id: Long): R<SysRoleDetailView> {
         val data = sysRoleService.findSysRoleById(id)
         return R(data = data)
     }
@@ -29,7 +25,7 @@ class SysRoleController(
     @PreAuthorize("hasAuthority('sys:role:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysRoleList(
-        @NotNull specification: SysRolePageSpecification,
+        @NotNull specification: SysRolePageSpecification
     ): R<List<SysRolePageView>> {
         val data = sysRoleService.findSysRoleList(specification)
         return R(data = data)
@@ -48,7 +44,7 @@ class SysRoleController(
     @PreAuthorize("hasAuthority('sys:role:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysRole(
-        @NotNull @RequestBody sysRoleCreateInput: SysRoleCreateInput,
+        @NotNull @RequestBody sysRoleCreateInput: SysRoleCreateInput
     ): R<SysRoleDetailView> {
         val data = sysRoleService.createSysRole(sysRoleCreateInput)
         return R(data = data)
@@ -57,7 +53,7 @@ class SysRoleController(
     @PreAuthorize("hasAuthority('sys:role:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysRoleById(
-        @NotNull @RequestBody sysRoleUpdateInput: SysRoleUpdateInput,
+        @NotNull @RequestBody sysRoleUpdateInput: SysRoleUpdateInput
     ): R<SysRoleDetailView> {
         val data = sysRoleService.updateSysRoleById(sysRoleUpdateInput)
         return R(data = data)
@@ -65,9 +61,7 @@ class SysRoleController(
 
     @PreAuthorize("hasAuthority('sys:role:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysRoleById(
-        @NotNull @PathVariable id: Long,
-    ): R<Boolean> {
+    fun deleteSysRoleById(@NotNull @PathVariable id: Long): R<Boolean> {
         sysRoleService.deleteSysRoleById(id)
         return R()
     }

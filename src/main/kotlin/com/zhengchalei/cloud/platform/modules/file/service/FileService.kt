@@ -1,8 +1,8 @@
 package com.zhengchalei.cloud.platform.modules.file.service
 
 import com.zhengchalei.cloud.platform.modules.file.domain.FileType
-import org.springframework.web.multipart.MultipartFile
 import java.io.InputStream
+import org.springframework.web.multipart.MultipartFile
 
 interface FileService {
     fun getFileType(multipartFile: MultipartFile): FileType {
@@ -17,6 +17,7 @@ interface FileService {
 
     /**
      * 上传文件
+     *
      * @param [multipartFile] 文件
      * @return [String]
      */
@@ -24,6 +25,7 @@ interface FileService {
 
     /**
      * 获取文件
+     *
      * @param [fileName]
      * @return [Pair<String, ByteArray>]
      */

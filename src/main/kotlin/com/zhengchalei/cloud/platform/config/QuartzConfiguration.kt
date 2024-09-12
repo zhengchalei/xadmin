@@ -1,5 +1,6 @@
 package com.zhengchalei.cloud.platform.config
 
+import java.util.*
 import org.quartz.Calendar
 import org.quartz.JobDetail
 import org.quartz.Trigger
@@ -11,7 +12,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.quartz.SchedulerFactoryBean
 import org.springframework.scheduling.quartz.SpringBeanJobFactory
-import java.util.*
 
 @Configuration
 class QuartzConfiguration {
@@ -23,7 +23,7 @@ class QuartzConfiguration {
         jobDetails: ObjectProvider<JobDetail>,
         calendars: Map<String, Calendar>,
         triggers: ObjectProvider<Trigger>,
-        applicationContext: ApplicationContext
+        applicationContext: ApplicationContext,
     ): SchedulerFactoryBean {
         val schedulerFactoryBean = SchedulerFactoryBean()
         val jobFactory = SpringBeanJobFactory()
@@ -35,7 +35,9 @@ class QuartzConfiguration {
 
         schedulerFactoryBean.isAutoStartup = properties.isAutoStartup
         schedulerFactoryBean.setStartupDelay(properties.startupDelay.seconds.toInt())
-        schedulerFactoryBean.setWaitForJobsToCompleteOnShutdown(properties.isWaitForJobsToCompleteOnShutdown)
+        schedulerFactoryBean.setWaitForJobsToCompleteOnShutdown(
+            properties.isWaitForJobsToCompleteOnShutdown
+        )
         schedulerFactoryBean.setOverwriteExistingJobs(properties.isOverwriteExistingJobs)
         schedulerFactoryBean.setTaskExecutor(virtualThreadExecutor("quartz"))
         if (properties.properties.isNotEmpty()) {
@@ -44,7 +46,9 @@ class QuartzConfiguration {
         schedulerFactoryBean.setCalendars(calendars)
         schedulerFactoryBean.setJobDetails(*jobDetails.orderedStream().toList().toTypedArray())
         schedulerFactoryBean.setTriggers(*triggers.orderedStream().toList().toTypedArray())
-        customizers.orderedStream().forEach { customizer -> customizer.customize(schedulerFactoryBean) }
+        customizers.orderedStream().forEach { customizer ->
+            customizer.customize(schedulerFactoryBean)
+        }
         return schedulerFactoryBean
     }
 

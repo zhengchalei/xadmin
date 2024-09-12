@@ -19,5 +19,4 @@ object Const {
     const val ENV_PROD = "prod"
     const val ENV_DEV = "dev"
     const val ENV_TEST = "test"
-
 }

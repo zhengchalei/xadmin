@@ -5,9 +5,7 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "sys_dict")
 interface SysDict {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val name: String
 
@@ -19,6 +17,5 @@ interface SysDict {
 
     val status: Boolean
 
-    @OneToMany(mappedBy = "dict")
-    val dictItems: List<SysDictItem>
+    @OneToMany(mappedBy = "dict") val dictItems: List<SysDictItem>
 }

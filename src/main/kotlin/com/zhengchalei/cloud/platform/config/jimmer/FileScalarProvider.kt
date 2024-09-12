@@ -1,10 +1,10 @@
 package com.zhengchalei.cloud.platform.config.jimmer
 
 import com.zhengchalei.cloud.platform.commons.util.FileZipUtils
-import org.babyfish.jimmer.sql.runtime.ScalarProvider
-import org.springframework.stereotype.Component
 import java.io.ByteArrayInputStream
 import java.io.InputStream
+import org.babyfish.jimmer.sql.runtime.ScalarProvider
+import org.springframework.stereotype.Component
 
 @Component
 class FileScalarProvider : ScalarProvider<InputStream, ByteArray> {

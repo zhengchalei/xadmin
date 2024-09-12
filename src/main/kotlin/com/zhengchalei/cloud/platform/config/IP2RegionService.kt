@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class IP2RegionService(
-    private val iP2RegionConfigurationProperties: IP2RegionConfigurationProperties,
+    private val iP2RegionConfigurationProperties: IP2RegionConfigurationProperties
 ) : ApplicationRunner {
     private val log = LoggerFactory.getLogger(IP2RegionService::class.java)
 
@@ -56,15 +56,14 @@ class IP2RegionService(
             return null
         }
         val searcher =
-            this.searcher ?: run {
-                log.warn("未配置 ip2region.xdb 存储库")
-                return null
-            }
+            this.searcher
+                ?: run {
+                    log.warn("未配置 ip2region.xdb 存储库")
+                    return null
+                }
         return try {
             if (this.safe) {
-                synchronized(this) {
-                    searcher.search(ip)
-                }
+                synchronized(this) { searcher.search(ip) }
             } else {
                 searcher.search(ip)
             }

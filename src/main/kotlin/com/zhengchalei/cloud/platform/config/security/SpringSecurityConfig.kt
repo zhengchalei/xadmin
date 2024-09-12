@@ -17,8 +17,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver
 @Service
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class SpringSecurityConfig(
-    @Value("\${spring.profiles.active}")
-    private val profile: String,
+    @Value("\${spring.profiles.active}") private val profile: String,
     private val objectMapper: ObjectMapper,
     private val tenantAuthenticationProvider: TenantAuthenticationProvider,
     private val handlerExceptionResolver: HandlerExceptionResolver,
@@ -35,7 +34,11 @@ class SpringSecurityConfig(
             .addFilterBefore(
                 JwtConfigurer.JwtAuthorizationFilter(jwtProvider, handlerExceptionResolver),
                 UsernamePasswordAuthenticationFilter::class.java,
-            ).addFilterBefore(tenantAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            )
+            .addFilterBefore(
+                tenantAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter::class.java,
+            )
             .authenticationProvider(tenantAuthenticationProvider)
             .authorizeHttpRequests { authorize ->
 
@@ -56,28 +59,28 @@ class SpringSecurityConfig(
                 authorize.requestMatchers("/api/external/file/download/**").permitAll()
 
                 authorize.anyRequest().authenticated()
-            }.exceptionHandling {
+            }
+            .exceptionHandling {
                 it.authenticationEntryPoint { _, response, authException ->
                     response.sendError(
                         401,
-                        objectMapper.writeValueAsString(GlobalException.Error(authException.message ?: "未登录")),
+                        objectMapper.writeValueAsString(
+                            GlobalException.Error(authException.message ?: "未登录")
+                        ),
                     )
                 }
                 it.accessDeniedHandler { _, response, accessDeniedException ->
                     response.sendError(
                         403,
                         objectMapper.writeValueAsString(
-                            GlobalException.Error(
-                                accessDeniedException.message ?: "无权限",
-                            ),
+                            GlobalException.Error(accessDeniedException.message ?: "无权限")
                         ),
                     )
                 }
-            }.sessionManagement {
-                it.disable()
-            }.csrf {
-                it.disable()
-            }.build()
+            }
+            .sessionManagement { it.disable() }
+            .csrf { it.disable() }
+            .build()
     }
 
     @Bean

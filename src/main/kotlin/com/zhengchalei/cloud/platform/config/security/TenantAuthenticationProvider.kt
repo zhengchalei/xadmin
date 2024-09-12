@@ -39,12 +39,19 @@ class TenantAuthenticationProvider(
         // 验证租户ID、验证码和用户密码的逻辑
         if (isValidTenant(tenant) && isValidCaptcha(captcha)) {
             val userDetails = loadUserByUsername(username, password, tenant)
-            return TenantAuthenticationToken(username, password, tenant, captcha, userDetails.authorities)
+            return TenantAuthenticationToken(
+                username,
+                password,
+                tenant,
+                captcha,
+                userDetails.authorities,
+            )
         }
         throw UserPasswordErrorException()
     }
 
-    override fun supports(authentication: Class<*>): Boolean = TenantAuthenticationToken::class.java.isAssignableFrom(authentication)
+    override fun supports(authentication: Class<*>): Boolean =
+        TenantAuthenticationToken::class.java.isAssignableFrom(authentication)
 
     private fun isValidTenant(tenant: String): Boolean {
         // 这里实现租户ID验证逻辑
@@ -52,7 +59,8 @@ class TenantAuthenticationProvider(
             .createQuery(SysTenant::class) {
                 where(table.code eq tenant)
                 select(table.id)
-            }.fetchOneOrNull() ?: throw TenantNotFoundException()
+            }
+            .fetchOneOrNull() ?: throw TenantNotFoundException()
         return true
     }
 
@@ -61,14 +69,12 @@ class TenantAuthenticationProvider(
         return true ?: throw CaptchaErrorException()
     }
 
-    fun loadUserByUsername(
-        username: String,
-        password: String,
-        tenant: String,
-    ): UserDetails {
+    fun loadUserByUsername(username: String, password: String, tenant: String): UserDetails {
         if (username == Const.Root) {
-            val user = sysUserRepository.findByUsernameForLogin(username) ?: throw UserNotFoundException()
-            if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
+            val user =
+                sysUserRepository.findByUsernameForLogin(username) ?: throw UserNotFoundException()
+            if (!passwordEncoder.matches(password, user.password))
+                throw UserPasswordErrorException()
             return User(
                 username,
                 user.password,
@@ -80,9 +86,12 @@ class TenantAuthenticationProvider(
             )
         }
 
-        val user = sysUserRepository.findByUsernameAndTenant(username, tenant) ?: throw UserNotFoundException()
+        val user =
+            sysUserRepository.findByUsernameAndTenant(username, tenant)
+                ?: throw UserNotFoundException()
         if (user.username == Const.AdminUser) {
-            if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
+            if (!passwordEncoder.matches(password, user.password))
+                throw UserPasswordErrorException()
             return User(
                 username,
                 user.password,
@@ -103,7 +112,7 @@ class TenantAuthenticationProvider(
             roles
                 .map { it.code }
                 .map { Const.SecurityRolePrifix + it }
-                .map { SimpleGrantedAuthority(it) },
+                .map { SimpleGrantedAuthority(it) }
         )
         return User(username, user.password, user.status, true, true, true, authorityList)
     }

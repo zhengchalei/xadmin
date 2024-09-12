@@ -6,9 +6,7 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "sys_posts")
 interface SysPosts : TenantAware {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val name: String
 

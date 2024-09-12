@@ -7,10 +7,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class TenantDraftInterceptor : DraftInterceptor<TenantAware, TenantAwareDraft> {
-    override fun beforeSave(
-        draft: TenantAwareDraft,
-        original: TenantAware?,
-    ) {
+    override fun beforeSave(draft: TenantAwareDraft, original: TenantAware?) {
         if (!isLoaded(draft, TenantAware::tenant)) {
             draft.tenant = SecurityUtils.getCurrentTenant()
         }

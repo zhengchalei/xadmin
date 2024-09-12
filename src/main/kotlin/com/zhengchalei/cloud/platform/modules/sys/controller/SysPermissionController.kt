@@ -14,14 +14,10 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RestController
 @RequestMapping("/api/sys/permission")
-class SysPermissionController(
-    val sysPermissionService: SysPermissionService,
-) {
+class SysPermissionController(val sysPermissionService: SysPermissionService) {
     @PreAuthorize("hasAuthority('sys:permission:id') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
-    fun findSysPermissionById(
-        @PathVariable id: Long,
-    ): R<SysPermissionDetailView> {
+    fun findSysPermissionById(@PathVariable id: Long): R<SysPermissionDetailView> {
         val data = sysPermissionService.findSysPermissionById(id)
         return R(data = data)
     }
@@ -29,7 +25,7 @@ class SysPermissionController(
     @PreAuthorize("hasAuthority('sys:permission:list') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysPermissionList(
-        @NotNull specification: SysPermissionPageSpecification,
+        @NotNull specification: SysPermissionPageSpecification
     ): R<List<SysPermissionPageView>> {
         val data = sysPermissionService.findSysPermissionList(specification)
         return R(data = data)
@@ -37,21 +33,27 @@ class SysPermissionController(
 
     @PreAuthorize("hasAuthority('sys:permission:tree-root') or hasAnyRole('admin')")
     @GetMapping("/tree-root")
-    fun findSysPermissionTreeRoot(specification: SysPermissionPageSpecification): R<List<SysPermissionTreeRootView>> {
+    fun findSysPermissionTreeRoot(
+        specification: SysPermissionPageSpecification
+    ): R<List<SysPermissionTreeRootView>> {
         val data = sysPermissionService.findSysPermissionTreeRoot(specification)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:permission:tree') or hasAnyRole('admin')")
     @GetMapping("/tree")
-    fun findSysPermissionTree(specification: SysPermissionPageSpecification): R<List<SysPermissionTreeView>> {
+    fun findSysPermissionTree(
+        specification: SysPermissionPageSpecification
+    ): R<List<SysPermissionTreeView>> {
         val data = sysPermissionService.findSysPermissionTree(specification)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:permission:tree-select') or hasAnyRole('admin')")
     @GetMapping("/tree-select")
-    fun findSysPermissionTreeSelect(specification: SysPermissionPageSpecification): R<List<SysPermissionTreeSelectView>> {
+    fun findSysPermissionTreeSelect(
+        specification: SysPermissionPageSpecification
+    ): R<List<SysPermissionTreeSelectView>> {
         val data = sysPermissionService.findSysPermissionTreeSelect(specification)
         return R(data = data)
     }
@@ -69,7 +71,7 @@ class SysPermissionController(
     @PreAuthorize("hasAuthority('sys:permission:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysPermission(
-        @NotNull @RequestBody sysPermissionCreateInput: SysPermissionCreateInput,
+        @NotNull @RequestBody sysPermissionCreateInput: SysPermissionCreateInput
     ): R<SysPermissionDetailView> {
         val data = sysPermissionService.createSysPermission(sysPermissionCreateInput)
         return R(data = data)
@@ -78,7 +80,7 @@ class SysPermissionController(
     @PreAuthorize("hasAuthority('sys:permission:update') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysPermissionById(
-        @NotNull @RequestBody sysPermissionUpdateInput: SysPermissionUpdateInput,
+        @NotNull @RequestBody sysPermissionUpdateInput: SysPermissionUpdateInput
     ): R<SysPermissionDetailView> {
         val data = sysPermissionService.updateSysPermissionById(sysPermissionUpdateInput)
         return R(data = data)
@@ -86,9 +88,7 @@ class SysPermissionController(
 
     @PreAuthorize("hasAuthority('sys:permission:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
-    fun deleteSysPermissionById(
-        @NotNull @PathVariable id: Long,
-    ): R<Boolean> {
+    fun deleteSysPermissionById(@NotNull @PathVariable id: Long): R<Boolean> {
         sysPermissionService.deleteSysPermissionById(id)
         return R()
     }

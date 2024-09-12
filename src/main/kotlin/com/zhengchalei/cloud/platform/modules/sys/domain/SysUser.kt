@@ -2,24 +2,19 @@ package com.zhengchalei.cloud.platform.modules.sys.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.zhengchalei.cloud.platform.config.jimmer.TenantAware
-import org.babyfish.jimmer.sql.*
 import java.time.LocalDate
+import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_user")
 interface SysUser : TenantAware {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
-    @Key
-    val username: String
+    @Key val username: String
 
-    @get:JsonIgnore
-    val password: String
+    @get:JsonIgnore val password: String
 
-    @Key
-    val email: String
+    @Key val email: String
 
     val avatar: String?
 
@@ -31,11 +26,9 @@ interface SysUser : TenantAware {
 
     val birthday: LocalDate?
 
-    @ManyToOne
-    val posts: SysPosts?
+    @ManyToOne val posts: SysPosts?
 
-    @ManyToOne
-    val department: SysDepartment?
+    @ManyToOne val department: SysDepartment?
 
     @ManyToMany
     @JoinTable(
@@ -45,15 +38,11 @@ interface SysUser : TenantAware {
     )
     val roles: List<SysRole>
 
-    @IdView("roles")
-    val roleIds: List<Long>
+    @IdView("roles") val roleIds: List<Long>
 }
 
 @EnumType(EnumType.Strategy.NAME)
 enum class Gender {
-    @EnumItem(name = "MALE")
-    MALE,
-
-    @EnumItem(name = "FEMALE")
-    FEMALE,
+    @EnumItem(name = "MALE") MALE,
+    @EnumItem(name = "FEMALE") FEMALE,
 }

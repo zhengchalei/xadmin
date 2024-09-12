@@ -17,79 +17,67 @@ import org.springframework.data.domain.Pageable
 
 interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
     fun findDetailById(id: Long) =
-        sql
-            .createQuery(SysDepartment::class) {
+        sql.createQuery(SysDepartment::class) {
                 where(table.id eq id)
-                select(
-                    table.fetch(SysDepartmentDetailView::class),
-                )
-            }.fetchOne()
+                select(table.fetch(SysDepartmentDetailView::class))
+            }
+            .fetchOne()
 
     fun findPage(
         specification: SysDepartmentPageSpecification,
         pageable: Pageable,
     ): Page<SysDepartmentPageView> =
-        sql
-            .createQuery(SysDepartment::class) {
+        sql.createQuery(SysDepartment::class) {
                 orderBy(table.sort.asc())
                 where(specification)
-                select(
-                    table.fetch(SysDepartmentPageView::class),
-                )
-            }.fetchSpringPage(pageable)
+                select(table.fetch(SysDepartmentPageView::class))
+            }
+            .fetchSpringPage(pageable)
 
     fun findList(specification: SysDepartmentPageSpecification): List<SysDepartmentPageView> =
-        sql
-            .createQuery(SysDepartment::class) {
+        sql.createQuery(SysDepartment::class) {
                 orderBy(table.sort.asc())
                 where(specification)
-                select(
-                    table.fetch(SysDepartmentPageView::class),
-                )
-            }.execute()
+                select(table.fetch(SysDepartmentPageView::class))
+            }
+            .execute()
 
     fun findTree(specification: SysDepartmentPageSpecification) =
-        sql
-            .createQuery(SysDepartment::class) {
+        sql.createQuery(SysDepartment::class) {
                 orderBy(table.sort.asc())
                 where(table.parentId.isNull())
                 where(specification)
-                select(
-                    table.fetch(SysDepartmentTreeView::class),
-                )
-            }.execute()
+                select(table.fetch(SysDepartmentTreeView::class))
+            }
+            .execute()
 
     fun findTreeRoot(specification: SysDepartmentPageSpecification) =
-        sql
-            .createQuery(SysDepartment::class) {
+        sql.createQuery(SysDepartment::class) {
                 orderBy(table.sort.asc())
                 where(table.parentId.isNull())
                 where(specification)
-                select(
-                    table.fetch(SysDepartmentTreeRootView::class),
-                )
-            }.execute()
+                select(table.fetch(SysDepartmentTreeRootView::class))
+            }
+            .execute()
 
-    fun findTreeSelect(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeSelectView> =
-        sql
-            .createQuery(SysDepartment::class) {
+    fun findTreeSelect(
+        specification: SysDepartmentPageSpecification
+    ): List<SysDepartmentTreeSelectView> =
+        sql.createQuery(SysDepartment::class) {
                 orderBy(table.sort.asc())
                 where(table.parentId.isNull())
                 where(specification)
-                select(
-                    table.fetch(SysDepartmentTreeSelectView::class),
-                )
-            }.execute()
+                select(table.fetch(SysDepartmentTreeSelectView::class))
+            }
+            .execute()
 
     fun deleteSysDepartmentById(id: Long) {
         val count =
-            sql
-                .createQuery(SysDepartment::class) {
+            sql.createQuery(SysDepartment::class) {
                     where(table.parentId eq id)
-                    select(
-                        count(table.id),
-                    )
-                }.fetchOne()
+                    select(count(table.id))
+                }
+                .fetchOne()
         if (count != 0L) {
             throw HasChildrenException()
         }

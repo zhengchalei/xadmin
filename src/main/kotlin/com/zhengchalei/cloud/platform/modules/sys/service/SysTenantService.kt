@@ -14,20 +14,20 @@ import org.springframework.transaction.annotation.Transactional
 
 /**
  * 系统租户服务
+ *
+ * @param [sysTenantRepository] 系统租户存储库
+ * @constructor 创建[SysTenantService]
  * @author 郑查磊
  * @date 2024-08-17
- * @constructor 创建[SysTenantService]
- * @param [sysTenantRepository] 系统租户存储库
  */
 @Service
 @Transactional(rollbackFor = [Exception::class])
-class SysTenantService(
-    private val sysTenantRepository: SysTenantRepository,
-) {
+class SysTenantService(private val sysTenantRepository: SysTenantRepository) {
     private val logger = org.slf4j.LoggerFactory.getLogger(SysTenantService::class.java)
 
     /**
      * 查找系统租户通过ID
+     *
      * @param [id] ID
      * @return [SysTenantDetailView]
      */
@@ -35,22 +35,24 @@ class SysTenantService(
 
     /**
      * 查找系统租户列表
+     *
      * @param [specification] 查询条件构造器
      */
-    fun findSysTenantList(specification: SysTenantPageSpecification) = this.sysTenantRepository.findList(specification)
+    fun findSysTenantList(specification: SysTenantPageSpecification) =
+        this.sysTenantRepository.findList(specification)
 
     /**
      * 查找系统租户分页
+     *
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysTenantPage(
-        specification: SysTenantPageSpecification,
-        pageable: Pageable,
-    ) = this.sysTenantRepository.findPage(specification, pageable)
+    fun findSysTenantPage(specification: SysTenantPageSpecification, pageable: Pageable) =
+        this.sysTenantRepository.findPage(specification, pageable)
 
     /**
      * 创造系统租户
+     *
      * @param [sysTenantCreateInput] 系统租户创建输入
      * @return [SysTenantDetailView]
      */
@@ -64,6 +66,7 @@ class SysTenantService(
 
     /**
      * 更新系统租户通过ID
+     *
      * @param [sysTenantUpdateInput] 系统租户更新输入
      * @return [SysTenantDetailView]
      */
@@ -78,6 +81,7 @@ class SysTenantService(
 
     /**
      * 删除系统租户通过ID
+     *
      * @param [id] ID
      */
     fun deleteSysTenantById(id: Long) {
@@ -86,6 +90,7 @@ class SysTenantService(
 
     /**
      * 禁用系统租户通过ID
+     *
      * @param [id] ID
      */
     fun disableSysTenantById(id: Long) {
@@ -94,6 +99,7 @@ class SysTenantService(
 
     /**
      * 启用系统租户通过ID
+     *
      * @param [id] ID
      */
     fun enableSysTenantById(id: Long) {

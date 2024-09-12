@@ -12,20 +12,20 @@ import org.springframework.transaction.annotation.Transactional
 
 /**
  * 系统岗位服务
+ *
+ * @param [sysPostRepository] 系统post存储库
+ * @constructor 创建[SysPostsService]
  * @author 郑查磊
  * @date 2024-08-17
- * @constructor 创建[SysPostsService]
- * @param [sysPostRepository] 系统post存储库
  */
 @Service
 @Transactional(rollbackFor = [Exception::class])
-class SysPostsService(
-    private val sysPostRepository: SysPostsRepository,
-) {
+class SysPostsService(private val sysPostRepository: SysPostsRepository) {
     private val logger = org.slf4j.LoggerFactory.getLogger(SysPostsService::class.java)
 
     /**
      * 查找系统岗位通过ID
+     *
      * @param [id] ID
      * @return [SysPostsDetailView]
      */
@@ -33,22 +33,24 @@ class SysPostsService(
 
     /**
      * 查找系统岗位列表
+     *
      * @param [specification] 查询条件构造器
      */
-    fun findSysPostsList(specification: SysPostsPageSpecification) = this.sysPostRepository.findList(specification)
+    fun findSysPostsList(specification: SysPostsPageSpecification) =
+        this.sysPostRepository.findList(specification)
 
     /**
      * 查找系统岗位分页
+     *
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysPostsPage(
-        specification: SysPostsPageSpecification,
-        pageable: Pageable,
-    ) = this.sysPostRepository.findPage(specification, pageable)
+    fun findSysPostsPage(specification: SysPostsPageSpecification, pageable: Pageable) =
+        this.sysPostRepository.findPage(specification, pageable)
 
     /**
      * 创造系统岗位
+     *
      * @param [sysPostCreateInput] 系统岗位输入
      * @return [SysPostsDetailView]
      */
@@ -59,6 +61,7 @@ class SysPostsService(
 
     /**
      * 更新系统岗位通过ID
+     *
      * @param [sysPostUpdateInput] 系统邮政更新输入
      * @return [SysPostsDetailView]
      */
@@ -69,6 +72,7 @@ class SysPostsService(
 
     /**
      * 删除
+     *
      * @param [id] ID
      */
     fun deleteSysPostsById(id: Long) = this.sysPostRepository.deleteById(id)

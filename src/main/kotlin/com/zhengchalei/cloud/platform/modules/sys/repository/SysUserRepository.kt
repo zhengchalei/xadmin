@@ -18,60 +18,50 @@ import org.springframework.data.domain.Pageable
 
 interface SysUserRepository : KRepository<SysUser, Long> {
     fun findDetailById(id: Long) =
-        sql
-            .createQuery(SysUser::class) {
+        sql.createQuery(SysUser::class) {
                 where(table.id eq id)
-                select(
-                    table.fetch(SysUserDetailView::class),
-                )
-            }.fetchOne()
+                select(table.fetch(SysUserDetailView::class))
+            }
+            .fetchOne()
 
     fun findPage(
         specification: SysUserPageSpecification,
         pageable: Pageable,
     ): Page<SysUserPageView> =
-        sql
-            .createQuery(SysUser::class) {
+        sql.createQuery(SysUser::class) {
                 orderBy(table.id.asc())
                 where(specification)
-                select(
-                    table.fetch(SysUserPageView::class),
-                )
-            }.fetchSpringPage(pageable)
+                select(table.fetch(SysUserPageView::class))
+            }
+            .fetchSpringPage(pageable)
 
     fun findPage(
         specification: SysUserPageSpecification,
         pageable: Pageable,
         sysDepartmentIds: List<Long>,
     ): Page<SysUserPageView> {
-        return sql
-            .createQuery(SysUser::class) {
+        return sql.createQuery(SysUser::class) {
                 orderBy(table.id.asc())
                 where(specification)
                 where(table.departmentId valueIn sysDepartmentIds)
-                select(
-                    table.fetch(SysUserPageView::class),
-                )
-            }.fetchSpringPage(pageable)
+                select(table.fetch(SysUserPageView::class))
+            }
+            .fetchSpringPage(pageable)
     }
 
     fun findList(specification: SysUserPageSpecification): List<SysUserPageView> =
-        sql
-            .createQuery(SysUser::class) {
+        sql.createQuery(SysUser::class) {
                 orderBy(table.id.asc())
                 where(specification)
-                select(
-                    table.fetch(SysUserPageView::class),
-                )
-            }.execute()
+                select(table.fetch(SysUserPageView::class))
+            }
+            .execute()
 
     fun currentUserInfo(): SysUser {
         val username = SecurityUtils.getCurrentUsername()
         val sqlClient =
             if (username == Const.Root) {
-                sql.filters {
-                    disableByTypes(TenantFilter::class, SuperAdminFilter::class)
-                }
+                sql.filters { disableByTypes(TenantFilter::class, SuperAdminFilter::class) }
             } else {
                 sql
             }
@@ -83,74 +73,61 @@ interface SysUserRepository : KRepository<SysUser, Long> {
                         allScalarFields()
                         roles {
                             allScalarFields()
-                            permissions {
-                                allScalarFields()
-                            }
-                        }
-                    },
-                )
-            }.fetchOne()
-    }
-
-    fun findByUsernameAndTenant(
-        username: String,
-        tenant: String,
-    ) = sql
-        .filters {
-            disableByTypes(TenantFilter::class)
-        }.createQuery(SysUser::class) {
-            where(table.username eq username)
-            where(table.tenant eq tenant)
-            select(
-                table.fetchBy {
-                    allScalarFields()
-                    roles {
-                        allScalarFields()
-                        permissions {
-                            allScalarFields()
+                            permissions { allScalarFields() }
                         }
                     }
-                },
-            )
-        }.fetchOneOrNull()
+                )
+            }
+            .fetchOne()
+    }
+
+    fun findByUsernameAndTenant(username: String, tenant: String) =
+        sql.filters { disableByTypes(TenantFilter::class) }
+            .createQuery(SysUser::class) {
+                where(table.username eq username)
+                where(table.tenant eq tenant)
+                select(
+                    table.fetchBy {
+                        allScalarFields()
+                        roles {
+                            allScalarFields()
+                            permissions { allScalarFields() }
+                        }
+                    }
+                )
+            }
+            .fetchOneOrNull()
 
     fun findByUsernameForLogin(username: String) =
-        sql
-            .filters {
-                disableByTypes(TenantFilter::class, SuperAdminFilter::class)
-            }.createQuery(SysUser::class) {
+        sql.filters { disableByTypes(TenantFilter::class, SuperAdminFilter::class) }
+            .createQuery(SysUser::class) {
                 where(table.username eq username)
                 select(
                     table.fetchBy {
                         allScalarFields()
                         roles {
                             allScalarFields()
-                            permissions {
-                                allScalarFields()
-                            }
+                            permissions { allScalarFields() }
                         }
-                    },
+                    }
                 )
-            }.fetchOneOrNull()
+            }
+            .fetchOneOrNull()
 
     fun currentUserId(): Long {
         val username = SecurityUtils.getCurrentUsername()
         val sqlClient =
             if (username == Const.Root) {
-                sql.filters {
-                    disableByTypes(TenantFilter::class)
-                }
+                sql.filters { disableByTypes(TenantFilter::class) }
             } else {
                 sql
             }
         return sqlClient
             .createQuery(SysUser::class) {
                 where(table.username eq username)
-                select(
-                    table.fetchBy {
-                        table.id
-                    },
-                )
-            }.fetchOne().id
+                select(table.fetchBy { table.id })
+            }
+            .fetchOne()
+            .id
     }
 }

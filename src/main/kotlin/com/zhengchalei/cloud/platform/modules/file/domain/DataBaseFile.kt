@@ -1,15 +1,13 @@
 package com.zhengchalei.cloud.platform.modules.file.domain
 
 import com.zhengchalei.cloud.platform.config.jimmer.TenantAware
-import org.babyfish.jimmer.sql.*
 import java.io.InputStream
+import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_file")
 interface DataBaseFile : TenantAware {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val uid: String
 
