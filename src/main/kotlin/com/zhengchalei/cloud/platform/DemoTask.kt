@@ -37,7 +37,8 @@ class DemoTask {
             .withSchedule(
                 CronScheduleBuilder
                     // 每5秒执行一次
-                    .cronSchedule("0/5 * * * * ?"))
+                    .cronSchedule("0/5 * * * * ?")
+            )
             .build()
     }
 }

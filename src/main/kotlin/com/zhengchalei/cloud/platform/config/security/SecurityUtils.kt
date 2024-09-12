@@ -36,8 +36,9 @@ object SecurityUtils {
     }
 
     private fun getTenantCaptchaAuthenticationToken(): TenantAuthenticationToken {
-        if ((SecurityContextHolder.getContext().authentication is TenantAuthenticationToken)
-            .not()) {
+        if (
+            (SecurityContextHolder.getContext().authentication is TenantAuthenticationToken).not()
+        ) {
             throw NotLoginException()
         }
         return SecurityContextHolder.getContext().authentication as TenantAuthenticationToken
@@ -56,8 +57,10 @@ object SecurityUtils {
      */
     fun switchTenant(tenant: String, jwtProvider: JwtProvider): String {
         // 判断用户名是否为 superAdmin
-        if ((SecurityContextHolder.getContext().authentication.principal as User).username ==
-            Const.Root) {
+        if (
+            (SecurityContextHolder.getContext().authentication.principal as User).username ==
+                Const.Root
+        ) {
             // 切换租户
             SecurityContextHolder.getContext().authentication =
                 TenantAuthenticationToken(

@@ -48,7 +48,8 @@ class JimmerCacheConfiguration {
                         CaffeineValueBinder.forProp<Any, Any>(prop)
                             .maximumSize(1024)
                             .duration(caffeineDuration)
-                            .build())
+                            .build()
+                    )
                     .build()
             }
 
@@ -58,7 +59,8 @@ class JimmerCacheConfiguration {
                         CaffeineValueBinder.forObject<Any, Any>(type)
                             .maximumSize(1024)
                             .duration(caffeineDuration)
-                            .build())
+                            .build()
+                    )
                     .build()
             }
 
@@ -68,7 +70,8 @@ class JimmerCacheConfiguration {
                         CaffeineValueBinder.forProp<Any, List<*>>(prop)
                             .maximumSize(1024)
                             .duration(caffeineDuration)
-                            .build())
+                            .build()
+                    )
                     .build()
             }
         }

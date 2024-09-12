@@ -1,5 +1,4 @@
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 plugins {
     jacoco
@@ -13,29 +12,16 @@ plugins {
 }
 
 group = "com.zhengchalei.cloud.platform"
+
 version = "0.0.1-SNAPSHOT"
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
+java { toolchain { languageVersion = JavaLanguageVersion.of(21) } }
 
-kotlin {
-    sourceSets.main {
-        kotlin.srcDir("build/generated/ksp/main/kotlin")
-    }
-}
+kotlin { sourceSets.main { kotlin.srcDir("build/generated/ksp/main/kotlin") } }
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
-}
+configurations { compileOnly { extendsFrom(configurations.annotationProcessor.get()) } }
 
 val jimmerVersion: String by project
 
@@ -100,11 +86,7 @@ pmd {
     )
 }
 
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
-    }
-}
+kotlin { compilerOptions { freeCompilerArgs.addAll("-Xjsr305=strict") } }
 
 jacoco {
     toolVersion = "0.8.12"
@@ -113,24 +95,23 @@ jacoco {
 
 spotless {
     kotlin {
-        ktfmt().kotlinlangStyle().configure {
-            it.setBlockIndent(4)
-            it.setContinuationIndent(4)
-            it.setRemoveUnusedImports(true)
-            it.setManageTrailingCommas(false)
-        }
-        licenseHeader("""
-/*
- * 版权所有 © ${LocalDate.now().year} 郑查磊.
- * 保留所有权利.
- *
- * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
- */
-        """.trimIndent())
+        ktfmt().kotlinlangStyle()
+        licenseHeader(
+            """
+            /*
+             * 版权所有 © ${LocalDate.now().year} 郑查磊.
+             * 保留所有权利.
+             *
+             * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
+             */
+        """
+                .trimIndent()
+        )
         target("src/main/kotlin/**/*.kt")
     }
     kotlinGradle {
         kotlin
+        ktfmt().kotlinlangStyle()
         target("build.gradle.kts")
     }
 }

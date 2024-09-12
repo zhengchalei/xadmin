@@ -71,7 +71,8 @@ class SysAuthService(
                         password = password,
                         captcha = captcha,
                         tenant = tenant,
-                    )) as TenantAuthenticationToken
+                    )
+                ) as TenantAuthenticationToken
             SecurityContextHolder.getContext().authentication = authentication
             val token: String = jwtProvider.createAccessToken(authentication)
             return token
@@ -121,7 +122,8 @@ class SysAuthService(
                     this.sysUser =
                         if (status) makeIdOnly(SysUser::class, userService.currentUserId())
                         else null
-                })
+                }
+            )
         }
     }
 

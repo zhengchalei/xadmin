@@ -89,8 +89,10 @@ class SysUserService(
      * @return [SysUserDetailView]
      */
     fun createSysUser(sysUserCreateInput: SysUserCreateInput): SysUserDetailView {
-        if (sysUserCreateInput.username == Const.AdminUser ||
-            sysUserCreateInput.username == Const.Root) {
+        if (
+            sysUserCreateInput.username == Const.AdminUser ||
+                sysUserCreateInput.username == Const.Root
+        ) {
             throw ServiceException("用户名不能为 ${Const.AdminUser}")
         }
         // TODO 集成邮件后, 这里密码应该由邮件发送

@@ -42,7 +42,8 @@ class QuartzConfiguration {
         schedulerFactoryBean.isAutoStartup = properties.isAutoStartup
         schedulerFactoryBean.setStartupDelay(properties.startupDelay.seconds.toInt())
         schedulerFactoryBean.setWaitForJobsToCompleteOnShutdown(
-            properties.isWaitForJobsToCompleteOnShutdown)
+            properties.isWaitForJobsToCompleteOnShutdown
+        )
         schedulerFactoryBean.setOverwriteExistingJobs(properties.isOverwriteExistingJobs)
         schedulerFactoryBean.setTaskExecutor(virtualThreadExecutor("quartz"))
         if (properties.properties.isNotEmpty()) {

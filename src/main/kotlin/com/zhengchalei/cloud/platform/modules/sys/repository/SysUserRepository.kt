@@ -81,7 +81,8 @@ interface SysUserRepository : KRepository<SysUser, Long> {
                             allScalarFields()
                             permissions { allScalarFields() }
                         }
-                    })
+                    }
+                )
             }
             .fetchOne()
     }
@@ -98,7 +99,8 @@ interface SysUserRepository : KRepository<SysUser, Long> {
                             allScalarFields()
                             permissions { allScalarFields() }
                         }
-                    })
+                    }
+                )
             }
             .fetchOneOrNull()
 
@@ -113,7 +115,8 @@ interface SysUserRepository : KRepository<SysUser, Long> {
                             allScalarFields()
                             permissions { allScalarFields() }
                         }
-                    })
+                    }
+                )
             }
             .fetchOneOrNull()
 

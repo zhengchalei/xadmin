@@ -118,7 +118,8 @@ class TenantAuthenticationProvider(
             roles
                 .map { it.code }
                 .map { Const.SecurityRolePrifix + it }
-                .map { SimpleGrantedAuthority(it) })
+                .map { SimpleGrantedAuthority(it) }
+        )
         return User(username, user.password, user.status, true, true, true, authorityList)
     }
 }

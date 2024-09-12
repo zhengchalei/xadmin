@@ -49,7 +49,8 @@ class SysAuthController(
                     accessToken = token,
                     refreshToken = token,
                     username = loginDTO.username,
-                ))
+                )
+        )
     }
 
     fun getIpAddress(request: HttpServletRequest): String {
@@ -92,6 +93,7 @@ class SysAuthController(
     fun switchTenant(@PathVariable tenant: String): R<LoginResponse> {
         val token = sysAuthService.switchTenant(tenant)
         return R(
-            data = LoginResponse(accessToken = token, refreshToken = token, username = Const.Root))
+            data = LoginResponse(accessToken = token, refreshToken = token, username = Const.Root)
+        )
     }
 }
