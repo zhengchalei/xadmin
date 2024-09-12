@@ -64,6 +64,13 @@ class SysAuthService(
         ip: String,
     ): String {
         try {
+            log.info(
+                "登录: username: {}, tenant: {}, ip: {}, captcha: {}",
+                username,
+                tenant,
+                ip,
+                captcha,
+            )
             val authentication: TenantAuthenticationToken =
                 authenticationManager.authenticate(
                     TenantAuthenticationToken(
@@ -74,6 +81,7 @@ class SysAuthService(
                     )
                 ) as TenantAuthenticationToken
             SecurityContextHolder.getContext().authentication = authentication
+            log.info("登录成功, username {} ", username)
             val token: String = jwtProvider.createAccessToken(authentication)
             return token
         } catch (e: ServiceException) {
@@ -109,6 +117,15 @@ class SysAuthService(
     ) {
         this.virtualThreadExecutor.submit {
             val address = this.ip2RegionService.search(ip)
+            log.info(
+                "保存登录日志: username: {}, tenant: {}, ip: {}, address: {}, status: {}, errorMessage: {}",
+                username,
+                tenant,
+                ip,
+                address,
+                status,
+                errorMessage,
+            )
             this.sysLoginLogRepository.insert(
                 new(SysLoginLog::class).by {
                     this.username = username
@@ -128,6 +145,7 @@ class SysAuthService(
     }
 
     fun switchTenant(tenant: String): String {
+        log.info("切换租户: {}", tenant)
         return SecurityUtils.switchTenant(tenant, jwtProvider)
     }
 

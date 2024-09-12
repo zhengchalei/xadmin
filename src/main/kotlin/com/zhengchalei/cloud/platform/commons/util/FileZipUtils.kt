@@ -20,14 +20,11 @@ object FileZipUtils {
         deflater.finish()
         val outputStream = ByteArrayOutputStream(data.size)
         val tmp = ByteArray(BITE_SIZE)
-
         while (!deflater.finished()) {
             val size = deflater.deflate(tmp)
             outputStream.write(tmp, 0, size)
         }
-
         outputStream.close()
-
         return outputStream.toByteArray()
     }
 
@@ -36,14 +33,11 @@ object FileZipUtils {
         inflater.setInput(data)
         val outputStream = ByteArrayOutputStream(data.size)
         val tmp = ByteArray(BITE_SIZE)
-
         while (!inflater.finished()) {
             val count = inflater.inflate(tmp)
             outputStream.write(tmp, 0, count)
         }
-
         outputStream.close()
-
         return outputStream.toByteArray()
     }
 }
