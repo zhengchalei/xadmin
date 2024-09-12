@@ -32,9 +32,7 @@ class SysTenantController(val sysTenantService: SysTenantService) {
 
     @PreAuthorize(Const.ONLY_ROOT_AUTHORIZE_EL)
     @GetMapping("/list")
-    fun findSysTenantList(
-        @NotNull specification: SysTenantPageSpecification
-    ): R<List<SysTenantPageView>> {
+    fun findSysTenantList(@NotNull specification: SysTenantPageSpecification): R<List<SysTenantPageView>> {
         val data = sysTenantService.findSysTenantList(specification)
         return R(data = data)
     }
@@ -51,18 +49,14 @@ class SysTenantController(val sysTenantService: SysTenantService) {
 
     @PreAuthorize(Const.ONLY_ROOT_AUTHORIZE_EL)
     @PostMapping("/create")
-    fun createSysTenant(
-        @NotNull @RequestBody sysTenantCreateInput: SysTenantCreateInput
-    ): R<SysTenantDetailView> {
+    fun createSysTenant(@NotNull @RequestBody sysTenantCreateInput: SysTenantCreateInput): R<SysTenantDetailView> {
         val data = sysTenantService.createSysTenant(sysTenantCreateInput)
         return R(data = data)
     }
 
     @PreAuthorize(Const.ONLY_ROOT_AUTHORIZE_EL)
     @PostMapping("/update")
-    fun updateSysTenantById(
-        @NotNull @RequestBody sysTenantUpdateInput: SysTenantUpdateInput
-    ): R<SysTenantDetailView> {
+    fun updateSysTenantById(@NotNull @RequestBody sysTenantUpdateInput: SysTenantUpdateInput): R<SysTenantDetailView> {
         val data = sysTenantService.updateSysTenantById(sysTenantUpdateInput)
         return R(data = data)
     }

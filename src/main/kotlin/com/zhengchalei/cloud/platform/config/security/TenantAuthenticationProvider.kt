@@ -77,10 +77,8 @@ class TenantAuthenticationProvider(
 
     fun loadUserByUsername(username: String, password: String, tenant: String): UserDetails {
         if (username == Const.Root) {
-            val user =
-                sysUserRepository.findByUsernameForLogin(username) ?: throw UserNotFoundException()
-            if (!passwordEncoder.matches(password, user.password))
-                throw UserPasswordErrorException()
+            val user = sysUserRepository.findByUsernameForLogin(username) ?: throw UserNotFoundException()
+            if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
             return User(
                 username,
                 user.password,
@@ -92,12 +90,9 @@ class TenantAuthenticationProvider(
             )
         }
 
-        val user =
-            sysUserRepository.findByUsernameAndTenant(username, tenant)
-                ?: throw UserNotFoundException()
+        val user = sysUserRepository.findByUsernameAndTenant(username, tenant) ?: throw UserNotFoundException()
         if (user.username == Const.AdminUser) {
-            if (!passwordEncoder.matches(password, user.password))
-                throw UserPasswordErrorException()
+            if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
             return User(
                 username,
                 user.password,
@@ -115,11 +110,7 @@ class TenantAuthenticationProvider(
         val permissions = user.roles.flatMap { it.permissions }
         authorityList.addAll(permissions.map { it.code }.map { SimpleGrantedAuthority(it) })
         authorityList.addAll(
-            roles
-                .map { it.code }
-                .map { Const.SecurityRolePrifix + it }
-                .map { SimpleGrantedAuthority(it) }
-        )
+            roles.map { it.code }.map { Const.SecurityRolePrifix + it }.map { SimpleGrantedAuthority(it) })
         return User(username, user.password, user.status, true, true, true, authorityList)
     }
 }

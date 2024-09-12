@@ -45,9 +45,7 @@ class SysDepartmentService(private val sysDepartmentRepository: SysDepartmentRep
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysDepartmentList(
-        specification: SysDepartmentPageSpecification
-    ): List<SysDepartmentPageView> {
+    fun findSysDepartmentList(specification: SysDepartmentPageSpecification): List<SysDepartmentPageView> {
         log.info("查找系统部门列表, 查询条件: {}", specification)
         val data = this.sysDepartmentRepository.findList(specification)
         log.debug("查找系统部门列表, 查询条件: {}, 查询结果: {}", specification, data)
@@ -59,9 +57,7 @@ class SysDepartmentService(private val sysDepartmentRepository: SysDepartmentRep
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysDepartmentTree(
-        specification: SysDepartmentPageSpecification
-    ): List<SysDepartmentTreeView> {
+    fun findSysDepartmentTree(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeView> {
         log.info("查找系统部门树, 查询条件: {}", specification)
         val data = this.sysDepartmentRepository.findTree(specification)
         log.debug("查找系统部门树, 查询条件: {}, 查询结果: {}", specification, data)
@@ -90,12 +86,9 @@ class SysDepartmentService(private val sysDepartmentRepository: SysDepartmentRep
      * @param [sysDepartmentCreateInput] 系统部门创建输入
      * @return [SysDepartmentDetailView]
      */
-    fun createSysDepartment(
-        sysDepartmentCreateInput: SysDepartmentCreateInput
-    ): SysDepartmentDetailView {
+    fun createSysDepartment(sysDepartmentCreateInput: SysDepartmentCreateInput): SysDepartmentDetailView {
         log.info("创建系统部门, 输入参数: {}", sysDepartmentCreateInput)
-        val sysDepartment: SysDepartment =
-            this.sysDepartmentRepository.insert(sysDepartmentCreateInput)
+        val sysDepartment: SysDepartment = this.sysDepartmentRepository.insert(sysDepartmentCreateInput)
         log.info("创建系统部门, 创建结果: {}", sysDepartment)
         val data = findSysDepartmentById(sysDepartment.id)
         return data
@@ -107,9 +100,7 @@ class SysDepartmentService(private val sysDepartmentRepository: SysDepartmentRep
      * @param [sysDepartmentUpdateInput] 系统部门更新输入
      * @return [SysDepartmentDetailView]
      */
-    fun updateSysDepartmentById(
-        sysDepartmentUpdateInput: SysDepartmentUpdateInput
-    ): SysDepartmentDetailView {
+    fun updateSysDepartmentById(sysDepartmentUpdateInput: SysDepartmentUpdateInput): SysDepartmentDetailView {
         log.info("更新系统部门通过ID, 输入参数: {}", sysDepartmentUpdateInput)
         val sysDepartment = this.sysDepartmentRepository.update(sysDepartmentUpdateInput)
         log.info("更新系统部门通过ID, 更新结果: {}", sysDepartment)
@@ -132,9 +123,7 @@ class SysDepartmentService(private val sysDepartmentRepository: SysDepartmentRep
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysDepartmentTreeRoot(
-        specification: SysDepartmentPageSpecification
-    ): List<SysDepartmentTreeRootView> {
+    fun findSysDepartmentTreeRoot(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeRootView> {
         log.info("查找系统部门树根, 查询条件: {}", specification)
         val data = this.sysDepartmentRepository.findTreeRoot(specification)
         log.debug("查找系统部门树根, 查询结果: {}", data)
@@ -147,9 +136,7 @@ class SysDepartmentService(private val sysDepartmentRepository: SysDepartmentRep
      * @param [specification] 查询条件构造器
      * @return [List<SysDepartmentTreeSelectView>]
      */
-    fun findSysDepartmentTreeSelect(
-        specification: SysDepartmentPageSpecification
-    ): List<SysDepartmentTreeSelectView> {
+    fun findSysDepartmentTreeSelect(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeSelectView> {
         log.info("查找系统部门树选择, 查询条件: {}", specification)
         val data = this.sysDepartmentRepository.findTreeSelect(specification)
         log.debug("查找系统部门树选择, 查询结果: {}", data)

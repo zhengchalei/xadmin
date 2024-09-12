@@ -42,8 +42,7 @@ class SysPostsService(private val sysPostRepository: SysPostsRepository) {
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysPostsList(specification: SysPostsPageSpecification) =
-        this.sysPostRepository.findList(specification)
+    fun findSysPostsList(specification: SysPostsPageSpecification) = this.sysPostRepository.findList(specification)
 
     /**
      * 查找系统岗位分页

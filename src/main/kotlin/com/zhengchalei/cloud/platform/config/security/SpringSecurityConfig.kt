@@ -70,17 +70,13 @@ class SpringSecurityConfig(
                 it.authenticationEntryPoint { _, response, authException ->
                     response.sendError(
                         401,
-                        objectMapper.writeValueAsString(
-                            GlobalException.Error(authException.message ?: "未登录")
-                        ),
+                        objectMapper.writeValueAsString(GlobalException.Error(authException.message ?: "未登录")),
                     )
                 }
                 it.accessDeniedHandler { _, response, accessDeniedException ->
                     response.sendError(
                         403,
-                        objectMapper.writeValueAsString(
-                            GlobalException.Error(accessDeniedException.message ?: "无权限")
-                        ),
+                        objectMapper.writeValueAsString(GlobalException.Error(accessDeniedException.message ?: "无权限")),
                     )
                 }
             }

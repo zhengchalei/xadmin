@@ -32,9 +32,7 @@ class SysLoginLogController(val sysLoginLogService: SysLoginLogService) {
 
     @PreAuthorize("hasAuthority('sys:loginLog:list') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysLoginLogList(
-        @NotNull specification: SysLoginLogPageSpecification
-    ): R<List<SysLoginLogPageView>> {
+    fun findSysLoginLogList(@NotNull specification: SysLoginLogPageSpecification): R<List<SysLoginLogPageView>> {
         val data = sysLoginLogService.findSysLoginLogList(specification)
         return R(data = data)
     }

@@ -23,8 +23,7 @@ class TenantFilter : KCacheableFilter<TenantAware> {
         }
     }
 
-    override fun getParameters(): SortedMap<String, Any>? =
-        sortedMapOf("tenant" to SecurityUtils.getCurrentTenant())
+    override fun getParameters(): SortedMap<String, Any>? = sortedMapOf("tenant" to SecurityUtils.getCurrentTenant())
 
     override fun isAffectedBy(e: EntityEvent<*>): Boolean = e.isChanged(TenantAware::tenant)
 }

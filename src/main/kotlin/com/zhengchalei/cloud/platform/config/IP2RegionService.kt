@@ -15,9 +15,8 @@ import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
 
 @Component
-class IP2RegionService(
-    private val iP2RegionConfigurationProperties: IP2RegionConfigurationProperties
-) : ApplicationRunner {
+class IP2RegionService(private val iP2RegionConfigurationProperties: IP2RegionConfigurationProperties) :
+    ApplicationRunner {
     private val log = LoggerFactory.getLogger(IP2RegionService::class.java)
 
     private var searcher: Searcher? = null

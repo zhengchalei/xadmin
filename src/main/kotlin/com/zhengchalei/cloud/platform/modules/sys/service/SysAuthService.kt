@@ -78,8 +78,7 @@ class SysAuthService(
                         password = password,
                         captcha = captcha,
                         tenant = tenant,
-                    )
-                ) as TenantAuthenticationToken
+                    )) as TenantAuthenticationToken
             SecurityContextHolder.getContext().authentication = authentication
             log.info("登录成功, username {} ", username)
             val token: String = jwtProvider.createAccessToken(authentication)
@@ -136,11 +135,8 @@ class SysAuthService(
                     this.ip = ip
                     this.address = address
                     this.tenant = tenant
-                    this.sysUser =
-                        if (status) makeIdOnly(SysUser::class, userService.currentUserId())
-                        else null
-                }
-            )
+                    this.sysUser = if (status) makeIdOnly(SysUser::class, userService.currentUserId()) else null
+                })
         }
     }
 

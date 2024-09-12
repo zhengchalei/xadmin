@@ -19,8 +19,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @ConditionalOnProperty(prefix = "file", name = ["storage"], havingValue = "database")
 @Service
-class DataBaseFileService(private val dataBaseFileRepository: DataBaseFileRepository) :
-    FileService {
+class DataBaseFileService(private val dataBaseFileRepository: DataBaseFileRepository) : FileService {
     /**
      * 上传图片
      *
@@ -32,11 +31,8 @@ class DataBaseFileService(private val dataBaseFileRepository: DataBaseFileReposi
             val baseFile =
                 new(DataBaseFile::class).by {
                     this.uid =
-                        UUID.randomUUID().toString() +
-                            "." +
-                            multipartFile.originalFilename?.substringAfterLast(".")
-                    this.originalName =
-                        multipartFile.originalFilename ?: UUID.randomUUID().toString()
+                        UUID.randomUUID().toString() + "." + multipartFile.originalFilename?.substringAfterLast(".")
+                    this.originalName = multipartFile.originalFilename ?: UUID.randomUUID().toString()
                     this.type = getFileType(multipartFile)
                     this.fileData = ByteArrayInputStream(multipartFile.bytes)
                 }
@@ -54,7 +50,6 @@ class DataBaseFileService(private val dataBaseFileRepository: DataBaseFileReposi
      */
     override fun getFile(fileName: String): Pair<String, ByteArrayInputStream> {
         val dataBaseFile = dataBaseFileRepository.findByUid(fileName)
-        return dataBaseFile.originalName to
-            ByteArrayInputStream(dataBaseFile.fileData.readAllBytes())
+        return dataBaseFile.originalName to ByteArrayInputStream(dataBaseFile.fileData.readAllBytes())
     }
 }

@@ -25,8 +25,7 @@ import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
 
 @Component
-class JwtProvider(private val authConfigurationProperties: AuthConfigurationProperties) :
-    CommandLineRunner {
+class JwtProvider(private val authConfigurationProperties: AuthConfigurationProperties) : CommandLineRunner {
     private val log = LoggerFactory.getLogger(JwtProvider::class.java)
 
     private var secret: ByteArray = "".toByteArray(Charsets.UTF_8)
@@ -120,8 +119,7 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
     fun getAuthentication(token: String): Authentication {
         val jwt: SignedJWT = parseToken(token)
         val jwtClaimsSet = jwt.jwtClaimsSet ?: throw RuntimeException("JWT ClaimsSet is null")
-        val permissions =
-            jwtClaimsSet.getStringClaim("permissions").split(",").filter { it.isNotBlank() }
+        val permissions = jwtClaimsSet.getStringClaim("permissions").split(",").filter { it.isNotBlank() }
         val roles =
             jwtClaimsSet
                 .getStringClaim("roles")
@@ -131,8 +129,7 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
         val tenant = jwtClaimsSet.getStringClaim("tenant")
 
         // 构建权限
-        val authorities =
-            mutableListOf(permissions, roles).flatten().map { SimpleGrantedAuthority(it) }
+        val authorities = mutableListOf(permissions, roles).flatten().map { SimpleGrantedAuthority(it) }
 
         val principal = User(jwtClaimsSet.subject, "", authorities)
 

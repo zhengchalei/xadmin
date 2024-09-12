@@ -49,8 +49,7 @@ class SysAuthController(
                     accessToken = token,
                     refreshToken = token,
                     username = loginDTO.username,
-                )
-        )
+                ))
     }
 
     fun getIpAddress(request: HttpServletRequest): String {
@@ -66,9 +65,7 @@ class SysAuthController(
                 ipAddress = request.remoteAddr
                 if (ipAddress == "0:0:0:0:0:0:0:1") {
                     // 根据网卡取本机配置的IP
-                    ipAddress =
-                        if (profile == Const.ENV_PROD) InetAddress.getLocalHost().hostAddress
-                        else "127.0.0.1"
+                    ipAddress = if (profile == Const.ENV_PROD) InetAddress.getLocalHost().hostAddress else "127.0.0.1"
                 }
             }
             // 对于通过多个代理的情况，第一个IP为客户端真实IP，多个IP按照','分割
@@ -92,8 +89,6 @@ class SysAuthController(
     @PostMapping("/switch-tenant/{tenant}")
     fun switchTenant(@PathVariable tenant: String): R<LoginResponse> {
         val token = sysAuthService.switchTenant(tenant)
-        return R(
-            data = LoginResponse(accessToken = token, refreshToken = token, username = Const.Root)
-        )
+        return R(data = LoginResponse(accessToken = token, refreshToken = token, username = Const.Root))
     }
 }

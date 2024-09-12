@@ -95,7 +95,13 @@ jacoco {
 
 spotless {
     kotlin {
-        ktfmt().kotlinlangStyle()
+        ktfmt().kotlinlangStyle().configure {
+            it.setBlockIndent(4)
+            it.setContinuationIndent(4)
+            it.setMaxWidth(120)
+            it.setRemoveUnusedImports(true)
+            it.setManageTrailingCommas(false)
+        }
         licenseHeader(
             """
             /*
@@ -105,13 +111,17 @@ spotless {
              * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
              */
         """
-                .trimIndent()
-        )
+                .trimIndent())
         target("src/main/kotlin/**/*.kt")
     }
     kotlinGradle {
-        kotlin
-        ktfmt().kotlinlangStyle()
+        ktfmt().kotlinlangStyle().configure {
+            it.setBlockIndent(4)
+            it.setContinuationIndent(4)
+            it.setMaxWidth(120)
+            it.setRemoveUnusedImports(true)
+            it.setManageTrailingCommas(false)
+        }
         target("build.gradle.kts")
     }
 }

@@ -30,9 +30,7 @@ class SysDictController(val sysDictService: SysDictService) {
 
     @PreAuthorize("hasAuthority('sys:dict:list') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysDictList(
-        @NotNull specification: SysDictPageSpecification
-    ): R<List<SysDictPageView>> {
+    fun findSysDictList(@NotNull specification: SysDictPageSpecification): R<List<SysDictPageView>> {
         val data = sysDictService.findSysDictList(specification)
         return R(data = data)
     }
@@ -49,18 +47,14 @@ class SysDictController(val sysDictService: SysDictService) {
 
     @PreAuthorize("hasAuthority('sys:dict:create') or hasAnyRole('admin')")
     @PostMapping("/create")
-    fun createSysDict(
-        @NotNull @RequestBody sysDictCreateInput: SysDictCreateInput
-    ): R<SysDictDetailView> {
+    fun createSysDict(@NotNull @RequestBody sysDictCreateInput: SysDictCreateInput): R<SysDictDetailView> {
         val data = sysDictService.createSysDict(sysDictCreateInput)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:dict:update') or hasAnyRole('admin')")
     @PostMapping("/update")
-    fun updateSysDictById(
-        @NotNull @RequestBody sysDictUpdateInput: SysDictUpdateInput
-    ): R<SysDictDetailView> {
+    fun updateSysDictById(@NotNull @RequestBody sysDictUpdateInput: SysDictUpdateInput): R<SysDictDetailView> {
         val data = sysDictService.updateSysDictById(sysDictUpdateInput)
         return R(data = data)
     }

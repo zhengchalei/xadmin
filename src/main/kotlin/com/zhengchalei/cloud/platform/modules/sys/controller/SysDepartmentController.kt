@@ -30,18 +30,14 @@ class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
 
     @PreAuthorize("hasAuthority('sys:department:list') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysDepartmentList(
-        @NotNull specification: SysDepartmentPageSpecification
-    ): R<List<SysDepartmentPageView>> {
+    fun findSysDepartmentList(@NotNull specification: SysDepartmentPageSpecification): R<List<SysDepartmentPageView>> {
         val data = sysDepartmentService.findSysDepartmentList(specification)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:department:tree-root') or hasAnyRole('admin')")
     @GetMapping("/tree-root")
-    fun findSysDepartmentTreeRoot(
-        specification: SysDepartmentPageSpecification
-    ): R<List<SysDepartmentTreeRootView>> {
+    fun findSysDepartmentTreeRoot(specification: SysDepartmentPageSpecification): R<List<SysDepartmentTreeRootView>> {
         val data = sysDepartmentService.findSysDepartmentTreeRoot(specification)
         return R(data = data)
     }
@@ -58,9 +54,7 @@ class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
 
     @PreAuthorize("hasAuthority('sys:department:tree') or hasAnyRole('admin')")
     @GetMapping("/tree")
-    fun findSysDepartmentTree(
-        specification: SysDepartmentPageSpecification
-    ): R<List<SysDepartmentTreeView>> {
+    fun findSysDepartmentTree(specification: SysDepartmentPageSpecification): R<List<SysDepartmentTreeView>> {
         val data = sysDepartmentService.findSysDepartmentTree(specification)
         return R(data = data)
     }

@@ -24,12 +24,8 @@ class OpenApiConfig {
                 Components()
                     .addSecuritySchemes(
                         "Authentication",
-                        SecurityScheme()
-                            .type(SecurityScheme.Type.HTTP)
-                            .scheme("bearer")
-                            .bearerFormat("JWT"),
-                    )
-            )
+                        SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"),
+                    ))
     }
 
     @Bean

@@ -30,27 +30,21 @@ class SysPermissionController(val sysPermissionService: SysPermissionService) {
 
     @PreAuthorize("hasAuthority('sys:permission:list') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysPermissionList(
-        @NotNull specification: SysPermissionPageSpecification
-    ): R<List<SysPermissionPageView>> {
+    fun findSysPermissionList(@NotNull specification: SysPermissionPageSpecification): R<List<SysPermissionPageView>> {
         val data = sysPermissionService.findSysPermissionList(specification)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:permission:tree-root') or hasAnyRole('admin')")
     @GetMapping("/tree-root")
-    fun findSysPermissionTreeRoot(
-        specification: SysPermissionPageSpecification
-    ): R<List<SysPermissionTreeRootView>> {
+    fun findSysPermissionTreeRoot(specification: SysPermissionPageSpecification): R<List<SysPermissionTreeRootView>> {
         val data = sysPermissionService.findSysPermissionTreeRoot(specification)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:permission:tree') or hasAnyRole('admin')")
     @GetMapping("/tree")
-    fun findSysPermissionTree(
-        specification: SysPermissionPageSpecification
-    ): R<List<SysPermissionTreeView>> {
+    fun findSysPermissionTree(specification: SysPermissionPageSpecification): R<List<SysPermissionTreeView>> {
         val data = sysPermissionService.findSysPermissionTree(specification)
         return R(data = data)
     }

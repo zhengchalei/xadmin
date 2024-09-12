@@ -50,8 +50,7 @@ class SysUserService(
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysUserList(specification: SysUserPageSpecification) =
-        this.sysUserRepository.findList(specification)
+    fun findSysUserList(specification: SysUserPageSpecification) = this.sysUserRepository.findList(specification)
 
     /**
      * 查找系统用户分页
@@ -75,8 +74,7 @@ class SysUserService(
             SELECT id FROM DepartmentHierarchy
         """
         if (specification.departmentId != null) {
-            val sysDepartmentIds =
-                jdbcTemplate.queryForList(sql, Long::class.java, specification.departmentId)
+            val sysDepartmentIds = jdbcTemplate.queryForList(sql, Long::class.java, specification.departmentId)
             return this.sysUserRepository.findPage(specification, pageable, sysDepartmentIds)
         }
         return this.sysUserRepository.findPage(specification, pageable)
@@ -89,10 +87,7 @@ class SysUserService(
      * @return [SysUserDetailView]
      */
     fun createSysUser(sysUserCreateInput: SysUserCreateInput): SysUserDetailView {
-        if (
-            sysUserCreateInput.username == Const.AdminUser ||
-                sysUserCreateInput.username == Const.Root
-        ) {
+        if (sysUserCreateInput.username == Const.AdminUser || sysUserCreateInput.username == Const.Root) {
             throw ServiceException("用户名不能为 ${Const.AdminUser}")
         }
         // TODO 集成邮件后, 这里密码应该由邮件发送
@@ -112,9 +107,7 @@ class SysUserService(
      */
     fun updateSysUserById(sysUserUpdateInput: SysUserUpdateInput): SysUserDetailView {
         val oldUser =
-            this.sysUserRepository.findById(sysUserUpdateInput.id).orElseThrow {
-                throw ServiceException("用户不存在")
-            }
+            this.sysUserRepository.findById(sysUserUpdateInput.id).orElseThrow { throw ServiceException("用户不存在") }
         if (oldUser.username == Const.AdminUser || oldUser.username == Const.Root) {
             throw ServiceException("${Const.AdminUser} 不能修改用户名")
         }
@@ -128,8 +121,7 @@ class SysUserService(
      * @param [id] ID
      */
     fun deleteSysUserById(id: Long) {
-        val sysUser =
-            this.sysUserRepository.findById(id).orElseThrow { throw ServiceException("用户不存在") }
+        val sysUser = this.sysUserRepository.findById(id).orElseThrow { throw ServiceException("用户不存在") }
         if (sysUser.username == Const.AdminUser || sysUser.username == Const.Root) {
             throw ServiceException("${sysUser.username} 不能删除")
         }

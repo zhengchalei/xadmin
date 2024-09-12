@@ -35,8 +35,7 @@ class SysDictItemService(private val sysDictItemRepository: SysDictItemRepositor
      * @param [id] ID
      * @return [SysDictItemDetailView]
      */
-    fun findSysDictItemById(id: Long): SysDictItemDetailView =
-        this.sysDictItemRepository.findDetailById(id)
+    fun findSysDictItemById(id: Long): SysDictItemDetailView = this.sysDictItemRepository.findDetailById(id)
 
     /**
      * 查找系统字典物品列表
@@ -72,9 +71,7 @@ class SysDictItemService(private val sysDictItemRepository: SysDictItemRepositor
      * @param [sysDictItemUpdateInput] 系统字典物品更新输入
      * @return [SysDictItemDetailView]
      */
-    fun updateSysDictItemById(
-        sysDictItemUpdateInput: SysDictItemUpdateInput
-    ): SysDictItemDetailView {
+    fun updateSysDictItemById(sysDictItemUpdateInput: SysDictItemUpdateInput): SysDictItemDetailView {
         val sysDictItem = this.sysDictItemRepository.update(sysDictItemUpdateInput)
         return findSysDictItemById(sysDictItem.id)
     }

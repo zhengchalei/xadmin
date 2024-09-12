@@ -44,8 +44,7 @@ class SysRoleService(private val sysRoleRepository: SysRoleRepository) {
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysRoleList(specification: SysRolePageSpecification) =
-        this.sysRoleRepository.findList(specification)
+    fun findSysRoleList(specification: SysRolePageSpecification) = this.sysRoleRepository.findList(specification)
 
     /**
      * 查找系统角色分页
@@ -77,10 +76,7 @@ class SysRoleService(private val sysRoleRepository: SysRoleRepository) {
      * @return [SysRoleDetailView]
      */
     fun updateSysRoleById(sysRoleUpdateInput: SysRoleUpdateInput): SysRoleDetailView {
-        val oldRole =
-            this.sysRoleRepository.findById(sysRoleUpdateInput.id).orElseThrow {
-                ServiceException("角色不存在")
-            }
+        val oldRole = this.sysRoleRepository.findById(sysRoleUpdateInput.id).orElseThrow { ServiceException("角色不存在") }
         if (oldRole.code == Const.AdminRole) {
             throw ServiceException("${Const.AdminRole} 不能修改")
         }

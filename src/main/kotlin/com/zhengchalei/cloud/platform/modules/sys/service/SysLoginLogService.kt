@@ -31,8 +31,7 @@ class SysLoginLogService(val sysLoginLogRepository: SysLoginLogRepository) {
      * @param [id] ID
      * @return [SysLoginLogPageView]
      */
-    fun findSysLoginLogById(id: Long): SysLoginLogDetailView =
-        this.sysLoginLogRepository.findDetailById(id)
+    fun findSysLoginLogById(id: Long): SysLoginLogDetailView = this.sysLoginLogRepository.findDetailById(id)
 
     /**
      * 查找系统登录日志列表
@@ -40,9 +39,8 @@ class SysLoginLogService(val sysLoginLogRepository: SysLoginLogRepository) {
      * @param [specification] 查询条件构造器
      * @return [List<SysLoginLogPageView>?]
      */
-    fun findSysLoginLogList(
-        specification: SysLoginLogPageSpecification
-    ): List<SysLoginLogPageView>? = this.sysLoginLogRepository.findList(specification)
+    fun findSysLoginLogList(specification: SysLoginLogPageSpecification): List<SysLoginLogPageView>? =
+        this.sysLoginLogRepository.findList(specification)
 
     /**
      * 查找系统登录日志分页

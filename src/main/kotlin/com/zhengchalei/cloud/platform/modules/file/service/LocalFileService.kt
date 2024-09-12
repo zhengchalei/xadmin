@@ -16,8 +16,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @ConditionalOnProperty(prefix = "file", name = ["storage"], havingValue = "local")
 @Service
-class LocalFileService(private val fileConfigProperties: FileConfigurationProperties) :
-    FileService {
+class LocalFileService(private val fileConfigProperties: FileConfigurationProperties) : FileService {
     /**
      * 上传图片
      *
@@ -41,10 +40,7 @@ class LocalFileService(private val fileConfigProperties: FileConfigurationProper
             if (!File(localConfig.storagePath).exists()) {
                 File(localConfig.storagePath).mkdirs()
             }
-            val fileName =
-                UUID.randomUUID().toString() +
-                    "." +
-                    multipartFile.originalFilename?.substringAfterLast(".")
+            val fileName = UUID.randomUUID().toString() + "." + multipartFile.originalFilename?.substringAfterLast(".")
             val filePath = localConfig.storagePath + "/" + fileName
             try {
                 multipartFile.transferTo(File(filePath))

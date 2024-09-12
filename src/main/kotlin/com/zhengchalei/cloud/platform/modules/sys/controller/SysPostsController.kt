@@ -30,9 +30,7 @@ class SysPostsController(val sysPostsService: SysPostsService) {
 
     @PreAuthorize("hasAuthority('sys:post:list') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysPostsList(
-        @NotNull specification: SysPostsPageSpecification
-    ): R<List<SysPostsPageView>> {
+    fun findSysPostsList(@NotNull specification: SysPostsPageSpecification): R<List<SysPostsPageView>> {
         val data = sysPostsService.findSysPostsList(specification)
         return R(data = data)
     }
@@ -49,18 +47,14 @@ class SysPostsController(val sysPostsService: SysPostsService) {
 
     @PreAuthorize("hasAuthority('sys:post:create') or hasAnyRole('admin')")
     @PostMapping("/create")
-    fun createSysPosts(
-        @NotNull @RequestBody sysPostsCreateInput: SysPostsCreateInput
-    ): R<SysPostsDetailView> {
+    fun createSysPosts(@NotNull @RequestBody sysPostsCreateInput: SysPostsCreateInput): R<SysPostsDetailView> {
         val data = sysPostsService.createSysPosts(sysPostsCreateInput)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:post:update') or hasAnyRole('admin')")
     @PostMapping("/update")
-    fun updateSysPostsById(
-        @NotNull @RequestBody sysPostsUpdateInput: SysPostsUpdateInput
-    ): R<SysPostsDetailView> {
+    fun updateSysPostsById(@NotNull @RequestBody sysPostsUpdateInput: SysPostsUpdateInput): R<SysPostsDetailView> {
         val data = sysPostsService.updateSysPostsById(sysPostsUpdateInput)
         return R(data = data)
     }

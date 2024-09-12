@@ -42,8 +42,7 @@ class SysDictService(private val sysDictRepository: SysDictRepository) {
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysDictList(specification: SysDictPageSpecification) =
-        this.sysDictRepository.findList(specification)
+    fun findSysDictList(specification: SysDictPageSpecification) = this.sysDictRepository.findList(specification)
 
     /**
      * 查找系统字典分页

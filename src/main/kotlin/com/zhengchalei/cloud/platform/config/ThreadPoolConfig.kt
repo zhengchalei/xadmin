@@ -27,8 +27,7 @@ fun virtualThreadExecutor(name: String = ""): VirtualThreadExecutor {
     val virtualThreadExecutor = VirtualThreadExecutor()
     virtualThreadExecutor.setVirtualThreads(true)
     virtualThreadExecutor.setTaskDecorator(SecurityContextTaskDecorator())
-    virtualThreadExecutor.threadFactory =
-        Thread.ofVirtual().name("virtual-$name-executor", 0).factory()
+    virtualThreadExecutor.threadFactory = Thread.ofVirtual().name("virtual-$name-executor", 0).factory()
     virtualThreadExecutor.setTaskTerminationTimeout(5000)
     return virtualThreadExecutor
 }

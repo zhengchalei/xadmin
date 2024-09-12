@@ -35,8 +35,7 @@ class SysPermissionService(private val sysPermissionRepository: SysPermissionRep
      * @param [id] ID
      * @return [SysPermissionDetailView]
      */
-    fun findSysPermissionById(id: Long): SysPermissionDetailView =
-        this.sysPermissionRepository.findDetailById(id)
+    fun findSysPermissionById(id: Long): SysPermissionDetailView = this.sysPermissionRepository.findDetailById(id)
 
     /**
      * 查找系统权限列表
@@ -69,11 +68,8 @@ class SysPermissionService(private val sysPermissionRepository: SysPermissionRep
      * @param [sysPermissionCreateInput] 系统权限创建输入
      * @return [SysPermissionDetailView]
      */
-    fun createSysPermission(
-        sysPermissionCreateInput: SysPermissionCreateInput
-    ): SysPermissionDetailView {
-        val sysPermission: SysPermission =
-            this.sysPermissionRepository.insert(sysPermissionCreateInput)
+    fun createSysPermission(sysPermissionCreateInput: SysPermissionCreateInput): SysPermissionDetailView {
+        val sysPermission: SysPermission = this.sysPermissionRepository.insert(sysPermissionCreateInput)
         return findSysPermissionById(sysPermission.id)
     }
 
@@ -83,9 +79,7 @@ class SysPermissionService(private val sysPermissionRepository: SysPermissionRep
      * @param [sysPermissionUpdateInput] 系统权限更新输入
      * @return [SysPermissionDetailView]
      */
-    fun updateSysPermissionById(
-        sysPermissionUpdateInput: SysPermissionUpdateInput
-    ): SysPermissionDetailView {
+    fun updateSysPermissionById(sysPermissionUpdateInput: SysPermissionUpdateInput): SysPermissionDetailView {
         val sysPermission = this.sysPermissionRepository.update(sysPermissionUpdateInput)
         return findSysPermissionById(sysPermission.id)
     }

@@ -44,8 +44,7 @@ class SysTenantService(private val sysTenantRepository: SysTenantRepository) {
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysTenantList(specification: SysTenantPageSpecification) =
-        this.sysTenantRepository.findList(specification)
+    fun findSysTenantList(specification: SysTenantPageSpecification) = this.sysTenantRepository.findList(specification)
 
     /**
      * 查找系统租户分页

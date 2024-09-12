@@ -30,9 +30,7 @@ class SysDictItemController(val sysDictItemService: SysDictItemService) {
 
     @PreAuthorize("hasAuthority('sys:dict-item:list') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysDictItemList(
-        @NotNull specification: SysDictItemPageSpecification
-    ): R<List<SysDictItemPageView>> {
+    fun findSysDictItemList(@NotNull specification: SysDictItemPageSpecification): R<List<SysDictItemPageView>> {
         val data = sysDictItemService.findSysDictItemList(specification)
         return R(data = data)
     }

@@ -66,9 +66,7 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
             }
             .execute()
 
-    fun findTreeSelect(
-        specification: SysDepartmentPageSpecification
-    ): List<SysDepartmentTreeSelectView> =
+    fun findTreeSelect(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeSelectView> =
         sql.createQuery(SysDepartment::class) {
                 orderBy(table.sort.asc())
                 where(table.parentId.isNull())

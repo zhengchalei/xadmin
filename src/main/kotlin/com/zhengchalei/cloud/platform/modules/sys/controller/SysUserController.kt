@@ -30,9 +30,7 @@ class SysUserController(val sysUserService: SysUserService) {
 
     @PreAuthorize("hasAuthority('sys:user:list') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysUserList(
-        @NotNull specification: SysUserPageSpecification
-    ): R<List<SysUserPageView>> {
+    fun findSysUserList(@NotNull specification: SysUserPageSpecification): R<List<SysUserPageView>> {
         val data = sysUserService.findSysUserList(specification)
         return R(data = data)
     }
@@ -49,18 +47,14 @@ class SysUserController(val sysUserService: SysUserService) {
 
     @PreAuthorize("hasAuthority('sys:user:create') or hasAnyRole('admin')")
     @PostMapping("/create")
-    fun createSysUser(
-        @NotNull @RequestBody sysUserCreateInput: SysUserCreateInput
-    ): R<SysUserDetailView> {
+    fun createSysUser(@NotNull @RequestBody sysUserCreateInput: SysUserCreateInput): R<SysUserDetailView> {
         val data = sysUserService.createSysUser(sysUserCreateInput)
         return R(data = data)
     }
 
     @PreAuthorize("hasAuthority('sys:user:update') or hasAnyRole('admin')")
     @PostMapping("/update")
-    fun updateSysUserById(
-        @NotNull @RequestBody sysUserUpdateInput: SysUserUpdateInput
-    ): R<SysUserDetailView> {
+    fun updateSysUserById(@NotNull @RequestBody sysUserUpdateInput: SysUserUpdateInput): R<SysUserDetailView> {
         val data = sysUserService.updateSysUserById(sysUserUpdateInput)
         return R(data = data)
     }
