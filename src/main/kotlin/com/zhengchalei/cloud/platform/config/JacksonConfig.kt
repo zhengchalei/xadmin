@@ -29,10 +29,7 @@ class JacksonConfig : WebMvcConfigurer {
         Jackson2ObjectMapperBuilderCustomizer { builder ->
             // LocalTime
             builder.serializerByType(LocalTime::class.java, LocalDateTimeSerializer(timeFormatter))
-            builder.deserializerByType(
-                LocalTime::class.java,
-                LocalDateTimeDeserializer(timeFormatter),
-            )
+            builder.deserializerByType(LocalTime::class.java, LocalDateTimeDeserializer(timeFormatter))
 
             // LocalDate
             builder.serializerByType(

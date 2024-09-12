@@ -37,11 +37,7 @@ interface SysUser : TenantAware {
     @ManyToOne val department: SysDepartment?
 
     @ManyToMany
-    @JoinTable(
-        name = "sys_user_role",
-        joinColumnName = "user_id",
-        inverseJoinColumnName = "role_id",
-    )
+    @JoinTable(name = "sys_user_role", joinColumnName = "user_id", inverseJoinColumnName = "role_id")
     val roles: List<SysRole>
 
     @IdView("roles") val roleIds: List<Long>

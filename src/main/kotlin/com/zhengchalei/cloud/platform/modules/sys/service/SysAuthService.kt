@@ -64,13 +64,7 @@ class SysAuthService(
         ip: String,
     ): String {
         try {
-            log.info(
-                "登录: username: {}, tenant: {}, ip: {}, captcha: {}",
-                username,
-                tenant,
-                ip,
-                captcha,
-            )
+            log.info("登录: username: {}, tenant: {}, ip: {}, captcha: {}", username, tenant, ip, captcha)
             val authentication: TenantAuthenticationToken =
                 authenticationManager.authenticate(
                     TenantAuthenticationToken(
@@ -141,7 +135,12 @@ class SysAuthService(
     }
 
     fun switchTenant(tenant: String): String {
-        log.info("切换租户: {}", tenant)
+        log.info(
+            "用户：{}, 当前租户： {} 切换租户: {}",
+            SecurityUtils.getCurrentUsername(),
+            SecurityUtils.getCurrentTenant(),
+            tenant,
+        )
         return SecurityUtils.switchTenant(tenant, jwtProvider)
     }
 

@@ -43,13 +43,7 @@ class SysAuthController(
                 loginDTO.tenant,
                 ip,
             )
-        return R(
-            data =
-                LoginResponse(
-                    accessToken = token,
-                    refreshToken = token,
-                    username = loginDTO.username,
-                ))
+        return R(data = LoginResponse(accessToken = token, refreshToken = token, username = loginDTO.username))
     }
 
     fun getIpAddress(request: HttpServletRequest): String {

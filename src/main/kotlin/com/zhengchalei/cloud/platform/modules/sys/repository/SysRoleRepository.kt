@@ -26,10 +26,7 @@ interface SysRoleRepository : KRepository<SysRole, Long> {
             }
             .fetchOne()
 
-    fun findPage(
-        specification: SysRolePageSpecification,
-        pageable: Pageable,
-    ): Page<SysRolePageView> =
+    fun findPage(specification: SysRolePageSpecification, pageable: Pageable): Page<SysRolePageView> =
         sql.createQuery(SysRole::class) {
                 orderBy(table.id.asc())
                 where(specification)

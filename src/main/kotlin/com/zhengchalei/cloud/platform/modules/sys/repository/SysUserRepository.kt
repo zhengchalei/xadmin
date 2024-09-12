@@ -30,10 +30,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
             }
             .fetchOne()
 
-    fun findPage(
-        specification: SysUserPageSpecification,
-        pageable: Pageable,
-    ): Page<SysUserPageView> =
+    fun findPage(specification: SysUserPageSpecification, pageable: Pageable): Page<SysUserPageView> =
         sql.createQuery(SysUser::class) {
                 orderBy(table.id.asc())
                 where(specification)

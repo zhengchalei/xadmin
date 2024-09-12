@@ -45,13 +45,7 @@ class TenantAuthenticationProvider(
         // 验证租户ID、验证码和用户密码的逻辑
         if (isValidTenant(tenant) && isValidCaptcha(captcha)) {
             val userDetails = loadUserByUsername(username, password, tenant)
-            return TenantAuthenticationToken(
-                username,
-                password,
-                tenant,
-                captcha,
-                userDetails.authorities,
-            )
+            return TenantAuthenticationToken(username, password, tenant, captcha, userDetails.authorities)
         }
         throw UserPasswordErrorException()
     }

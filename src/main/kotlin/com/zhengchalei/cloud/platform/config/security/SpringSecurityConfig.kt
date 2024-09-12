@@ -41,10 +41,7 @@ class SpringSecurityConfig(
                 JwtConfigurer.JwtAuthorizationFilter(jwtProvider, handlerExceptionResolver),
                 UsernamePasswordAuthenticationFilter::class.java,
             )
-            .addFilterBefore(
-                tenantAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter::class.java,
-            )
+            .addFilterBefore(tenantAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .authenticationProvider(tenantAuthenticationProvider)
             .authorizeHttpRequests { authorize ->
 
