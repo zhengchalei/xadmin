@@ -1,3 +1,9 @@
+/*
+ * 版权所有 © 2024 郑查磊.
+ * 保留所有权利.
+ *
+ * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
+ */
 package com.zhengchalei.cloud.platform.modules.sys.controller
 
 import com.zhengchalei.cloud.platform.commons.Const
@@ -43,8 +49,7 @@ class SysAuthController(
                     accessToken = token,
                     refreshToken = token,
                     username = loginDTO.username,
-                )
-        )
+                ))
     }
 
     fun getIpAddress(request: HttpServletRequest): String {
@@ -87,7 +92,6 @@ class SysAuthController(
     fun switchTenant(@PathVariable tenant: String): R<LoginResponse> {
         val token = sysAuthService.switchTenant(tenant)
         return R(
-            data = LoginResponse(accessToken = token, refreshToken = token, username = Const.Root)
-        )
+            data = LoginResponse(accessToken = token, refreshToken = token, username = Const.Root))
     }
 }

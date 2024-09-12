@@ -1,10 +1,15 @@
+import java.time.LocalDate
+import java.time.LocalDateTime
+
 plugins {
+    jacoco
     kotlin("jvm") version "2.0.20"
     kotlin("plugin.spring") version "2.0.20"
     id("org.springframework.boot") version "3.3.3"
     id("io.spring.dependency-management") version "1.1.6"
     id("com.google.devtools.ksp") version "2.0.20-1.0.24"
-    id("org.jlleitschuh.gradle.ktlint") version "latest.release"
+    id("pmd")
+    id("com.diffplug.spotless") version "latest.release"
 }
 
 group = "com.zhengchalei.cloud.platform"
@@ -84,9 +89,49 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+pmd {
+    isConsoleOutput = true
+    toolVersion = "7.5.0"
+    rulesMinimumPriority.set(5)
+    threads = 4
+    ruleSets(
+        "category/kotlin/bestpractices.xml/FunctionNameTooShort",
+        "category/kotlin/errorprone.xml/OverrideBothEqualsAndHashcode",
+    )
+}
+
 kotlin {
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict")
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+    reportsDirectory.set(layout.buildDirectory.dir("reports/jacoco"))
+}
+
+spotless {
+    kotlin {
+        ktfmt().kotlinlangStyle().configure {
+            it.setBlockIndent(4)
+            it.setContinuationIndent(4)
+            it.setRemoveUnusedImports(true)
+            it.setManageTrailingCommas(false)
+        }
+        licenseHeader("""
+/*
+ * 版权所有 © ${LocalDate.now().year} 郑查磊.
+ * 保留所有权利.
+ *
+ * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
+ */
+        """.trimIndent())
+        target("src/main/kotlin/**/*.kt")
+    }
+    kotlinGradle {
+        kotlin
+        target("build.gradle.kts")
     }
 }
 

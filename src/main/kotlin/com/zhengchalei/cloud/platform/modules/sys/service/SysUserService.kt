@@ -1,3 +1,9 @@
+/*
+ * 版权所有 © 2024 郑查磊.
+ * 保留所有权利.
+ *
+ * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
+ */
 package com.zhengchalei.cloud.platform.modules.sys.service
 
 import com.zhengchalei.cloud.platform.commons.Const
@@ -83,10 +89,8 @@ class SysUserService(
      * @return [SysUserDetailView]
      */
     fun createSysUser(sysUserCreateInput: SysUserCreateInput): SysUserDetailView {
-        if (
-            sysUserCreateInput.username == Const.AdminUser ||
-                sysUserCreateInput.username == Const.Root
-        ) {
+        if (sysUserCreateInput.username == Const.AdminUser ||
+            sysUserCreateInput.username == Const.Root) {
             throw ServiceException("用户名不能为 ${Const.AdminUser}")
         }
         // TODO 集成邮件后, 这里密码应该由邮件发送

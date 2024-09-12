@@ -1,3 +1,9 @@
+/*
+ * 版权所有 © 2024 郑查磊.
+ * 保留所有权利.
+ *
+ * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
+ */
 package com.zhengchalei.cloud.platform.config.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -65,16 +71,14 @@ class SpringSecurityConfig(
                     response.sendError(
                         401,
                         objectMapper.writeValueAsString(
-                            GlobalException.Error(authException.message ?: "未登录")
-                        ),
+                            GlobalException.Error(authException.message ?: "未登录")),
                     )
                 }
                 it.accessDeniedHandler { _, response, accessDeniedException ->
                     response.sendError(
                         403,
                         objectMapper.writeValueAsString(
-                            GlobalException.Error(accessDeniedException.message ?: "无权限")
-                        ),
+                            GlobalException.Error(accessDeniedException.message ?: "无权限")),
                     )
                 }
             }

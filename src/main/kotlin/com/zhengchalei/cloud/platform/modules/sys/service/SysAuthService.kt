@@ -1,3 +1,9 @@
+/*
+ * 版权所有 © 2024 郑查磊.
+ * 保留所有权利.
+ *
+ * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
+ */
 package com.zhengchalei.cloud.platform.modules.sys.service
 
 import com.zhengchalei.cloud.platform.config.IP2RegionService
@@ -65,8 +71,7 @@ class SysAuthService(
                         password = password,
                         captcha = captcha,
                         tenant = tenant,
-                    )
-                ) as TenantAuthenticationToken
+                    )) as TenantAuthenticationToken
             SecurityContextHolder.getContext().authentication = authentication
             val token: String = jwtProvider.createAccessToken(authentication)
             return token
@@ -116,8 +121,7 @@ class SysAuthService(
                     this.sysUser =
                         if (status) makeIdOnly(SysUser::class, userService.currentUserId())
                         else null
-                }
-            )
+                })
         }
     }
 

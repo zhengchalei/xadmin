@@ -1,3 +1,9 @@
+/*
+ * 版权所有 © 2024 郑查磊.
+ * 保留所有权利.
+ *
+ * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
+ */
 package com.zhengchalei.cloud.platform.config.jimmer
 
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -42,8 +48,7 @@ class JimmerCacheConfiguration {
                         CaffeineValueBinder.forProp<Any, Any>(prop)
                             .maximumSize(1024)
                             .duration(caffeineDuration)
-                            .build()
-                    )
+                            .build())
                     .build()
             }
 
@@ -53,8 +58,7 @@ class JimmerCacheConfiguration {
                         CaffeineValueBinder.forObject<Any, Any>(type)
                             .maximumSize(1024)
                             .duration(caffeineDuration)
-                            .build()
-                    )
+                            .build())
                     .build()
             }
 
@@ -64,8 +68,7 @@ class JimmerCacheConfiguration {
                         CaffeineValueBinder.forProp<Any, List<*>>(prop)
                             .maximumSize(1024)
                             .duration(caffeineDuration)
-                            .build()
-                    )
+                            .build())
                     .build()
             }
         }

@@ -1,3 +1,9 @@
+/*
+ * 版权所有 © 2024 郑查磊.
+ * 保留所有权利.
+ *
+ * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
+ */
 package com.zhengchalei.cloud.platform.config.security
 
 import com.zhengchalei.cloud.platform.commons.Const
@@ -30,9 +36,8 @@ object SecurityUtils {
     }
 
     private fun getTenantCaptchaAuthenticationToken(): TenantAuthenticationToken {
-        if (
-            (SecurityContextHolder.getContext().authentication is TenantAuthenticationToken).not()
-        ) {
+        if ((SecurityContextHolder.getContext().authentication is TenantAuthenticationToken)
+            .not()) {
             throw NotLoginException()
         }
         return SecurityContextHolder.getContext().authentication as TenantAuthenticationToken
@@ -51,10 +56,8 @@ object SecurityUtils {
      */
     fun switchTenant(tenant: String, jwtProvider: JwtProvider): String {
         // 判断用户名是否为 superAdmin
-        if (
-            (SecurityContextHolder.getContext().authentication.principal as User).username ==
-                Const.Root
-        ) {
+        if ((SecurityContextHolder.getContext().authentication.principal as User).username ==
+            Const.Root) {
             // 切换租户
             SecurityContextHolder.getContext().authentication =
                 TenantAuthenticationToken(

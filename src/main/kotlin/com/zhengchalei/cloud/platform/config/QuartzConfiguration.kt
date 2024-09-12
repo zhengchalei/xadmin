@@ -1,3 +1,9 @@
+/*
+ * 版权所有 © 2024 郑查磊.
+ * 保留所有权利.
+ *
+ * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
+ */
 package com.zhengchalei.cloud.platform.config
 
 import java.util.*
@@ -36,8 +42,7 @@ class QuartzConfiguration {
         schedulerFactoryBean.isAutoStartup = properties.isAutoStartup
         schedulerFactoryBean.setStartupDelay(properties.startupDelay.seconds.toInt())
         schedulerFactoryBean.setWaitForJobsToCompleteOnShutdown(
-            properties.isWaitForJobsToCompleteOnShutdown
-        )
+            properties.isWaitForJobsToCompleteOnShutdown)
         schedulerFactoryBean.setOverwriteExistingJobs(properties.isOverwriteExistingJobs)
         schedulerFactoryBean.setTaskExecutor(virtualThreadExecutor("quartz"))
         if (properties.properties.isNotEmpty()) {
