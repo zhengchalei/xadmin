@@ -7,7 +7,7 @@
 package com.zhengchalei.cloud.platform.modules.sys.service
 
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysLoginLogDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysLoginLogPageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysLoginLogListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysLoginLogPageView
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysLoginLogRepository
 import org.springframework.data.domain.Page
@@ -39,7 +39,7 @@ class SysLoginLogService(val sysLoginLogRepository: SysLoginLogRepository) {
      * @param [specification] 查询条件构造器
      * @return [List<SysLoginLogPageView>?]
      */
-    fun findSysLoginLogList(specification: SysLoginLogPageSpecification): List<SysLoginLogPageView>? =
+    fun findSysLoginLogList(specification: SysLoginLogListSpecification): List<SysLoginLogPageView>? =
         this.sysLoginLogRepository.findList(specification)
 
     /**
@@ -50,7 +50,7 @@ class SysLoginLogService(val sysLoginLogRepository: SysLoginLogRepository) {
      * @return [Page<SysLoginLogPageView>]
      */
     fun findSysLoginLogPage(
-        specification: SysLoginLogPageSpecification,
+        specification: SysLoginLogListSpecification,
         page: PageRequest,
     ): Page<SysLoginLogPageView> = this.sysLoginLogRepository.findPage(specification, page)
 

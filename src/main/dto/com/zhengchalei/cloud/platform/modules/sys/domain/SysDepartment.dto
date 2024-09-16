@@ -1,4 +1,4 @@
-specification SysDepartmentPageSpecification {
+specification SysDepartmentListSpecification {
     eq(id)
     like/i(name)
     eq(status)

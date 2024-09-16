@@ -30,7 +30,7 @@ class SysRoleController(val sysRoleService: SysRoleService) {
 
     @PreAuthorize("hasAuthority('sys:role:list') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysRoleList(@NotNull specification: SysRolePageSpecification): R<List<SysRolePageView>> {
+    fun findSysRoleList(@NotNull specification: SysRoleListSpecification): R<List<SysRolePageView>> {
         val data = sysRoleService.findSysRoleList(specification)
         return R(data = data)
     }
@@ -38,7 +38,7 @@ class SysRoleController(val sysRoleService: SysRoleService) {
     @PreAuthorize("hasAuthority('sys:role:page') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysRolePage(
-        @NotNull specification: SysRolePageSpecification,
+        @NotNull specification: SysRoleListSpecification,
         @NotNull pageable: QueryPage,
     ): R<MutableList<SysRolePageView>> {
         val data = sysRoleService.findSysRolePage(specification, pageable.page())

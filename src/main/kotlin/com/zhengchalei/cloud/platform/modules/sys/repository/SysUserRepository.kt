@@ -12,7 +12,7 @@ import com.zhengchalei.cloud.platform.config.jimmer.TenantFilter
 import com.zhengchalei.cloud.platform.config.security.SecurityUtils
 import com.zhengchalei.cloud.platform.modules.sys.domain.*
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserPageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserPageView
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.spring.repository.fetchSpringPage
@@ -30,7 +30,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
             }
             .fetchOne()
 
-    fun findPage(specification: SysUserPageSpecification, pageable: Pageable): Page<SysUserPageView> =
+    fun findPage(specification: SysUserListSpecification, pageable: Pageable): Page<SysUserPageView> =
         sql.createQuery(SysUser::class) {
                 orderBy(table.id.asc())
                 where(specification)
@@ -39,7 +39,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
             .fetchSpringPage(pageable)
 
     fun findPage(
-        specification: SysUserPageSpecification,
+        specification: SysUserListSpecification,
         pageable: Pageable,
         sysDepartmentIds: List<Long>,
     ): Page<SysUserPageView> {
@@ -52,7 +52,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
             .fetchSpringPage(pageable)
     }
 
-    fun findList(specification: SysUserPageSpecification): List<SysUserPageView> =
+    fun findList(specification: SysUserListSpecification): List<SysUserPageView> =
         sql.createQuery(SysUser::class) {
                 orderBy(table.id.asc())
                 where(specification)

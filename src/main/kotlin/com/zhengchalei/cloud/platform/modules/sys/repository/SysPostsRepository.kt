@@ -8,7 +8,7 @@ package com.zhengchalei.cloud.platform.modules.sys.repository
 
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysPosts
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPostsDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPostsPageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPostsListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPostsPageView
 import com.zhengchalei.cloud.platform.modules.sys.domain.id
 import org.babyfish.jimmer.spring.repository.KRepository
@@ -27,7 +27,7 @@ interface SysPostsRepository : KRepository<SysPosts, Long> {
             .fetchOne()
 
     fun findPage(
-        specification: SysPostsPageSpecification,
+        specification: SysPostsListSpecification,
         pageable: Pageable,
     ): Page<SysPostsPageView> =
         sql.createQuery(SysPosts::class) {
@@ -37,7 +37,7 @@ interface SysPostsRepository : KRepository<SysPosts, Long> {
             }
             .fetchSpringPage(pageable)
 
-    fun findList(specification: SysPostsPageSpecification): List<SysPostsPageView> =
+    fun findList(specification: SysPostsListSpecification): List<SysPostsPageView> =
         sql.createQuery(SysPosts::class) {
                 orderBy(table.id.asc())
                 where(specification)

@@ -50,7 +50,7 @@ class SysUserService(
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysUserList(specification: SysUserPageSpecification) = this.sysUserRepository.findList(specification)
+    fun findSysUserList(specification: SysUserListSpecification) = this.sysUserRepository.findList(specification)
 
     /**
      * 查找系统用户分页
@@ -59,7 +59,7 @@ class SysUserService(
      * @param [pageable] 可分页
      */
     fun findSysUserPage(
-        specification: SysUserPageSpecification,
+        specification: SysUserListSpecification,
         pageable: Pageable,
     ): Page<SysUserPageView> {
         // 此处为了查询能够查询到子节点

@@ -9,7 +9,7 @@ package com.zhengchalei.cloud.platform.modules.sys.repository
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysTenant
 import com.zhengchalei.cloud.platform.modules.sys.domain.by
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysTenantDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysTenantPageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysTenantListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysTenantPageView
 import com.zhengchalei.cloud.platform.modules.sys.domain.id
 import org.babyfish.jimmer.kt.new
@@ -41,7 +41,7 @@ interface SysTenantRepository : KRepository<SysTenant, Long> {
      * @return [Page<SysTenantPageView>]
      */
     fun findPage(
-        specification: SysTenantPageSpecification,
+        specification: SysTenantListSpecification,
         pageable: Pageable,
     ): Page<SysTenantPageView> =
         sql.createQuery(SysTenant::class) {
@@ -57,7 +57,7 @@ interface SysTenantRepository : KRepository<SysTenant, Long> {
      * @param [specification] 查询条件构造器
      * @return [List<SysTenantPageView>]
      */
-    fun findList(specification: SysTenantPageSpecification): List<SysTenantPageView> =
+    fun findList(specification: SysTenantListSpecification): List<SysTenantPageView> =
         sql.createQuery(SysTenant::class) {
                 orderBy(table.id.asc())
                 where(specification)

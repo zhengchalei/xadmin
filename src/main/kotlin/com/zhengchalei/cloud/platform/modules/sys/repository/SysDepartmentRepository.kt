@@ -30,7 +30,7 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
             .fetchOne()
 
     fun findPage(
-        specification: SysDepartmentPageSpecification,
+        specification: SysDepartmentListSpecification,
         pageable: Pageable,
     ): Page<SysDepartmentPageView> =
         sql.createQuery(SysDepartment::class) {
@@ -40,7 +40,7 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
             }
             .fetchSpringPage(pageable)
 
-    fun findList(specification: SysDepartmentPageSpecification): List<SysDepartmentPageView> =
+    fun findList(specification: SysDepartmentListSpecification): List<SysDepartmentPageView> =
         sql.createQuery(SysDepartment::class) {
                 orderBy(table.sort.asc())
                 where(specification)
@@ -48,7 +48,7 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
             }
             .execute()
 
-    fun findTree(specification: SysDepartmentPageSpecification) =
+    fun findTree(specification: SysDepartmentListSpecification) =
         sql.createQuery(SysDepartment::class) {
                 orderBy(table.sort.asc())
                 where(table.parentId.isNull())
@@ -57,7 +57,7 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
             }
             .execute()
 
-    fun findTreeRoot(specification: SysDepartmentPageSpecification) =
+    fun findTreeRoot(specification: SysDepartmentListSpecification) =
         sql.createQuery(SysDepartment::class) {
                 orderBy(table.sort.asc())
                 where(table.parentId.isNull())
@@ -66,7 +66,7 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
             }
             .execute()
 
-    fun findTreeSelect(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeSelectView> =
+    fun findTreeSelect(specification: SysDepartmentListSpecification): List<SysDepartmentTreeSelectView> =
         sql.createQuery(SysDepartment::class) {
                 orderBy(table.sort.asc())
                 where(table.parentId.isNull())

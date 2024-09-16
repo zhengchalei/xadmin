@@ -32,7 +32,7 @@ class SysTenantController(val sysTenantService: SysTenantService) {
 
     @PreAuthorize(Const.ONLY_ROOT_AUTHORIZE_EL)
     @GetMapping("/list")
-    fun findSysTenantList(@NotNull specification: SysTenantPageSpecification): R<List<SysTenantPageView>> {
+    fun findSysTenantList(@NotNull specification: SysTenantListSpecification): R<List<SysTenantPageView>> {
         val data = sysTenantService.findSysTenantList(specification)
         return R(data = data)
     }
@@ -40,7 +40,7 @@ class SysTenantController(val sysTenantService: SysTenantService) {
     @PreAuthorize(Const.ONLY_ROOT_AUTHORIZE_EL)
     @GetMapping("/page")
     fun findSysTenantPage(
-        @NotNull specification: SysTenantPageSpecification,
+        @NotNull specification: SysTenantListSpecification,
         @NotNull pageable: QueryPage,
     ): R<MutableList<SysTenantPageView>> {
         val data = sysTenantService.findSysTenantPage(specification, pageable.page())

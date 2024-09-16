@@ -11,7 +11,7 @@ import com.zhengchalei.cloud.platform.config.ServiceException
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysTenant
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysTenantCreateInput
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysTenantDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysTenantPageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysTenantListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysTenantUpdateInput
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysTenantRepository
 import org.springframework.data.domain.Pageable
@@ -44,7 +44,7 @@ class SysTenantService(private val sysTenantRepository: SysTenantRepository) {
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysTenantList(specification: SysTenantPageSpecification) = this.sysTenantRepository.findList(specification)
+    fun findSysTenantList(specification: SysTenantListSpecification) = this.sysTenantRepository.findList(specification)
 
     /**
      * 查找系统租户分页
@@ -52,7 +52,7 @@ class SysTenantService(private val sysTenantRepository: SysTenantRepository) {
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysTenantPage(specification: SysTenantPageSpecification, pageable: Pageable) =
+    fun findSysTenantPage(specification: SysTenantListSpecification, pageable: Pageable) =
         this.sysTenantRepository.findPage(specification, pageable)
 
     /**

@@ -1,4 +1,4 @@
-specification SysLoginLogPageSpecification {
+specification SysLoginLogListSpecification {
     eq(id)
     like/i(username)
     like/i(password)

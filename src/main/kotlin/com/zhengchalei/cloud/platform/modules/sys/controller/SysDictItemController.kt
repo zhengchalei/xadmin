@@ -30,7 +30,7 @@ class SysDictItemController(val sysDictItemService: SysDictItemService) {
 
     @PreAuthorize("hasAuthority('sys:dict-item:list') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysDictItemList(@NotNull specification: SysDictItemPageSpecification): R<List<SysDictItemPageView>> {
+    fun findSysDictItemList(@NotNull specification: SysDictItemListSpecification): R<List<SysDictItemPageView>> {
         val data = sysDictItemService.findSysDictItemList(specification)
         return R(data = data)
     }
@@ -38,7 +38,7 @@ class SysDictItemController(val sysDictItemService: SysDictItemService) {
     @PreAuthorize("hasAuthority('sys:dict-item:page') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysDictItemPage(
-        @NotNull specification: SysDictItemPageSpecification,
+        @NotNull specification: SysDictItemListSpecification,
         @NotNull pageable: QueryPage,
     ): R<MutableList<SysDictItemPageView>> {
         val data = sysDictItemService.findSysDictItemPage(specification, pageable.page())
