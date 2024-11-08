@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/sys/permission")
 class SysPermissionController(val sysPermissionService: SysPermissionService) {
-    @PreAuthorize("hasAuthority('sys:permission:id') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:permission:read') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysPermissionById(@PathVariable id: Long): R<SysPermissionDetailView> {
         val data = sysPermissionService.findSysPermissionById(id)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:permission:list') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:permission:read') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysPermissionList(@NotNull specification: SysPermissionPageSpecification): R<List<SysPermissionPageView>> {
         val data = sysPermissionService.findSysPermissionList(specification)
@@ -58,7 +58,7 @@ class SysPermissionController(val sysPermissionService: SysPermissionService) {
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:permission:page') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:permission:read') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysPermissionPage(
         @NotNull specification: SysPermissionPageSpecification,

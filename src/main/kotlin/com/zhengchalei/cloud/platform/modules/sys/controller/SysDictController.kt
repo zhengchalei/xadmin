@@ -21,21 +21,21 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/sys/dict")
 class SysDictController(val sysDictService: SysDictService) {
-    @PreAuthorize("hasAuthority('sys:dict:id') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict:read') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysDictById(@PathVariable id: Long): R<SysDictDetailView> {
         val data = sysDictService.findSysDictById(id)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict:list') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict:read') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysDictList(@NotNull specification: SysDictPageSpecification): R<List<SysDictPageView>> {
         val data = sysDictService.findSysDictList(specification)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict:page') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict:read') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysDictPage(
         @NotNull specification: SysDictPageSpecification,

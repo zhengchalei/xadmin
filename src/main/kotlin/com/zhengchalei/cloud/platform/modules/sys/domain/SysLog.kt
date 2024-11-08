@@ -6,12 +6,12 @@
  */
 package com.zhengchalei.cloud.platform.modules.sys.domain
 
-import com.zhengchalei.cloud.platform.config.jimmer.TenantAware
+import com.zhengchalei.cloud.platform.config.jimmer.BaseEntity
 import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_log")
-interface SysLog : TenantAware {
+interface SysLog : BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     @ManyToOne val user: SysUser?

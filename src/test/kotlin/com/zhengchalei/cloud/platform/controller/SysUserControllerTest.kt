@@ -2,7 +2,7 @@ package com.zhengchalei.cloud.platform.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.jsonpath.JsonPath
-import com.zhengchalei.cloud.platform.config.WithMockTenantUser
+import com.zhengchalei.cloud.platform.config.WithMockUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.Gender
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserCreateInput
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserUpdateInput
@@ -23,9 +23,9 @@ import java.time.LocalDate
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(OrderAnnotation::class)
-@WithMockTenantUser(
+@WithMockUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:user:create", "sys:user:update", "sys:user:delete", "sys:user:list", "sys:user:page", "sys:user:id"],
+    authorities = ["ROLE_admin", "sys:user:create", "sys:user:update", "sys:user:delete", "sys:user:read", "sys:user:page", "sys:user:read"],
 )
 class SysUserControllerTest {
     @Autowired

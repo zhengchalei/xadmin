@@ -2,7 +2,7 @@ package com.zhengchalei.cloud.platform.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.jsonpath.JsonPath
-import com.zhengchalei.cloud.platform.config.WithMockTenantUser
+import com.zhengchalei.cloud.platform.config.WithMockUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPermissionCreateInput
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPermissionUpdateInput
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
@@ -21,9 +21,9 @@ import org.springframework.test.web.servlet.post
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(OrderAnnotation::class)
-@WithMockTenantUser(
+@WithMockUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:permission:create", "sys:permission:update", "sys:permission:delete", "sys:permission:list", "sys:permission:tree-root", "sys:permission:page", "sys:permission:tree", "sys:permission:id"],
+    authorities = ["ROLE_admin", "sys:permission:create", "sys:permission:update", "sys:permission:delete", "sys:permission:read", "sys:permission:tree-root", "sys:permission:read", "sys:permission:tree", "sys:permission:read"],
 )
 class SysPermissionControllerTest {
     @Autowired

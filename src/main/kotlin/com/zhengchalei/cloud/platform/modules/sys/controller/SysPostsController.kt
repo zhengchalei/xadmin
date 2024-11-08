@@ -21,21 +21,21 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/sys/posts")
 class SysPostsController(val sysPostsService: SysPostsService) {
-    @PreAuthorize("hasAuthority('sys:post:id') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:post:read') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysPostsById(@PathVariable id: Long): R<SysPostsDetailView> {
         val data = sysPostsService.findSysPostsById(id)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:list') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:post:read') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysPostsList(@NotNull specification: SysPostsPageSpecification): R<List<SysPostsPageView>> {
         val data = sysPostsService.findSysPostsList(specification)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:page') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:post:read') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysPostsPage(
         @NotNull specification: SysPostsPageSpecification,

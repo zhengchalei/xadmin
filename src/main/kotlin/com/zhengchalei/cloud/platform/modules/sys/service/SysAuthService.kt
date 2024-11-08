@@ -12,7 +12,7 @@ import com.zhengchalei.cloud.platform.config.ServiceException
 import com.zhengchalei.cloud.platform.config.VirtualThreadExecutor
 import com.zhengchalei.cloud.platform.config.security.JwtProvider
 import com.zhengchalei.cloud.platform.config.security.SecurityUtils
-import com.zhengchalei.cloud.platform.config.security.TenantAuthenticationToken
+import com.zhengchalei.cloud.platform.config.security.AuthenticationToken
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysLoginLog
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.by
@@ -60,33 +60,31 @@ class SysAuthService(
         username: String,
         password: String,
         captcha: String,
-        tenant: String,
         ip: String,
     ): String {
         try {
-            log.info("登录: username: {}, tenant: {}, ip: {}, captcha: {}", username, tenant, ip, captcha)
-            val authentication: TenantAuthenticationToken =
+            log.info("登录: username: {}, ip: {}, captcha: {}", username, ip, captcha)
+            val authentication: AuthenticationToken =
                 authenticationManager.authenticate(
-                    TenantAuthenticationToken(
+                    AuthenticationToken(
                         username = username,
                         password = password,
                         captcha = captcha,
-                        tenant = tenant,
-                    )) as TenantAuthenticationToken
+                    )) as AuthenticationToken
             SecurityContextHolder.getContext().authentication = authentication
             log.info("登录成功, username {} ", username)
             val token: String = jwtProvider.createAccessToken(authentication)
             return token
         } catch (e: ServiceException) {
             log.error("登录失败", e)
-            saveLoginLog(username, password, false, e.message, ip, tenant)
+            saveLoginLog(username, password, false, e.message, ip)
             throw e
         } catch (e: Exception) {
             log.error("登录失败", e)
-            saveLoginLog(username, password, false, e.message, ip, tenant)
+            saveLoginLog(username, password, false, e.message, ip)
             throw LoginFailException()
         } finally {
-            saveLoginLog(username, "", true, null, ip, tenant)
+            saveLoginLog(username, "", true, null, ip)
         }
     }
 
@@ -106,14 +104,12 @@ class SysAuthService(
         status: Boolean,
         errorMessage: String?,
         ip: String,
-        tenant: String,
     ) {
         this.virtualThreadExecutor.submit {
             val address = this.ip2RegionService.search(ip)
             log.info(
-                "保存登录日志: username: {}, tenant: {}, ip: {}, address: {}, status: {}, errorMessage: {}",
+                "保存登录日志: username: {}, ip: {}, address: {}, status: {}, errorMessage: {}",
                 username,
-                tenant,
                 ip,
                 address,
                 status,
@@ -128,21 +124,11 @@ class SysAuthService(
                     this.loginTime = LocalDateTime.now()
                     this.ip = ip
                     this.address = address
-                    this.tenant = tenant
                     this.sysUser = if (status) makeIdOnly(SysUser::class, userService.currentUserId()) else null
                 })
         }
     }
 
-    fun switchTenant(tenant: String): String {
-        log.info(
-            "用户：{}, 当前租户： {} 切换租户: {}",
-            SecurityUtils.getCurrentUsername(),
-            SecurityUtils.getCurrentTenant(),
-            tenant,
-        )
-        return SecurityUtils.switchTenant(tenant, jwtProvider)
-    }
 
     fun logout() {
         // TODO 期望值， 如果有Redis,使用Redis 存储JWT -》 User

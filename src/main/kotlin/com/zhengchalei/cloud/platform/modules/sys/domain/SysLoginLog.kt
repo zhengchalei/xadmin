@@ -30,5 +30,4 @@ interface SysLoginLog {
 
     @ManyToOne @JoinColumn(name = "user_id") val sysUser: SysUser?
 
-    val tenant: String
 }

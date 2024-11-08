@@ -11,17 +11,16 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
-class TenantAuthenticationFilter : UsernamePasswordAuthenticationFilter() {
+class AuthenticationFilter : UsernamePasswordAuthenticationFilter() {
     override fun attemptAuthentication(
         request: HttpServletRequest,
         response: HttpServletResponse,
     ): Authentication {
         val username = request.getParameter("username")
         val password = request.getParameter("password")
-        val tenantId = request.getParameter("tenant")
         val captcha = request.getParameter("captcha")
 
-        val authRequest = TenantAuthenticationToken(username, password, tenantId, captcha)
+        val authRequest = AuthenticationToken(username, password, captcha)
         super.setDetails(request, authRequest)
         return authenticationManager.authenticate(authRequest)
     }

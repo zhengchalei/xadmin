@@ -8,12 +8,8 @@ package com.zhengchalei.cloud.platform.config.security
 
 import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.*
-import com.zhengchalei.cloud.platform.modules.sys.domain.SysTenant
 import com.zhengchalei.cloud.platform.modules.sys.domain.code
-import com.zhengchalei.cloud.platform.modules.sys.domain.id
-import com.zhengchalei.cloud.platform.modules.sys.repository.SysTenantRepository
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysUserRepository
-import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
@@ -32,44 +28,31 @@ import org.springframework.stereotype.Component
  * @constructor Create empty Tenant authentication provider
  */
 @Component
-class TenantAuthenticationProvider(
-    val sysTenantRepository: SysTenantRepository,
+class AuthenticationProvider(
     val sysUserRepository: SysUserRepository,
     val passwordEncoder: PasswordEncoder,
 ) : AuthenticationProvider {
     override fun authenticate(authentication: Authentication): Authentication {
         val username = authentication.name
         val password = authentication.credentials as String
-        val tenant = (authentication as TenantAuthenticationToken).tenant
-        val captcha = authentication.captcha
+        val captcha = (authentication as AuthenticationToken).captcha
         // 验证租户ID、验证码和用户密码的逻辑
-        if (isValidTenant(tenant) && isValidCaptcha(captcha)) {
-            val userDetails = loadUserByUsername(username, password, tenant)
-            return TenantAuthenticationToken(username, password, tenant, captcha, userDetails.authorities)
+        if (isValidCaptcha(captcha)) {
+            val userDetails = loadUserByUsername(username, password)
+            return AuthenticationToken(username, password, captcha, userDetails.authorities)
         }
         throw UserPasswordErrorException()
     }
 
     override fun supports(authentication: Class<*>): Boolean =
-        TenantAuthenticationToken::class.java.isAssignableFrom(authentication)
-
-    private fun isValidTenant(tenant: String): Boolean {
-        // 这里实现租户ID验证逻辑
-        this.sysTenantRepository.sql
-            .createQuery(SysTenant::class) {
-                where(table.code eq tenant)
-                select(table.id)
-            }
-            .fetchOneOrNull() ?: throw TenantNotFoundException()
-        return true
-    }
+        AuthenticationToken::class.java.isAssignableFrom(authentication)
 
     private fun isValidCaptcha(captcha: String): Boolean {
         // TODO 这里实现验证码验证逻辑
         return true ?: throw CaptchaErrorException()
     }
 
-    fun loadUserByUsername(username: String, password: String, tenant: String): UserDetails {
+    fun loadUserByUsername(username: String, password: String): UserDetails {
         if (username == Const.Root) {
             val user = sysUserRepository.findByUsernameForLogin(username) ?: throw UserNotFoundException()
             if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
@@ -84,7 +67,7 @@ class TenantAuthenticationProvider(
             )
         }
 
-        val user = sysUserRepository.findByUsernameAndTenant(username, tenant) ?: throw UserNotFoundException()
+        val user = sysUserRepository.findByUsernameAndTenant(username) ?: throw UserNotFoundException()
         if (user.username == Const.AdminUser) {
             if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
             return User(

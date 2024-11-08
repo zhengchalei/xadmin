@@ -16,10 +16,9 @@ import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilde
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.format.Formatter
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
-class JacksonConfig : WebMvcConfigurer {
+class JacksonConfig {
     private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")

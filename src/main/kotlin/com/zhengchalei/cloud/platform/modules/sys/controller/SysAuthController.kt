@@ -40,7 +40,6 @@ class SysAuthController(
                 loginDTO.username,
                 loginDTO.password,
                 loginDTO.captcha,
-                loginDTO.tenant,
                 ip,
             )
         return R(data = LoginResponse(accessToken = token, refreshToken = token, username = loginDTO.username))
@@ -79,10 +78,4 @@ class SysAuthController(
         return R.success(data = true)
     }
 
-    // 至于 SUPER_ADMIN 可以切换租户
-    @PostMapping("/switch-tenant/{tenant}")
-    fun switchTenant(@PathVariable tenant: String): R<LoginResponse> {
-        val token = sysAuthService.switchTenant(tenant)
-        return R(data = LoginResponse(accessToken = token, refreshToken = token, username = Const.Root))
-    }
 }

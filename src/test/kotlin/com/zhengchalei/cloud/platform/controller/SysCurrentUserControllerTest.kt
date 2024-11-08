@@ -1,7 +1,7 @@
 package com.zhengchalei.cloud.platform.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.zhengchalei.cloud.platform.config.WithMockTenantUser
+import com.zhengchalei.cloud.platform.config.WithMockUser
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
@@ -15,9 +15,9 @@ import org.springframework.test.web.servlet.get
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(OrderAnnotation::class)
-@WithMockTenantUser(
+@WithMockUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:department:create", "sys:department:update", "sys:department:delete", "sys:department:list", "sys:department:page", "sys:department:tree", "sys:department:tree-root", "sys:department:id"],
+    authorities = ["ROLE_admin", "sys:department:create", "sys:department:update", "sys:department:delete", "sys:department:read", "sys:department:read", "sys:department:tree", "sys:department:tree-root", "sys:department:read"],
 )
 class SysCurrentUserControllerTest {
     @Autowired

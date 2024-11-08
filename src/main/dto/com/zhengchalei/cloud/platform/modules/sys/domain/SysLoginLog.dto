@@ -5,7 +5,6 @@ specification SysLoginLogPageSpecification {
     like/i(ip)
     like/i(address)
     eq(status)
-    eq(tenant)
     like/i(errorMessage)
     ge(loginTime) as startTime
     le(loginTime) as endTime

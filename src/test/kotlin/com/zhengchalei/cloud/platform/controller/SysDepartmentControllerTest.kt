@@ -2,7 +2,7 @@ package com.zhengchalei.cloud.platform.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.jsonpath.JsonPath
-import com.zhengchalei.cloud.platform.config.WithMockTenantUser
+import com.zhengchalei.cloud.platform.config.WithMockUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDepartmentCreateInput
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDepartmentUpdateInput
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
@@ -21,9 +21,9 @@ import org.springframework.test.web.servlet.post
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(OrderAnnotation::class)
-@WithMockTenantUser(
+@WithMockUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:department:create", "sys:department:update", "sys:department:delete", "sys:department:list", "sys:department:page", "sys:department:tree", "sys:department:tree-root", "sys:department:id"],
+    authorities = ["ROLE_admin", "sys:department:create", "sys:department:update", "sys:department:delete", "sys:department:read", "sys:department:read", "sys:department:tree", "sys:department:tree-root", "sys:department:read"],
 )
 class SysDepartmentControllerTest {
     @Autowired

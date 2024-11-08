@@ -2,7 +2,7 @@ package com.zhengchalei.cloud.platform.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zhengchalei.cloud.platform.commons.Const
-import com.zhengchalei.cloud.platform.config.WithMockTenantUser
+import com.zhengchalei.cloud.platform.config.WithMockUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.LoginDTO
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
 import org.junit.jupiter.api.Test
@@ -33,7 +33,6 @@ class SysAuthControllerTest {
                         LoginDTO(
                             username = "admin",
                             password = "123456",
-                            tenant = "default",
                             captcha = "1234",
                         ),
                     )
@@ -55,7 +54,6 @@ class SysAuthControllerTest {
                         LoginDTO(
                             username = "root",
                             password = "123456",
-                            tenant = "default",
                             captcha = "1234",
                         ),
                     )
@@ -80,7 +78,6 @@ class SysAuthControllerTest {
                         LoginDTO(
                             username = "admin",
                             password = "1234561",
-                            tenant = "default",
                             captcha = "1234",
                         ),
                     )
@@ -108,7 +105,6 @@ class SysAuthControllerTest {
                         LoginDTO(
                             username = "root",
                             password = "error password",
-                            tenant = "default",
                             captcha = "1234",
                         ),
                     )
@@ -136,7 +132,6 @@ class SysAuthControllerTest {
                         LoginDTO(
                             username = "root",
                             password = "123456",
-                            tenant = "default",
                             captcha = "1234",
                         ),
                     )
@@ -164,7 +159,7 @@ class SysAuthControllerTest {
     }
 
     @Test
-    @WithMockTenantUser(
+    @WithMockUser(
         username = Const.Root,
     )
     fun switchTenant() {
@@ -182,7 +177,7 @@ class SysAuthControllerTest {
     }
 
     @Test
-    @WithMockTenantUser(
+    @WithMockUser(
         username = Const.AdminUser,
     )
     fun switchTenantFail() {

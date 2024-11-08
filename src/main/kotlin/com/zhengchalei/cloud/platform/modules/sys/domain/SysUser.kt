@@ -7,13 +7,13 @@
 package com.zhengchalei.cloud.platform.modules.sys.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zhengchalei.cloud.platform.config.jimmer.TenantAware
+import com.zhengchalei.cloud.platform.config.jimmer.BaseEntity
 import java.time.LocalDate
 import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_user")
-interface SysUser : TenantAware {
+interface SysUser : BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     @Key val username: String

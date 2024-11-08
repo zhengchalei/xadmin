@@ -17,8 +17,6 @@ object Const {
 
     const val DefaultPassword = "123456"
 
-    const val DefaultTenant = "default"
-
     const val SecurityRolePrifix = "ROLE_"
 
     // env

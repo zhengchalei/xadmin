@@ -2,7 +2,7 @@ package com.zhengchalei.cloud.platform.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.jsonpath.JsonPath
-import com.zhengchalei.cloud.platform.config.WithMockTenantUser
+import com.zhengchalei.cloud.platform.config.WithMockUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictCreateInput
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictUpdateInput
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
@@ -21,9 +21,9 @@ import org.springframework.test.web.servlet.post
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(OrderAnnotation::class)
-@WithMockTenantUser(
+@WithMockUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:dict:create", "sys:dict:update", "sys:dict:delete", "sys:dict:list", "sys:dict:page", "sys:dict:id"],
+    authorities = ["ROLE_admin", "sys:dict:create", "sys:dict:update", "sys:dict:delete", "sys:dict:read", "sys:dict:page", "sys:dict:read"],
 )
 class SysDictControllerTest {
     @Autowired

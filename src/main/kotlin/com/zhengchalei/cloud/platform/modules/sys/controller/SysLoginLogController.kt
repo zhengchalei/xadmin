@@ -23,21 +23,21 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/sys/login-log")
 class SysLoginLogController(val sysLoginLogService: SysLoginLogService) {
-    @PreAuthorize("hasAuthority('sys:loginLog:id') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:loginLog:read') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysLoginLogById(@PathVariable id: Long): R<SysLoginLogDetailView> {
         val data = sysLoginLogService.findSysLoginLogById(id)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:loginLog:list') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:loginLog:read') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysLoginLogList(@NotNull specification: SysLoginLogPageSpecification): R<List<SysLoginLogPageView>> {
         val data = sysLoginLogService.findSysLoginLogList(specification)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:loginLog:page') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:loginLog:read') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysLoginLogPage(
         @NotNull specification: SysLoginLogPageSpecification,

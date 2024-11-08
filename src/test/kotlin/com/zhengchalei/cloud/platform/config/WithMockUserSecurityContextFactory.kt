@@ -1,7 +1,7 @@
 package com.zhengchalei.cloud.platform.config
 
 import com.zhengchalei.cloud.platform.commons.Const
-import com.zhengchalei.cloud.platform.config.security.TenantAuthenticationToken
+import com.zhengchalei.cloud.platform.config.security.AuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.test.context.support.WithSecurityContextFactory
 import java.util.*
 
-class WithMockTenantUserSecurityContextFactory : WithSecurityContextFactory<WithMockTenantUser> {
-    override fun createSecurityContext(annotation: WithMockTenantUser): SecurityContext {
+class WithMockUserSecurityContextFactory : WithSecurityContextFactory<WithMockUser> {
+    override fun createSecurityContext(annotation: WithMockUser): SecurityContext {
         val context = SecurityContextHolder.createEmptyContext()
         val authorities: MutableList<GrantedAuthority> = ArrayList()
         authorities.addAll(
@@ -31,7 +31,7 @@ class WithMockTenantUserSecurityContextFactory : WithSecurityContextFactory<With
         )
         val principal: UserDetails = User(annotation.username, annotation.password, authorities)
         val auth: Authentication =
-            TenantAuthenticationToken(principal, annotation.password, annotation.tenant, "", authorities)
+            AuthenticationToken(principal, annotation.password, "", authorities)
         context.authentication = auth
         return context
     }

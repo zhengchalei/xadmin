@@ -3,33 +3,28 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="初始化Default租户数据" author="郑查磊">
+    <changeSet id="初始化数据" author="郑查磊">
         <sql>
-            insert into sys_tenant(name, code, status, description, contact_name, contact_phone, domain, logo, address)
-            values ('默认租户', 'default', true, '默认租户', '郑查磊', '16255198881', 'https://zhengchalei.github.io', null,
-                    '上海市黄浦区汇泉路99999号');
+            insert into sys_department(name, parent_id, sort, status, description)
+            values ('研发部', null, 1, true, '研发部门'),
+                   ('产品部', null, 2, true, '产品部门'),
+                   ('市场部', null, 3, true, '市场部门'),
+                   ('研发一组', 1, 1, true, '研发一组'),
+                   ('研发二组', 1, 2, true, '研发二组'),
+                   ('产品一组', 2, 1, true, '产品一组'),
+                   ('产品二组', 2, 2, true, '产品二组'),
+                   ('市场一组', 3, 1, true, '市场一组'),
+                   ('市场二组', 3, 2, true, '市场二组');
 
+            insert into sys_posts(name, sort, status, description)
+            values ('董事长', 1, true, '董事长'),
+                   ('项目经理', 2, true, '项目经理'),
+                   ('部门经理', 3, true, '部门经理'),
+                   ('普通员工', 4, true, '普通员工');
 
-            insert into sys_department(name, parent_id, sort, status, description, tenant)
-            values ('研发部', null, 1, true, '研发部门', 'default'),
-                   ('产品部', null, 2, true, '产品部门', 'default'),
-                   ('市场部', null, 3, true, '市场部门', 'default'),
-                   ('研发一组', 1, 1, true, '研发一组', 'default'),
-                   ('研发二组', 1, 2, true, '研发二组', 'default'),
-                   ('产品一组', 2, 1, true, '产品一组', 'default'),
-                   ('产品二组', 2, 2, true, '产品二组', 'default'),
-                   ('市场一组', 3, 1, true, '市场一组', 'default'),
-                   ('市场二组', 3, 2, true, '市场二组', 'default');
-
-            insert into sys_posts(name, sort, status, description, tenant)
-            values ('董事长', 1, true, '董事长', 'default'),
-                   ('项目经理', 2, true, '项目经理', 'default'),
-                   ('部门经理', 3, true, '部门经理', 'default'),
-                   ('普通员工', 4, true, '普通员工', 'default');
-
-            insert into sys_role(name, code, status, description, tenant)
-            values ('超级管理员', 'admin', true, '超级管理员', 'default'),
-                   ('普通用户', 'user', true, '普通用户', 'default');
+            insert into sys_role(name, code, status, description)
+            values ('超级管理员', 'admin', true, '超级管理员'),
+                   ('普通用户', 'user', true, '普通用户');
 
 
             insert into sys_permission(name, code, parent_id, status)
@@ -72,19 +67,19 @@
 
             insert into sys_user(id, username, email, password, avatar, status, department_id, posts_id, gender,
                                  birthday,
-                                 phone_number, tenant)
+                                 phone_number)
             values (-1, 'root', 'mail@gmail.com', '$2a$10$teGAavoNRwk36qcJQX9IaOHQoOYtnxnkakCMQKJwtDGMbULkVd5e2',
                     'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', true, null, null, 'MALE',
-                    '2019-01-01', '16255198881', 'default');
+                    '2019-01-01', '16255198881');
 
             insert into sys_user(username, email, password, avatar, status, department_id, posts_id, gender, birthday,
-                                 phone_number, tenant)
+                                 phone_number)
             values ('admin', 'mail@163.com', '$2a$10$teGAavoNRwk36qcJQX9IaOHQoOYtnxnkakCMQKJwtDGMbULkVd5e2',
                     'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', true, 1, 1, 'MALE',
-                    '2019-01-01', '16255198882', 'default'),
+                    '2019-01-01', '16255198882'),
                    ('editor', 'mail2@163.com', '$2a$10$teGAavoNRwk36qcJQX9IaOHQoOYtnxnkakCMQKJwtDGMbULkVd5e2',
                     'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', true, 1, 1, 'MALE',
-                    '2019-01-01', '16255198883', 'default');
+                    '2019-01-01', '16255198883');
 
             insert into sys_user_role(user_id, role_id)
             values (1, 1),

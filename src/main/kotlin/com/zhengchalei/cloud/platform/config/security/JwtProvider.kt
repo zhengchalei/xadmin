@@ -52,7 +52,7 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
      * @return 签名后的 JWT 对象
      * @throws JOSEException 如果签名过程中出现错误
      */
-    fun createAccessToken(authentication: TenantAuthenticationToken): String {
+    fun createAccessToken(authentication: AuthenticationToken): String {
         // Header
         val header = JWSHeader(JWSAlgorithm.HS256)
 
@@ -76,7 +76,6 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
                         .map { it.authority }
                         .joinToString(","),
                 )
-                .claim("tenant", authentication.tenant)
                 .expirationTime(Date(System.currentTimeMillis() + expiration)) // 1 hour from now
                 .build()
 
@@ -126,17 +125,14 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
                 .split(",")
                 .map { Const.SecurityRolePrifix.plus(it) }
                 .filter { it.isNotBlank() }
-        val tenant = jwtClaimsSet.getStringClaim("tenant")
-
         // 构建权限
         val authorities = mutableListOf(permissions, roles).flatten().map { SimpleGrantedAuthority(it) }
 
         val principal = User(jwtClaimsSet.subject, "", authorities)
 
-        return TenantAuthenticationToken(
+        return AuthenticationToken(
             username = principal,
             password = "",
-            tenant = tenant,
             captcha = "",
             authorities = authorities,
         )

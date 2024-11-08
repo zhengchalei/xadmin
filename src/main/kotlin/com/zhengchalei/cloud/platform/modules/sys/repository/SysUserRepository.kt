@@ -8,7 +8,6 @@ package com.zhengchalei.cloud.platform.modules.sys.repository
 
 import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.jimmer.SuperAdminFilter
-import com.zhengchalei.cloud.platform.config.jimmer.TenantFilter
 import com.zhengchalei.cloud.platform.config.security.SecurityUtils
 import com.zhengchalei.cloud.platform.modules.sys.domain.*
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserDetailView
@@ -62,13 +61,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
 
     fun currentUserInfo(): SysUser {
         val username = SecurityUtils.getCurrentUsername()
-        val sqlClient =
-            if (username == Const.Root) {
-                sql.filters { disableByTypes(TenantFilter::class, SuperAdminFilter::class) }
-            } else {
-                sql
-            }
-        return sqlClient
+        return sql
             .createQuery(SysUser::class) {
                 where(table.username eq username)
                 select(
@@ -83,11 +76,10 @@ interface SysUserRepository : KRepository<SysUser, Long> {
             .fetchOne()
     }
 
-    fun findByUsernameAndTenant(username: String, tenant: String) =
-        sql.filters { disableByTypes(TenantFilter::class) }
+    fun findByUsernameAndTenant(username: String) =
+        sql
             .createQuery(SysUser::class) {
                 where(table.username eq username)
-                where(table.tenant eq tenant)
                 select(
                     table.fetchBy {
                         allScalarFields()
@@ -100,7 +92,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
             .fetchOneOrNull()
 
     fun findByUsernameForLogin(username: String) =
-        sql.filters { disableByTypes(TenantFilter::class, SuperAdminFilter::class) }
+        sql
             .createQuery(SysUser::class) {
                 where(table.username eq username)
                 select(
@@ -118,7 +110,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
         val username = SecurityUtils.getCurrentUsername()
         val sqlClient =
             if (username == Const.Root) {
-                sql.filters { disableByTypes(TenantFilter::class) }
+                sql
             } else {
                 sql
             }

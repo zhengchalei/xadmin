@@ -21,21 +21,21 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/sys/user")
 class SysUserController(val sysUserService: SysUserService) {
-    @PreAuthorize("hasAuthority('sys:user:id') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:user:read') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysUserById(@PathVariable id: Long): R<SysUserDetailView> {
         val data = sysUserService.findSysUserById(id)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:user:list') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:user:read') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysUserList(@NotNull specification: SysUserPageSpecification): R<List<SysUserPageView>> {
         val data = sysUserService.findSysUserList(specification)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:user:page') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:user:read') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysUserPage(
         @NotNull specification: SysUserPageSpecification,

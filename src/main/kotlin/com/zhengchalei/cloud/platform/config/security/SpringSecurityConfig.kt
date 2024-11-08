@@ -25,7 +25,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver
 class SpringSecurityConfig(
     @Value("\${spring.profiles.active}") private val profile: String,
     private val objectMapper: ObjectMapper,
-    private val tenantAuthenticationProvider: TenantAuthenticationProvider,
+    private val tenantAuthenticationProvider: AuthenticationProvider,
     private val handlerExceptionResolver: HandlerExceptionResolver,
 ) {
     @Bean
@@ -34,14 +34,14 @@ class SpringSecurityConfig(
         jwtProvider: JwtProvider,
         authenticationManager: AuthenticationManager,
     ): SecurityFilterChain {
-        val tenantAuthenticationFilter = TenantAuthenticationFilter()
-        tenantAuthenticationFilter.setAuthenticationManager(authenticationManager)
+        val authenticationFilter = AuthenticationFilter()
+        authenticationFilter.setAuthenticationManager(authenticationManager)
         return http
             .addFilterBefore(
                 JwtConfigurer.JwtAuthorizationFilter(jwtProvider, handlerExceptionResolver),
                 UsernamePasswordAuthenticationFilter::class.java,
             )
-            .addFilterBefore(tenantAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .authenticationProvider(tenantAuthenticationProvider)
             .authorizeHttpRequests { authorize ->
 

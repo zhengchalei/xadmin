@@ -4,7 +4,7 @@ plugins {
     jacoco
     kotlin("jvm") version "2.0.20"
     kotlin("plugin.spring") version "2.0.20"
-    id("org.springframework.boot") version "3.3.3"
+    id("org.springframework.boot") version "3.3.5"
     id("io.spring.dependency-management") version "1.1.6"
     id("com.google.devtools.ksp") version "2.0.20-1.0.24"
     id("pmd")
@@ -23,8 +23,6 @@ repositories { mavenCentral() }
 
 configurations { compileOnly { extendsFrom(configurations.annotationProcessor.get()) } }
 
-val jimmerVersion: String by project
-
 dependencies {
     // database
     runtimeOnly("org.postgresql:postgresql")
@@ -36,8 +34,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-quartz")
 
     // orm
-    implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:$jimmerVersion")
-    ksp("org.babyfish.jimmer:jimmer-ksp:$jimmerVersion")
+    implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:latest.release")
+    ksp("org.babyfish.jimmer:jimmer-ksp:latest.release")
 
     // ip2region
     implementation("org.lionsoul:ip2region:latest.release")
@@ -54,13 +52,15 @@ dependencies {
     implementation("com.nimbusds:nimbus-jose-jwt:latest.release")
 
     // openapi
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:latest.release")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     // configuration processor
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     // kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
     // actuator
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -70,6 +70,7 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework.security:spring-security-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

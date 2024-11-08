@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/sys/department")
 class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
-    @PreAuthorize("hasAuthority('sys:department:id') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:read') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysDepartmentById(@PathVariable id: Long): R<SysDepartmentDetailView> {
         val data = sysDepartmentService.findSysDepartmentById(id)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:list') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:read') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysDepartmentList(@NotNull specification: SysDepartmentPageSpecification): R<List<SysDepartmentPageView>> {
         val data = sysDepartmentService.findSysDepartmentList(specification)
@@ -42,7 +42,7 @@ class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:page') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:read') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysDepartmentPage(
         @NotNull specification: SysDepartmentPageSpecification,

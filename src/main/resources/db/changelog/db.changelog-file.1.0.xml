@@ -30,9 +30,5 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="sys_file" baseColumnNames="tenant"
-                                 constraintName="fk_sys_file_tenant"
-                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
-                                 referencedColumnNames="code" referencedTableName="sys_tenant" validate="true"/>
     </changeSet>
 </databaseChangeLog>

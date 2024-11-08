@@ -2,7 +2,7 @@ package com.zhengchalei.cloud.platform.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.jsonpath.JsonPath
-import com.zhengchalei.cloud.platform.config.WithMockTenantUser
+import com.zhengchalei.cloud.platform.config.WithMockUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRoleCreateInput
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRoleUpdateInput
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
@@ -21,9 +21,9 @@ import org.springframework.test.web.servlet.post
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(OrderAnnotation::class)
-@WithMockTenantUser(
+@WithMockUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:role:create", "sys:role:update", "sys:role:delete", "sys:role:list", "sys:role:page", "sys:role:id"],
+    authorities = ["ROLE_admin", "sys:role:create", "sys:role:update", "sys:role:delete", "sys:role:read", "sys:role:page", "sys:role:read"],
 )
 class SysRoleControllerTest {
     @Autowired
