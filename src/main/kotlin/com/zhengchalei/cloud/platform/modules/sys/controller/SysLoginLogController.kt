@@ -9,7 +9,7 @@ package com.zhengchalei.cloud.platform.modules.sys.controller
 import com.zhengchalei.cloud.platform.commons.QueryPage
 import com.zhengchalei.cloud.platform.commons.R
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysLoginLogDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysLoginLogPageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysLoginLogListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysLoginLogPageView
 import com.zhengchalei.cloud.platform.modules.sys.service.SysLoginLogService
 import jakarta.validation.constraints.NotNull
@@ -32,7 +32,7 @@ class SysLoginLogController(val sysLoginLogService: SysLoginLogService) {
 
     @PreAuthorize("hasAuthority('sys:loginLog:read') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysLoginLogList(@NotNull specification: SysLoginLogPageSpecification): R<List<SysLoginLogPageView>> {
+    fun findSysLoginLogList(@NotNull specification: SysLoginLogListSpecification): R<List<SysLoginLogPageView>> {
         val data = sysLoginLogService.findSysLoginLogList(specification)
         return R(data = data)
     }
@@ -40,7 +40,7 @@ class SysLoginLogController(val sysLoginLogService: SysLoginLogService) {
     @PreAuthorize("hasAuthority('sys:loginLog:read') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysLoginLogPage(
-        @NotNull specification: SysLoginLogPageSpecification,
+        @NotNull specification: SysLoginLogListSpecification,
         @NotNull pageable: QueryPage,
     ): R<MutableList<SysLoginLogPageView>> {
         val data = sysLoginLogService.findSysLoginLogPage(specification, pageable.page())

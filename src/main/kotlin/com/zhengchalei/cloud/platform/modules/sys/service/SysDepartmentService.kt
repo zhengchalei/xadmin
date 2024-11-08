@@ -45,7 +45,7 @@ class SysDepartmentService(private val sysDepartmentRepository: SysDepartmentRep
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysDepartmentList(specification: SysDepartmentPageSpecification): List<SysDepartmentPageView> {
+    fun findSysDepartmentList(specification: SysDepartmentListSpecification): List<SysDepartmentPageView> {
         log.info("查找系统部门列表, 查询条件: {}", specification)
         val data = this.sysDepartmentRepository.findList(specification)
         log.debug("查找系统部门列表, 查询条件: {}, 查询结果: {}", specification, data)
@@ -57,7 +57,7 @@ class SysDepartmentService(private val sysDepartmentRepository: SysDepartmentRep
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysDepartmentTree(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeView> {
+    fun findSysDepartmentTree(specification: SysDepartmentListSpecification): List<SysDepartmentTreeView> {
         log.info("查找系统部门树, 查询条件: {}", specification)
         val data = this.sysDepartmentRepository.findTree(specification)
         log.debug("查找系统部门树, 查询条件: {}, 查询结果: {}", specification, data)
@@ -71,7 +71,7 @@ class SysDepartmentService(private val sysDepartmentRepository: SysDepartmentRep
      * @param [pageable] 可分页
      */
     fun findSysDepartmentPage(
-        specification: SysDepartmentPageSpecification,
+        specification: SysDepartmentListSpecification,
         pageable: Pageable,
     ): Page<SysDepartmentPageView> {
         log.info("查找系统部门分页, 查询条件: {}, 分页参数: {}", specification, pageable)
@@ -123,7 +123,7 @@ class SysDepartmentService(private val sysDepartmentRepository: SysDepartmentRep
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysDepartmentTreeRoot(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeRootView> {
+    fun findSysDepartmentTreeRoot(specification: SysDepartmentListSpecification): List<SysDepartmentTreeRootView> {
         log.info("查找系统部门树根, 查询条件: {}", specification)
         val data = this.sysDepartmentRepository.findTreeRoot(specification)
         log.debug("查找系统部门树根, 查询结果: {}", data)
@@ -136,7 +136,7 @@ class SysDepartmentService(private val sysDepartmentRepository: SysDepartmentRep
      * @param [specification] 查询条件构造器
      * @return [List<SysDepartmentTreeSelectView>]
      */
-    fun findSysDepartmentTreeSelect(specification: SysDepartmentPageSpecification): List<SysDepartmentTreeSelectView> {
+    fun findSysDepartmentTreeSelect(specification: SysDepartmentListSpecification): List<SysDepartmentTreeSelectView> {
         log.info("查找系统部门树选择, 查询条件: {}", specification)
         val data = this.sysDepartmentRepository.findTreeSelect(specification)
         log.debug("查找系统部门树选择, 查询结果: {}", data)

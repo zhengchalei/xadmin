@@ -9,7 +9,7 @@ package com.zhengchalei.cloud.platform.modules.sys.repository
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysDict
 import com.zhengchalei.cloud.platform.modules.sys.domain.code
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictPageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictPageView
 import com.zhengchalei.cloud.platform.modules.sys.domain.id
 import org.babyfish.jimmer.spring.repository.KRepository
@@ -27,7 +27,7 @@ interface SysDictRepository : KRepository<SysDict, Long> {
             }
             .fetchOne()
 
-    fun findPage(specification: SysDictPageSpecification, pageable: Pageable): Page<SysDictPageView> =
+    fun findPage(specification: SysDictListSpecification, pageable: Pageable): Page<SysDictPageView> =
         sql.createQuery(SysDict::class) {
                 orderBy(table.id.asc())
                 where(specification)
@@ -35,7 +35,7 @@ interface SysDictRepository : KRepository<SysDict, Long> {
             }
             .fetchSpringPage(pageable)
 
-    fun findList(specification: SysDictPageSpecification): List<SysDictPageView> =
+    fun findList(specification: SysDictListSpecification): List<SysDictPageView> =
         sql.createQuery(SysDict::class) {
                 orderBy(table.id.asc())
                 where(specification)

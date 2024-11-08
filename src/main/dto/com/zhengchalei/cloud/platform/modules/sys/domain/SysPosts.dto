@@ -1,4 +1,4 @@
-specification SysPostsPageSpecification {
+specification SysPostsListSpecification {
     eq(id)
     like/i(name)
     eq(status)

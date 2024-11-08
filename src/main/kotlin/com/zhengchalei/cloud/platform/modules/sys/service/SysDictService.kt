@@ -9,7 +9,7 @@ package com.zhengchalei.cloud.platform.modules.sys.service
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysDict
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictCreateInput
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictPageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictUpdateInput
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysDictRepository
 import org.springframework.data.domain.Pageable
@@ -42,7 +42,7 @@ class SysDictService(private val sysDictRepository: SysDictRepository) {
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysDictList(specification: SysDictPageSpecification) = this.sysDictRepository.findList(specification)
+    fun findSysDictList(specification: SysDictListSpecification) = this.sysDictRepository.findList(specification)
 
     /**
      * 查找系统字典分页
@@ -50,7 +50,7 @@ class SysDictService(private val sysDictRepository: SysDictRepository) {
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysDictPage(specification: SysDictPageSpecification, pageable: Pageable) =
+    fun findSysDictPage(specification: SysDictListSpecification, pageable: Pageable) =
         this.sysDictRepository.findPage(specification, pageable)
 
     /**

@@ -1,4 +1,4 @@
-specification SysUserPageSpecification {
+specification SysUserListSpecification {
     eq(id)
     like/i(username)
     like/i(email)

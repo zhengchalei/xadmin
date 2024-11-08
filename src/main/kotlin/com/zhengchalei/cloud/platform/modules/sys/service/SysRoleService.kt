@@ -11,7 +11,7 @@ import com.zhengchalei.cloud.platform.config.ServiceException
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysRole
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRoleCreateInput
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRoleDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRolePageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRoleListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRoleUpdateInput
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysRoleRepository
 import org.springframework.data.domain.Pageable
@@ -44,7 +44,7 @@ class SysRoleService(private val sysRoleRepository: SysRoleRepository) {
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysRoleList(specification: SysRolePageSpecification) = this.sysRoleRepository.findList(specification)
+    fun findSysRoleList(specification: SysRoleListSpecification) = this.sysRoleRepository.findList(specification)
 
     /**
      * 查找系统角色分页
@@ -52,7 +52,7 @@ class SysRoleService(private val sysRoleRepository: SysRoleRepository) {
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysRolePage(specification: SysRolePageSpecification, pageable: Pageable) =
+    fun findSysRolePage(specification: SysRoleListSpecification, pageable: Pageable) =
         this.sysRoleRepository.findPage(specification, pageable)
 
     /**

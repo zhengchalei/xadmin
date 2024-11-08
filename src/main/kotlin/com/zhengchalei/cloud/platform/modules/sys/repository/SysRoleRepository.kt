@@ -8,7 +8,7 @@ package com.zhengchalei.cloud.platform.modules.sys.repository
 
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysRole
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRoleDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRolePageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRoleListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysRolePageView
 import com.zhengchalei.cloud.platform.modules.sys.domain.id
 import org.babyfish.jimmer.spring.repository.KRepository
@@ -26,7 +26,7 @@ interface SysRoleRepository : KRepository<SysRole, Long> {
             }
             .fetchOne()
 
-    fun findPage(specification: SysRolePageSpecification, pageable: Pageable): Page<SysRolePageView> =
+    fun findPage(specification: SysRoleListSpecification, pageable: Pageable): Page<SysRolePageView> =
         sql.createQuery(SysRole::class) {
                 orderBy(table.id.asc())
                 where(specification)
@@ -34,7 +34,7 @@ interface SysRoleRepository : KRepository<SysRole, Long> {
             }
             .fetchSpringPage(pageable)
 
-    fun findList(specification: SysRolePageSpecification): List<SysRolePageView> =
+    fun findList(specification: SysRoleListSpecification): List<SysRolePageView> =
         sql.createQuery(SysRole::class) {
                 orderBy(table.id.asc())
                 where(specification)

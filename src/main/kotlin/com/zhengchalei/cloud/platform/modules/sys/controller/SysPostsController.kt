@@ -30,7 +30,7 @@ class SysPostsController(val sysPostsService: SysPostsService) {
 
     @PreAuthorize("hasAuthority('sys:post:read') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysPostsList(@NotNull specification: SysPostsPageSpecification): R<List<SysPostsPageView>> {
+    fun findSysPostsList(@NotNull specification: SysPostsListSpecification): R<List<SysPostsPageView>> {
         val data = sysPostsService.findSysPostsList(specification)
         return R(data = data)
     }
@@ -38,7 +38,7 @@ class SysPostsController(val sysPostsService: SysPostsService) {
     @PreAuthorize("hasAuthority('sys:post:read') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysPostsPage(
-        @NotNull specification: SysPostsPageSpecification,
+        @NotNull specification: SysPostsListSpecification,
         @NotNull pageable: QueryPage,
     ): R<MutableList<SysPostsPageView>> {
         val data = sysPostsService.findSysPostsPage(specification, pageable.page())

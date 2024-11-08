@@ -9,7 +9,7 @@ package com.zhengchalei.cloud.platform.modules.sys.service
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysPermission
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPermissionCreateInput
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPermissionDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPermissionPageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPermissionListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPermissionUpdateInput
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysPermissionRepository
 import org.springframework.data.domain.Pageable
@@ -42,7 +42,7 @@ class SysPermissionService(private val sysPermissionRepository: SysPermissionRep
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysPermissionList(specification: SysPermissionPageSpecification) =
+    fun findSysPermissionList(specification: SysPermissionListSpecification) =
         this.sysPermissionRepository.findList(specification)
 
     /**
@@ -50,7 +50,7 @@ class SysPermissionService(private val sysPermissionRepository: SysPermissionRep
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysPermissionTree(specification: SysPermissionPageSpecification) =
+    fun findSysPermissionTree(specification: SysPermissionListSpecification) =
         this.sysPermissionRepository.findTree(specification)
 
     /**
@@ -59,7 +59,7 @@ class SysPermissionService(private val sysPermissionRepository: SysPermissionRep
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysPermissionPage(specification: SysPermissionPageSpecification, pageable: Pageable) =
+    fun findSysPermissionPage(specification: SysPermissionListSpecification, pageable: Pageable) =
         this.sysPermissionRepository.findPage(specification, pageable)
 
     /**
@@ -96,7 +96,7 @@ class SysPermissionService(private val sysPermissionRepository: SysPermissionRep
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysPermissionTreeRoot(specification: SysPermissionPageSpecification) =
+    fun findSysPermissionTreeRoot(specification: SysPermissionListSpecification) =
         this.sysPermissionRepository.treeRoot(specification)
 
     /**
@@ -104,6 +104,6 @@ class SysPermissionService(private val sysPermissionRepository: SysPermissionRep
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysPermissionTreeSelect(specification: SysPermissionPageSpecification) =
+    fun findSysPermissionTreeSelect(specification: SysPermissionListSpecification) =
         this.sysPermissionRepository.treeSelect(specification)
 }

@@ -9,7 +9,7 @@ package com.zhengchalei.cloud.platform.modules.sys.service
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysDictItem
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictItemCreateInput
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictItemDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictItemPageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictItemListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysDictItemUpdateInput
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysDictItemRepository
 import org.springframework.data.domain.Pageable
@@ -42,7 +42,7 @@ class SysDictItemService(private val sysDictItemRepository: SysDictItemRepositor
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysDictItemList(specification: SysDictItemPageSpecification) =
+    fun findSysDictItemList(specification: SysDictItemListSpecification) =
         this.sysDictItemRepository.findList(specification)
 
     /**
@@ -51,7 +51,7 @@ class SysDictItemService(private val sysDictItemRepository: SysDictItemRepositor
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysDictItemPage(specification: SysDictItemPageSpecification, pageable: Pageable) =
+    fun findSysDictItemPage(specification: SysDictItemListSpecification, pageable: Pageable) =
         this.sysDictItemRepository.findPage(specification, pageable)
 
     /**

@@ -30,7 +30,7 @@ class SysUserController(val sysUserService: SysUserService) {
 
     @PreAuthorize("hasAuthority('sys:user:read') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysUserList(@NotNull specification: SysUserPageSpecification): R<List<SysUserPageView>> {
+    fun findSysUserList(@NotNull specification: SysUserListSpecification): R<List<SysUserPageView>> {
         val data = sysUserService.findSysUserList(specification)
         return R(data = data)
     }
@@ -38,7 +38,7 @@ class SysUserController(val sysUserService: SysUserService) {
     @PreAuthorize("hasAuthority('sys:user:read') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysUserPage(
-        @NotNull specification: SysUserPageSpecification,
+        @NotNull specification: SysUserListSpecification,
         @NotNull pageable: QueryPage,
     ): R<MutableList<SysUserPageView>> {
         val data = sysUserService.findSysUserPage(specification, pageable.page())

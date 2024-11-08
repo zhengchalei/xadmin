@@ -8,7 +8,7 @@ package com.zhengchalei.cloud.platform.modules.sys.repository
 
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysLoginLog
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysLoginLogDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysLoginLogPageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysLoginLogListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysLoginLogPageView
 import com.zhengchalei.cloud.platform.modules.sys.domain.id
 import org.babyfish.jimmer.spring.repository.KRepository
@@ -27,7 +27,7 @@ interface SysLoginLogRepository : KRepository<SysLoginLog, Long> {
             .fetchOne()
 
     fun findPage(
-        specification: SysLoginLogPageSpecification,
+        specification: SysLoginLogListSpecification,
         pageable: Pageable,
     ): Page<SysLoginLogPageView> =
         sql.createQuery(SysLoginLog::class) {
@@ -37,7 +37,7 @@ interface SysLoginLogRepository : KRepository<SysLoginLog, Long> {
             }
             .fetchSpringPage(pageable)
 
-    fun findList(specification: SysLoginLogPageSpecification): List<SysLoginLogPageView> =
+    fun findList(specification: SysLoginLogListSpecification): List<SysLoginLogPageView> =
         sql.createQuery(SysLoginLog::class) {
                 orderBy(table.id.asc())
                 where(specification)

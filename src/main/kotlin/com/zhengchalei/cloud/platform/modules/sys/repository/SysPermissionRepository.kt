@@ -29,7 +29,7 @@ interface SysPermissionRepository : KRepository<SysPermission, Long> {
             .fetchOne()
 
     fun findPage(
-        specification: SysPermissionPageSpecification,
+        specification: SysPermissionListSpecification,
         pageable: Pageable,
     ): Page<SysPermissionPageView> =
         sql.createQuery(SysPermission::class) {
@@ -39,7 +39,7 @@ interface SysPermissionRepository : KRepository<SysPermission, Long> {
             }
             .fetchSpringPage(pageable)
 
-    fun findList(specification: SysPermissionPageSpecification): List<SysPermissionPageView> =
+    fun findList(specification: SysPermissionListSpecification): List<SysPermissionPageView> =
         sql.createQuery(SysPermission::class) {
                 orderBy(table.id.asc())
                 where(specification)
@@ -47,7 +47,7 @@ interface SysPermissionRepository : KRepository<SysPermission, Long> {
             }
             .execute()
 
-    fun findTree(specification: SysPermissionPageSpecification) =
+    fun findTree(specification: SysPermissionListSpecification) =
         sql.createQuery(SysPermission::class) {
                 orderBy(table.id.asc())
                 where(table.parentId.isNull())
@@ -56,7 +56,7 @@ interface SysPermissionRepository : KRepository<SysPermission, Long> {
             }
             .execute()
 
-    fun treeRoot(specification: SysPermissionPageSpecification) =
+    fun treeRoot(specification: SysPermissionListSpecification) =
         sql.createQuery(SysPermission::class) {
                 orderBy(table.id.asc())
                 where(table.parentId.isNull())
@@ -65,7 +65,7 @@ interface SysPermissionRepository : KRepository<SysPermission, Long> {
             }
             .execute()
 
-    fun treeSelect(specification: SysPermissionPageSpecification) =
+    fun treeSelect(specification: SysPermissionListSpecification) =
         sql.createQuery(SysPermission::class) {
                 orderBy(table.id.asc())
                 where(specification)

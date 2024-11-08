@@ -9,7 +9,7 @@ package com.zhengchalei.cloud.platform.modules.sys.service
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysPosts
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPostsCreateInput
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPostsDetailView
-import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPostsPageSpecification
+import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPostsListSpecification
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysPostsUpdateInput
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysPostsRepository
 import org.springframework.data.domain.Pageable
@@ -42,7 +42,7 @@ class SysPostsService(private val sysPostRepository: SysPostsRepository) {
      *
      * @param [specification] 查询条件构造器
      */
-    fun findSysPostsList(specification: SysPostsPageSpecification) = this.sysPostRepository.findList(specification)
+    fun findSysPostsList(specification: SysPostsListSpecification) = this.sysPostRepository.findList(specification)
 
     /**
      * 查找系统岗位分页
@@ -50,7 +50,7 @@ class SysPostsService(private val sysPostRepository: SysPostsRepository) {
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysPostsPage(specification: SysPostsPageSpecification, pageable: Pageable) =
+    fun findSysPostsPage(specification: SysPostsListSpecification, pageable: Pageable) =
         this.sysPostRepository.findPage(specification, pageable)
 
     /**
