@@ -68,10 +68,10 @@
                    ('字典删除', 'sys:dict:delete', 7, true),
                    ('字典查询', 'sys:dict:read', 7, true),
 
-                   ('登录日志', 'sys:login-log:read', 8, true),
+                   ('登录日志查询', 'sys:login-log:read', 8, true),
                    ('登录日志删除', 'sys:login-log:delete', 8, true),
 
-                   ('操作日志', 'sys:operation-log:read', 9, true)
+                   ('操作日志查询', 'sys:operation-log:read', 9, true)
                    ('操作日志删除', 'sys:operation-log:delete', 10, true);
 
             insert into sys_role_permission(role_id, permission_id)
