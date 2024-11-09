@@ -7,7 +7,6 @@
 package com.zhengchalei.cloud.platform.modules.sys.repository
 
 import com.zhengchalei.cloud.platform.commons.Const
-import com.zhengchalei.cloud.platform.config.jimmer.SuperAdminFilter
 import com.zhengchalei.cloud.platform.config.security.SecurityUtils
 import com.zhengchalei.cloud.platform.modules.sys.domain.*
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserDetailView
@@ -61,8 +60,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
 
     fun currentUserInfo(): SysUser {
         val username = SecurityUtils.getCurrentUsername()
-        return sql
-            .createQuery(SysUser::class) {
+        return sql.createQuery(SysUser::class) {
                 where(table.username eq username)
                 select(
                     table.fetchBy {
@@ -77,8 +75,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
     }
 
     fun findByUsernameAndTenant(username: String) =
-        sql
-            .createQuery(SysUser::class) {
+        sql.createQuery(SysUser::class) {
                 where(table.username eq username)
                 select(
                     table.fetchBy {
@@ -92,8 +89,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
             .fetchOneOrNull()
 
     fun findByUsernameForLogin(username: String) =
-        sql
-            .createQuery(SysUser::class) {
+        sql.createQuery(SysUser::class) {
                 where(table.username eq username)
                 select(
                     table.fetchBy {

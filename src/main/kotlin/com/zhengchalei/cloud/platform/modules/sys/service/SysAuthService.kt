@@ -10,9 +10,8 @@ import com.zhengchalei.cloud.platform.config.IP2RegionService
 import com.zhengchalei.cloud.platform.config.LoginFailException
 import com.zhengchalei.cloud.platform.config.ServiceException
 import com.zhengchalei.cloud.platform.config.VirtualThreadExecutor
-import com.zhengchalei.cloud.platform.config.security.JwtProvider
-import com.zhengchalei.cloud.platform.config.security.SecurityUtils
 import com.zhengchalei.cloud.platform.config.security.AuthenticationToken
+import com.zhengchalei.cloud.platform.config.security.JwtProvider
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysLoginLog
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.by
@@ -128,7 +127,6 @@ class SysAuthService(
                 })
         }
     }
-
 
     fun logout() {
         // TODO 期望值， 如果有Redis,使用Redis 存储JWT -》 User

@@ -41,5 +41,4 @@ object SecurityUtils {
 
     // 判断是否登录
     fun isLogin(): Boolean = SecurityContextHolder.getContext().authentication is AuthenticationToken
-
 }

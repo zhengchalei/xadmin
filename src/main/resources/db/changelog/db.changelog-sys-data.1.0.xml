@@ -3,7 +3,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="初始化数据" author="郑查磊">
+    <changeSet id="初始化部门数据" author="郑查磊">
         <sql>
             insert into sys_department(name, parent_id, sort, status, description)
             values ('研发部', null, 1, true, '研发部门'),
@@ -16,17 +16,22 @@
                    ('市场一组', 3, 1, true, '市场一组'),
                    ('市场二组', 3, 2, true, '市场二组');
 
+        </sql>
+    </changeSet>
+
+    <changeSet id="初始化岗位数据" author="郑查磊">
+        <sql>
+
             insert into sys_posts(name, sort, status, description)
             values ('董事长', 1, true, '董事长'),
                    ('项目经理', 2, true, '项目经理'),
                    ('部门经理', 3, true, '部门经理'),
                    ('普通员工', 4, true, '普通员工');
+        </sql>
+    </changeSet>
 
-            insert into sys_role(name, code, status, description)
-            values ('超级管理员', 'admin', true, '超级管理员'),
-                   ('普通用户', 'user', true, '普通用户');
-
-
+    <changeSet id="初始化权限数据" author="郑查磊">
+        <sql>
             insert into sys_permission(name, code, parent_id, status)
             values ('系统管理', 'sys', null, true),
                    ('用户管理', 'sys:user', 1, true),
@@ -71,8 +76,17 @@
                    ('登录日志查询', 'sys:login-log:read', 8, true),
                    ('登录日志删除', 'sys:login-log:delete', 8, true),
 
-                   ('操作日志查询', 'sys:operation-log:read', 9, true)
-                   ('操作日志删除', 'sys:operation-log:delete', 10, true);
+                   ('操作日志查询', 'sys:operation-log:read', 9,true),
+                   ('操作日志删除', 'sys:operation-log:delete', 9, true);
+        </sql>
+    </changeSet>
+
+
+    <changeSet id="初始化角色数据" author="郑查磊">
+        <sql>
+            insert into sys_role(name, code, status, description)
+            values ('超级管理员', 'admin', true, '超级管理员'),
+                   ('普通用户', 'user', true, '普通用户');
 
             insert into sys_role_permission(role_id, permission_id)
             values (1, 1),
@@ -88,6 +102,11 @@
                    (1, 11),
                    (2, 2),
                    (2, 6);
+        </sql>
+    </changeSet>
+
+    <changeSet id="初始化字典数据" author="郑查磊">
+        <sql>
 
             insert into sys_dict(name, code, description, status)
             values ('性别', 'gender', '性别', true);
@@ -96,6 +115,11 @@
             values ('男', 'man', '男', '男', 1, 1, true),
                    ('女', 'woman', '女', '女', 2, 1, true);
 
+        </sql>
+    </changeSet>
+
+    <changeSet id="初始化用户数据" author="郑查磊">
+        <sql>
 
             insert into sys_user(id, username, email, password, avatar, status, department_id, posts_id, gender,
                                  birthday,
@@ -118,5 +142,6 @@
                    (2, 2);
         </sql>
     </changeSet>
+
 
 </databaseChangeLog>

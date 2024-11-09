@@ -77,5 +77,4 @@ class SysAuthController(
         this.sysAuthService.logout()
         return R.success(data = true)
     }
-
 }
