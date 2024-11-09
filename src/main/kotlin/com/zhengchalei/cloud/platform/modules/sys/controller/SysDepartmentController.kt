@@ -35,7 +35,7 @@ class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:tree-root') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:read') or hasAnyRole('admin')")
     @GetMapping("/tree-root")
     fun findSysDepartmentTreeRoot(specification: SysDepartmentListSpecification): R<List<SysDepartmentTreeRootView>> {
         val data = sysDepartmentService.findSysDepartmentTreeRoot(specification)
@@ -52,14 +52,14 @@ class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:tree') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:read') or hasAnyRole('admin')")
     @GetMapping("/tree")
     fun findSysDepartmentTree(specification: SysDepartmentListSpecification): R<List<SysDepartmentTreeView>> {
         val data = sysDepartmentService.findSysDepartmentTree(specification)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:tree-select') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:read') or hasAnyRole('admin')")
     @GetMapping("/tree-select")
     fun findSysDepartmentTreeSelect(
         specification: SysDepartmentListSpecification
@@ -68,7 +68,7 @@ class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:create') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:write') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysDepartment(
         @NotNull @RequestBody sysDepartmentCreateInput: SysDepartmentCreateInput
@@ -77,7 +77,7 @@ class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:update') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:department:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysDepartmentById(
         @NotNull @RequestBody sysDepartmentUpdateInput: SysDepartmentUpdateInput

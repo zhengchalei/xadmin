@@ -45,14 +45,14 @@ class SysRoleController(val sysRoleService: SysRoleService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:role:create') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:role:write') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysRole(@NotNull @RequestBody sysRoleCreateInput: SysRoleCreateInput): R<SysRoleDetailView> {
         val data = sysRoleService.createSysRole(sysRoleCreateInput)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:role:update') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:role:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysRoleById(@NotNull @RequestBody sysRoleUpdateInput: SysRoleUpdateInput): R<SysRoleDetailView> {
         val data = sysRoleService.updateSysRoleById(sysRoleUpdateInput)

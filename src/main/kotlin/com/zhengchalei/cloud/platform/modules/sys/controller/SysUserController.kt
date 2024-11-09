@@ -45,14 +45,14 @@ class SysUserController(val sysUserService: SysUserService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:user:create') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:user:write') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysUser(@NotNull @RequestBody sysUserCreateInput: SysUserCreateInput): R<SysUserDetailView> {
         val data = sysUserService.createSysUser(sysUserCreateInput)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:user:update') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:user:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysUserById(@NotNull @RequestBody sysUserUpdateInput: SysUserUpdateInput): R<SysUserDetailView> {
         val data = sysUserService.updateSysUserById(sysUserUpdateInput)

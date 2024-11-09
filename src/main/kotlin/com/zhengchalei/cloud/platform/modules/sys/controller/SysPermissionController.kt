@@ -35,21 +35,21 @@ class SysPermissionController(val sysPermissionService: SysPermissionService) {
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:permission:tree-root') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:permission:read') or hasAnyRole('admin')")
     @GetMapping("/tree-root")
     fun findSysPermissionTreeRoot(specification: SysPermissionListSpecification): R<List<SysPermissionTreeRootView>> {
         val data = sysPermissionService.findSysPermissionTreeRoot(specification)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:permission:tree') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:permission:read') or hasAnyRole('admin')")
     @GetMapping("/tree")
     fun findSysPermissionTree(specification: SysPermissionListSpecification): R<List<SysPermissionTreeView>> {
         val data = sysPermissionService.findSysPermissionTree(specification)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:permission:tree-select') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:permission:read') or hasAnyRole('admin')")
     @GetMapping("/tree-select")
     fun findSysPermissionTreeSelect(
         specification: SysPermissionListSpecification
@@ -68,7 +68,7 @@ class SysPermissionController(val sysPermissionService: SysPermissionService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:permission:create') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:permission:write') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysPermission(
         @NotNull @RequestBody sysPermissionCreateInput: SysPermissionCreateInput
@@ -77,7 +77,7 @@ class SysPermissionController(val sysPermissionService: SysPermissionService) {
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:permission:update') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:permission:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysPermissionById(
         @NotNull @RequestBody sysPermissionUpdateInput: SysPermissionUpdateInput

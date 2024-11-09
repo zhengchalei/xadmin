@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.post
 @TestMethodOrder(OrderAnnotation::class)
 @WithMockUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:dict:create", "sys:dict:update", "sys:dict:delete", "sys:dict:read", "sys:dict:page", "sys:dict:read"],
+    authorities = ["ROLE_admin", "sys:dict:write", "sys:dict:edit", "sys:dict:delete", "sys:dict:read", "sys:dict:page", "sys:dict:read"],
 )
 class SysDictControllerTest {
     @Autowired

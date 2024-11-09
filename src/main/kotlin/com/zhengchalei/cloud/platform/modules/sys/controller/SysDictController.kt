@@ -45,14 +45,14 @@ class SysDictController(val sysDictService: SysDictService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict:create') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict:write') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysDict(@NotNull @RequestBody sysDictCreateInput: SysDictCreateInput): R<SysDictDetailView> {
         val data = sysDictService.createSysDict(sysDictCreateInput)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict:update') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysDictById(@NotNull @RequestBody sysDictUpdateInput: SysDictUpdateInput): R<SysDictDetailView> {
         val data = sysDictService.updateSysDictById(sysDictUpdateInput)

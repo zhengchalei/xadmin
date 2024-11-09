@@ -45,14 +45,14 @@ class SysPostsController(val sysPostsService: SysPostsService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:create') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:post:write') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysPosts(@NotNull @RequestBody sysPostsCreateInput: SysPostsCreateInput): R<SysPostsDetailView> {
         val data = sysPostsService.createSysPosts(sysPostsCreateInput)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:update') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:post:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysPostsById(@NotNull @RequestBody sysPostsUpdateInput: SysPostsUpdateInput): R<SysPostsDetailView> {
         val data = sysPostsService.updateSysPostsById(sysPostsUpdateInput)

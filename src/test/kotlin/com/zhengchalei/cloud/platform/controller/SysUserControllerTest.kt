@@ -25,7 +25,7 @@ import java.time.LocalDate
 @TestMethodOrder(OrderAnnotation::class)
 @WithMockUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:user:create", "sys:user:update", "sys:user:delete", "sys:user:read", "sys:user:page", "sys:user:read"],
+    authorities = ["ROLE_admin", "sys:user:write", "sys:user:edit", "sys:user:delete", "sys:user:read", "sys:user:page", "sys:user:read"],
 )
 class SysUserControllerTest {
     @Autowired

@@ -28,19 +28,51 @@
 
 
             insert into sys_permission(name, code, parent_id, status)
-            values ('系统管理', 'sys:manage', null, true),
-                   ('用户管理', 'sys:user:manage', 1, true),
-                   ('角色管理', 'sys:role:manage', 1, true),
-                   ('权限管理', 'sys:permission:manage', 1, true),
-                   ('用户新增', 'sys:user:add', 2, true),
+            values ('系统管理', 'sys', null, true),
+                   ('用户管理', 'sys:user', 1, true),
+                   ('角色管理', 'sys:role', 1, true),
+                   ('权限管理', 'sys:permission', 1, true),
+                   ('部门管理', 'sys:department', 1, true),
+                   ('岗位管理', 'sys:posts', 1, true),
+                   ('字典管理', 'sys:dict', 1, true),
+                   ('登录日志', 'sys:login-log', 1, true),
+                   ('操作日志', 'sys:operation-log', 1, true),
+
+                   ('用户新增', 'sys:user:write', 2, true),
                    ('用户修改', 'sys:user:edit', 2, true),
                    ('用户删除', 'sys:user:delete', 2, true),
-                   ('角色新增', 'sys:role:add', 3, true),
+                   ('用户查询', 'sys:user:read', 2, true),
+
+                   ('角色新增', 'sys:role:write', 3, true),
                    ('角色修改', 'sys:role:edit', 3, true),
                    ('角色删除', 'sys:role:delete', 3, true),
-                   ('权限新增', 'sys:permission:add', 4, true),
+                   ('角色查询', 'sys:role:read', 3, true),
+
+                   ('权限新增', 'sys:permission:write', 4, true),
                    ('权限修改', 'sys:permission:edit', 4, true),
-                   ('权限删除', 'sys:permission:delete', 4, true);
+                   ('权限删除', 'sys:permission:delete', 4, true),
+                   ('权限查询', 'sys:permission:read', 4, true),
+
+                   ('部门新增', 'sys:department:write', 5, true),
+                   ('部门修改', 'sys:department:edit', 5, true),
+                   ('部门删除', 'sys:department:delete', 5, true),
+                   ('部门查询', 'sys:department:read', 5, true),
+
+                   ('岗位新增', 'sys:posts:write', 6, true),
+                   ('岗位修改', 'sys:posts:edit', 6, true),
+                   ('岗位删除', 'sys:posts:delete', 6, true),
+                   ('岗位查询', 'sys:posts:read', 6, true),
+
+                   ('字典新增', 'sys:dict:write', 7, true),
+                   ('字典修改', 'sys:dict:edit', 7, true),
+                   ('字典删除', 'sys:dict:delete', 7, true),
+                   ('字典查询', 'sys:dict:read', 7, true),
+
+                   ('登录日志', 'sys:login-log:read', 8, true),
+                   ('登录日志删除', 'sys:login-log:delete', 8, true),
+
+                   ('操作日志', 'sys:operation-log:read', 9, true)
+                   ('操作日志删除', 'sys:operation-log:delete', 10, true);
 
             insert into sys_role_permission(role_id, permission_id)
             values (1, 1),

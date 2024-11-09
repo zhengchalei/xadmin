@@ -45,7 +45,7 @@ class SysDictItemController(val sysDictItemService: SysDictItemService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict-item:create') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict-item:write') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysDictItem(
         @NotNull @RequestBody sysDictItemCreateInput: SysDictItemCreateInput
@@ -54,7 +54,7 @@ class SysDictItemController(val sysDictItemService: SysDictItemService) {
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict-item:update') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:dict-item:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysDictItemById(
         @NotNull @RequestBody sysDictItemUpdateInput: SysDictItemUpdateInput

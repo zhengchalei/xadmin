@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.post
 @TestMethodOrder(OrderAnnotation::class)
 @WithMockUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:permission:create", "sys:permission:update", "sys:permission:delete", "sys:permission:read", "sys:permission:tree-root", "sys:permission:read", "sys:permission:tree", "sys:permission:read"],
+    authorities = ["ROLE_admin", "sys:permission:write", "sys:permission:edit", "sys:permission:delete", "sys:permission:read", "sys:permission:read", "sys:permission:read", "sys:permission:read", "sys:permission:read"],
 )
 class SysPermissionControllerTest {
     @Autowired
