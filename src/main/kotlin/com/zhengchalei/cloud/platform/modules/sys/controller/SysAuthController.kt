@@ -6,14 +6,12 @@
  */
 package com.zhengchalei.cloud.platform.modules.sys.controller
 
-import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.commons.R
 import com.zhengchalei.cloud.platform.config.IPUtil.getIpAddress
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.LoginDTO
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.LoginResponse
 import com.zhengchalei.cloud.platform.modules.sys.service.SysAuthService
 import jakarta.servlet.http.HttpServletRequest
-import java.net.InetAddress
 import org.babyfish.jimmer.client.meta.Api
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value

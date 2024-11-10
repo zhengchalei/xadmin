@@ -32,7 +32,9 @@ class SysOperationLogController(val sysOperationLogService: SysOperationLogServi
 
     @PreAuthorize("hasAuthority('sys:operation-log:read') or hasAnyRole('admin')")
     @GetMapping("/list")
-    fun findSysOperationLogList(@NotNull specification: SysOperationLogListSpecification): R<List<SysOperationLogPageView>> {
+    fun findSysOperationLogList(
+        @NotNull specification: SysOperationLogListSpecification
+    ): R<List<SysOperationLogPageView>> {
         val data = sysOperationLogService.findSysOperationLogList(specification)
         return R(data = data)
     }

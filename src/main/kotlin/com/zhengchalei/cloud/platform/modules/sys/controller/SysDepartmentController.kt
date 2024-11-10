@@ -80,7 +80,6 @@ class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
         return R(data = data)
     }
 
-
     @Log(value = "修改系统部门", type = OperationType.UPDATE)
     @PreAuthorize("hasAuthority('sys:department:edit') or hasAnyRole('admin')")
     @PostMapping("/update")

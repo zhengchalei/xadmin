@@ -26,5 +26,4 @@ class SysCurrentUserController(val sysUserService: SysUserService) {
         val userInfo = this.sysUserService.currentUserInfo()
         return R(data = userInfo)
     }
-
 }

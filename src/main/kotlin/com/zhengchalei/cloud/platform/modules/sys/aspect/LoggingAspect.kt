@@ -18,6 +18,7 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.by
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysOperationLogRepository
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysUserRepository
 import jakarta.servlet.http.HttpServletRequest
+import java.lang.reflect.Method
 import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.AfterReturning
@@ -29,8 +30,6 @@ import org.babyfish.jimmer.kt.makeIdOnly
 import org.babyfish.jimmer.kt.new
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import java.lang.reflect.Method
-
 
 @Aspect
 @Component
@@ -61,7 +60,6 @@ class LoggingAspect(
         log.debug("离开方法: {}.{}，结果: {}", className, methodName, result)
     }
 
-
     //    @Around("execution(* com.zhengchalei.cloud.platform.modules.*.controller..*.*(..))")
     @Around("@annotation(com.zhengchalei.cloud.platform.config.log.Log)")
     fun aroundAdvice(joinPoint: ProceedingJoinPoint): Any? {
@@ -80,38 +78,38 @@ class LoggingAspect(
         var result: Any? = null
         var exception: Exception? = null
 
-        val status = try {
-            result = joinPoint.proceed()
-            responseData = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result)
-            true
-        } catch (e: Exception) {
-            exception = e
-            false
-        }
+        val status =
+            try {
+                result = joinPoint.proceed()
+                responseData = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result)
+                true
+            } catch (e: Exception) {
+                exception = e
+                false
+            }
 
         // 异步存储日志
         Thread.startVirtualThread {
-            val operationLog = new(SysOperationLog::class).by {
-                this.user = if (user == null) null else makeIdOnly(SysUser::class, user.id)
-                this.requestData = requestData
-                this.methodReference = "${signature.declaringTypeName}.${signature.name}"
-                this.httpMethod = HttpMethod.valueOf(httpMethod)
-                this.name = log.value
-                this.operationType = log.type
-                this.url = requestURI
-                this.ip = ipAddress
-                this.address = iP2RegionService.search(ipAddress)
-                this.responseData = responseData
-                this.time = System.currentTimeMillis()
-                this.status = status
-                this.errorStack = exception?.stackTraceToString()
-            }
+            val operationLog =
+                new(SysOperationLog::class).by {
+                    this.user = if (user == null) null else makeIdOnly(SysUser::class, user.id)
+                    this.requestData = requestData
+                    this.methodReference = "${signature.declaringTypeName}.${signature.name}"
+                    this.httpMethod = HttpMethod.valueOf(httpMethod)
+                    this.name = log.value
+                    this.operationType = log.type
+                    this.url = requestURI
+                    this.ip = ipAddress
+                    this.address = iP2RegionService.search(ipAddress)
+                    this.responseData = responseData
+                    this.time = System.currentTimeMillis()
+                    this.status = status
+                    this.errorStack = exception?.stackTraceToString()
+                }
             sysOperationLogRepository.insert(operationLog)
         }
         // 重新抛出异常，保证主流程不受影响
         if (exception != null) throw exception
         return result
     }
-
-
 }

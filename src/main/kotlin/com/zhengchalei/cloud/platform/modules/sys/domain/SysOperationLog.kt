@@ -8,18 +8,15 @@ package com.zhengchalei.cloud.platform.modules.sys.domain
 
 import com.zhengchalei.cloud.platform.config.jimmer.BaseEntity
 import com.zhengchalei.cloud.platform.config.log.OperationType
-import org.babyfish.jimmer.sql.*
 import java.util.*
+import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_operation_log")
 interface SysOperationLog : BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
-    @ManyToOne
-    val user: SysUser?
+    @ManyToOne val user: SysUser?
 
     // 操作名称
     val name: String
@@ -68,4 +65,3 @@ enum class HttpMethod {
         }
     }
 }
-

@@ -1,9 +1,14 @@
+/*
+ * 版权所有 © 2024 郑查磊.
+ * 保留所有权利.
+ *
+ * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
+ */
 package com.zhengchalei.cloud.platform.config
 
-import com.zhengchalei.cloud.platform.commons.Const
 import jakarta.servlet.http.HttpServletRequest
-import org.slf4j.LoggerFactory
 import java.net.InetAddress
+import org.slf4j.LoggerFactory
 
 object IPUtil {
 
@@ -35,5 +40,4 @@ object IPUtil {
         }
         return ""
     }
-
 }
