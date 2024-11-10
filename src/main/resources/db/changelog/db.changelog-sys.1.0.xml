@@ -265,16 +265,15 @@
                                  referencedTableName="sys_user" validate="true"/>
     </changeSet>
 
-    <changeSet author="郑查磊" id="创建日志表">
-        <createTable tableName="sys_log">
+    <changeSet author="郑查磊" id="创建操作日志表">
+        <createTable tableName="sys_operation_log">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="name" remarks="日志名称" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" remarks="用户id" type="BIGINT"/>
-            <column name="department_id" remarks="部门id" type="BIGINT"/>
+            <column name="user_id" remarks="用户id" type="BIGINT" />
             <column name="method" remarks="请求方法" type="text">
                 <constraints nullable="false"/>
             </column>
@@ -305,16 +304,12 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="sys_log" constraintName="fk_sys_log_user_id"
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="sys_operation_log" constraintName="fk_sys_operation_log_user_id"
                                  deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
-        <addForeignKeyConstraint baseColumnNames="department_id" baseTableName="sys_log"
-                                 constraintName="fk_sys_log_department_id" deferrable="false"
-                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
-                                 referencedColumnNames="id" referencedTableName="sys_department" validate="true"/>
     </changeSet>
 
-    <changeSet author="郑查磊" id="创建登录日志">
+    <changeSet author="郑查磊" id="创建登录日志表">
         <createTable tableName="sys_login_log">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>

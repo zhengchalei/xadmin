@@ -1,0 +1,14 @@
+specification SysOperationLogListSpecification {
+    eq(id)
+    like/i(name)
+    ge(createTime) as startTime
+    le(createTime) as endTime
+}
+
+SysOperationLogPageView {
+    #allScalars
+}
+
+SysOperationLogDetailView {
+    #allScalars
+}
