@@ -42,6 +42,8 @@ interface SysOperationLog : BaseEntity {
 
     val status: Boolean
 
+    val errorMessage: String?
+
     val errorStack: String?
 }
 

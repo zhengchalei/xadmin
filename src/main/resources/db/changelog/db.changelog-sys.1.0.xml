@@ -299,6 +299,7 @@
             <column name="status" remarks="状态" type="boolean" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
+            <column name="error_message" remarks="错误信息" type="text"/>
             <column name="error_stack" remarks="异常堆栈" type="text"/>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
                 <constraints nullable="false"/>

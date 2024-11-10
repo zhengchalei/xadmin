@@ -104,6 +104,7 @@ class LoggingAspect(
                     this.responseData = responseData
                     this.time = System.currentTimeMillis()
                     this.status = status
+                    this.errorMessage = if (status) null else exception?.message
                     this.errorStack = exception?.stackTraceToString()
                 }
             sysOperationLogRepository.insert(operationLog)
