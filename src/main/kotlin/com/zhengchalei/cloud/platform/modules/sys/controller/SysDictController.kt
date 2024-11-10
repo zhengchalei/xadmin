@@ -8,6 +8,8 @@ package com.zhengchalei.cloud.platform.modules.sys.controller
 
 import com.zhengchalei.cloud.platform.commons.QueryPage
 import com.zhengchalei.cloud.platform.commons.R
+import com.zhengchalei.cloud.platform.config.log.Log
+import com.zhengchalei.cloud.platform.config.log.OperationType
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.service.SysDictService
 import jakarta.validation.constraints.NotNull
@@ -45,13 +47,15 @@ class SysDictController(val sysDictService: SysDictService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict:write') or hasAnyRole('admin')")
+    @Log(value = "创建系统字典", type = OperationType.CREATE)
+    @PreAuthorize("hasAuthority('sys:dict:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysDict(@NotNull @RequestBody sysDictCreateInput: SysDictCreateInput): R<SysDictDetailView> {
         val data = sysDictService.createSysDict(sysDictCreateInput)
         return R(data = data)
     }
 
+    @Log(value = "修改系统字典", type = OperationType.UPDATE)
     @PreAuthorize("hasAuthority('sys:dict:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysDictById(@NotNull @RequestBody sysDictUpdateInput: SysDictUpdateInput): R<SysDictDetailView> {
@@ -59,6 +63,7 @@ class SysDictController(val sysDictService: SysDictService) {
         return R(data = data)
     }
 
+    @Log(value = "删除系统字典", type = OperationType.DELETE)
     @PreAuthorize("hasAuthority('sys:dict:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysDictById(@NotNull @PathVariable id: Long): R<Boolean> {

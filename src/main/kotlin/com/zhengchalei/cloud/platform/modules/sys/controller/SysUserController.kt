@@ -8,6 +8,8 @@ package com.zhengchalei.cloud.platform.modules.sys.controller
 
 import com.zhengchalei.cloud.platform.commons.QueryPage
 import com.zhengchalei.cloud.platform.commons.R
+import com.zhengchalei.cloud.platform.config.log.Log
+import com.zhengchalei.cloud.platform.config.log.OperationType
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.service.SysUserService
 import jakarta.validation.constraints.NotNull
@@ -45,13 +47,15 @@ class SysUserController(val sysUserService: SysUserService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:user:write') or hasAnyRole('admin')")
+    @Log(value = "创建系统用户", type = OperationType.CREATE)
+    @PreAuthorize("hasAuthority('sys:user:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysUser(@NotNull @RequestBody sysUserCreateInput: SysUserCreateInput): R<SysUserDetailView> {
         val data = sysUserService.createSysUser(sysUserCreateInput)
         return R(data = data)
     }
 
+    @Log(value = "修改系统用户", type = OperationType.UPDATE)
     @PreAuthorize("hasAuthority('sys:user:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysUserById(@NotNull @RequestBody sysUserUpdateInput: SysUserUpdateInput): R<SysUserDetailView> {
@@ -59,6 +63,7 @@ class SysUserController(val sysUserService: SysUserService) {
         return R(data = data)
     }
 
+    @Log(value = "删除系统用户", type = OperationType.DELETE)
     @PreAuthorize("hasAuthority('sys:user:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysUserById(@NotNull @PathVariable id: Long): R<Boolean> {

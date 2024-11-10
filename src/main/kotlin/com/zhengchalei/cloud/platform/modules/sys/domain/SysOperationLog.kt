@@ -7,21 +7,29 @@
 package com.zhengchalei.cloud.platform.modules.sys.domain
 
 import com.zhengchalei.cloud.platform.config.jimmer.BaseEntity
+import com.zhengchalei.cloud.platform.config.log.OperationType
 import org.babyfish.jimmer.sql.*
+import java.util.*
 
 @Entity
 @Table(name = "sys_operation_log")
 interface SysOperationLog : BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long
 
-    @ManyToOne val user: SysUser?
+    @ManyToOne
+    val user: SysUser?
 
     // 操作名称
     val name: String
 
-    val method: MethodType
+    val methodReference: String
 
-    val httpMethod: HttpMethodType
+    // 操作类型
+    val operationType: OperationType
+
+    val httpMethod: HttpMethod
 
     val url: String
 
@@ -40,21 +48,24 @@ interface SysOperationLog : BaseEntity {
     val errorStack: String?
 }
 
-enum class MethodType {
-    CREATE,
-    DELETE,
-    UPDATE,
-    QUERY,
-    OTHER,
-}
-
-enum class HttpMethodType {
+enum class HttpMethod {
     GET,
+    HEAD,
     POST,
     PUT,
-    DELETE,
-    HEAD,
-    OPTIONS,
     PATCH,
-    TRACE,
+    DELETE,
+    OPTIONS,
+    TRACE;
+
+    companion object {
+        fun value(name: String): HttpMethod {
+            return try {
+                valueOf(name.uppercase(Locale.getDefault()))
+            } catch (e: IllegalArgumentException) {
+                throw IllegalArgumentException("Unknown HTTP method: $name", e)
+            }
+        }
+    }
 }
+

@@ -7,8 +7,14 @@ specification SysOperationLogListSpecification {
 
 SysOperationLogPageView {
     #allScalars
+    user {
+        username
+    }
 }
 
 SysOperationLogDetailView {
     #allScalars
+    user {
+        #allScalars
+    }
 }

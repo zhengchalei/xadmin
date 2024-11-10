@@ -8,6 +8,8 @@ package com.zhengchalei.cloud.platform.modules.sys.controller
 
 import com.zhengchalei.cloud.platform.commons.QueryPage
 import com.zhengchalei.cloud.platform.commons.R
+import com.zhengchalei.cloud.platform.config.log.Log
+import com.zhengchalei.cloud.platform.config.log.OperationType
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.service.SysDictItemService
 import jakarta.validation.constraints.NotNull
@@ -45,7 +47,8 @@ class SysDictItemController(val sysDictItemService: SysDictItemService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:dict-item:write') or hasAnyRole('admin')")
+    @Log(value = "创建系统字典", type = OperationType.CREATE)
+    @PreAuthorize("hasAuthority('sys:dict-item:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysDictItem(
         @NotNull @RequestBody sysDictItemCreateInput: SysDictItemCreateInput
@@ -54,6 +57,7 @@ class SysDictItemController(val sysDictItemService: SysDictItemService) {
         return R(data = data)
     }
 
+    @Log(value = "修改系统字典", type = OperationType.UPDATE)
     @PreAuthorize("hasAuthority('sys:dict-item:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysDictItemById(
@@ -63,6 +67,7 @@ class SysDictItemController(val sysDictItemService: SysDictItemService) {
         return R(data = data)
     }
 
+    @Log(value = "删除系统字典", type = OperationType.DELETE)
     @PreAuthorize("hasAuthority('sys:dict-item:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysDictItemById(@NotNull @PathVariable id: Long): R<Boolean> {

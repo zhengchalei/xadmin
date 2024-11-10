@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.post
 @TestMethodOrder(OrderAnnotation::class)
 @WithMockUser(
     username = "admin",
-    authorities = ["ROLE_admin", "sys:role:write", "sys:role:edit", "sys:role:delete", "sys:role:read", "sys:role:page", "sys:role:read"],
+    authorities = ["ROLE_admin", "sys:role:create", "sys:role:edit", "sys:role:delete", "sys:role:read", "sys:role:page", "sys:role:read"],
 )
 class SysRoleControllerTest {
     @Autowired

@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/user")
 class SysCurrentUserController(val sysUserService: SysUserService) {
+
     @GetMapping("/info")
     fun currentUserInfo(): R<SysUser> {
         val userInfo = this.sysUserService.currentUserInfo()
         return R(data = userInfo)
     }
+
 }

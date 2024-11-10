@@ -28,5 +28,5 @@ interface SysLoginLog {
 
     val errorMessage: String?
 
-    @ManyToOne @JoinColumn(name = "user_id") val sysUser: SysUser?
+    @ManyToOne @JoinColumn(name = "user_id") val user: SysUser?
 }

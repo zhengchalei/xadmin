@@ -8,6 +8,8 @@ package com.zhengchalei.cloud.platform.modules.sys.controller
 
 import com.zhengchalei.cloud.platform.commons.QueryPage
 import com.zhengchalei.cloud.platform.commons.R
+import com.zhengchalei.cloud.platform.config.log.Log
+import com.zhengchalei.cloud.platform.config.log.OperationType
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.service.SysDepartmentService
 import jakarta.validation.constraints.NotNull
@@ -68,7 +70,8 @@ class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:department:write') or hasAnyRole('admin')")
+    @Log(value = "创建系统部门", type = OperationType.CREATE)
+    @PreAuthorize("hasAuthority('sys:department:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysDepartment(
         @NotNull @RequestBody sysDepartmentCreateInput: SysDepartmentCreateInput
@@ -77,6 +80,8 @@ class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
         return R(data = data)
     }
 
+
+    @Log(value = "修改系统部门", type = OperationType.UPDATE)
     @PreAuthorize("hasAuthority('sys:department:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysDepartmentById(
@@ -86,6 +91,7 @@ class SysDepartmentController(val sysDepartmentService: SysDepartmentService) {
         return R(data = data)
     }
 
+    @Log(value = "删除系统部门", type = OperationType.DELETE)
     @PreAuthorize("hasAuthority('sys:department:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysDepartmentById(@NotNull @PathVariable id: Long): R<Boolean> {

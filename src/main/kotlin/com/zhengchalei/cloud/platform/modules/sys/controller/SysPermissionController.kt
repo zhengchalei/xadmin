@@ -8,6 +8,8 @@ package com.zhengchalei.cloud.platform.modules.sys.controller
 
 import com.zhengchalei.cloud.platform.commons.QueryPage
 import com.zhengchalei.cloud.platform.commons.R
+import com.zhengchalei.cloud.platform.config.log.Log
+import com.zhengchalei.cloud.platform.config.log.OperationType
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.service.SysPermissionService
 import jakarta.validation.constraints.NotNull
@@ -68,7 +70,8 @@ class SysPermissionController(val sysPermissionService: SysPermissionService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:permission:write') or hasAnyRole('admin')")
+    @Log(value = "创建系统权限", type = OperationType.CREATE)
+    @PreAuthorize("hasAuthority('sys:permission:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysPermission(
         @NotNull @RequestBody sysPermissionCreateInput: SysPermissionCreateInput
@@ -77,6 +80,7 @@ class SysPermissionController(val sysPermissionService: SysPermissionService) {
         return R(data = data)
     }
 
+    @Log(value = "修改系统权限", type = OperationType.UPDATE)
     @PreAuthorize("hasAuthority('sys:permission:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysPermissionById(
@@ -86,6 +90,7 @@ class SysPermissionController(val sysPermissionService: SysPermissionService) {
         return R(data = data)
     }
 
+    @Log(value = "删除系统权限", type = OperationType.DELETE)
     @PreAuthorize("hasAuthority('sys:permission:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysPermissionById(@NotNull @PathVariable id: Long): R<Boolean> {

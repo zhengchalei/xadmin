@@ -8,6 +8,8 @@ package com.zhengchalei.cloud.platform.modules.sys.controller
 
 import com.zhengchalei.cloud.platform.commons.QueryPage
 import com.zhengchalei.cloud.platform.commons.R
+import com.zhengchalei.cloud.platform.config.log.Log
+import com.zhengchalei.cloud.platform.config.log.OperationType
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.service.SysRoleService
 import jakarta.validation.constraints.NotNull
@@ -45,13 +47,15 @@ class SysRoleController(val sysRoleService: SysRoleService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:role:write') or hasAnyRole('admin')")
+    @Log(value = "创建系统角色", type = OperationType.CREATE)
+    @PreAuthorize("hasAuthority('sys:role:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysRole(@NotNull @RequestBody sysRoleCreateInput: SysRoleCreateInput): R<SysRoleDetailView> {
         val data = sysRoleService.createSysRole(sysRoleCreateInput)
         return R(data = data)
     }
 
+    @Log(value = "修改系统角色", type = OperationType.UPDATE)
     @PreAuthorize("hasAuthority('sys:role:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysRoleById(@NotNull @RequestBody sysRoleUpdateInput: SysRoleUpdateInput): R<SysRoleDetailView> {
@@ -59,6 +63,7 @@ class SysRoleController(val sysRoleService: SysRoleService) {
         return R(data = data)
     }
 
+    @Log(value = "删除系统角色", type = OperationType.DELETE)
     @PreAuthorize("hasAuthority('sys:role:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysRoleById(@NotNull @PathVariable id: Long): R<Boolean> {

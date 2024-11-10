@@ -123,7 +123,7 @@ class SysAuthService(
                     this.loginTime = LocalDateTime.now()
                     this.ip = ip
                     this.address = address
-                    this.sysUser = if (status) makeIdOnly(SysUser::class, userService.currentUserId()) else null
+                    this.user = if (status) makeIdOnly(SysUser::class, userService.currentUserId()) else null
                 })
         }
     }

@@ -8,6 +8,8 @@ package com.zhengchalei.cloud.platform.modules.sys.controller
 
 import com.zhengchalei.cloud.platform.commons.QueryPage
 import com.zhengchalei.cloud.platform.commons.R
+import com.zhengchalei.cloud.platform.config.log.Log
+import com.zhengchalei.cloud.platform.config.log.OperationType
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.service.SysPostsService
 import jakarta.validation.constraints.NotNull
@@ -45,13 +47,15 @@ class SysPostsController(val sysPostsService: SysPostsService) {
         return R.success(data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:write') or hasAnyRole('admin')")
+    @Log(value = "创建岗位", type = OperationType.CREATE)
+    @PreAuthorize("hasAuthority('sys:post:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysPosts(@NotNull @RequestBody sysPostsCreateInput: SysPostsCreateInput): R<SysPostsDetailView> {
         val data = sysPostsService.createSysPosts(sysPostsCreateInput)
         return R(data = data)
     }
 
+    @Log(value = "修改岗位", type = OperationType.UPDATE)
     @PreAuthorize("hasAuthority('sys:post:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysPostsById(@NotNull @RequestBody sysPostsUpdateInput: SysPostsUpdateInput): R<SysPostsDetailView> {
@@ -59,6 +63,7 @@ class SysPostsController(val sysPostsService: SysPostsService) {
         return R(data = data)
     }
 
+    @Log(value = "删除岗位", type = OperationType.DELETE)
     @PreAuthorize("hasAuthority('sys:post:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysPostsById(@NotNull @PathVariable id: Long): R<Boolean> {

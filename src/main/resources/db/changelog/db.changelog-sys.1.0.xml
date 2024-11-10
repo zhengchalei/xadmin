@@ -235,7 +235,8 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="posts_id" baseTableName="sys_user" constraintName="fk_sys_user_posts_id"
+        <addForeignKeyConstraint baseColumnNames="posts_id" baseTableName="sys_user"
+                                 constraintName="fk_sys_user_posts_id"
                                  deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="id" referencedTableName="sys_posts" validate="true"/>
         <addForeignKeyConstraint baseColumnNames="department_id" baseTableName="sys_user"
@@ -273,8 +274,11 @@
             <column name="name" remarks="日志名称" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" remarks="用户id" type="BIGINT" />
-            <column name="method" remarks="请求方法" type="text">
+            <column name="user_id" remarks="用户id" type="BIGINT"/>
+            <column name="method_reference" remarks="请求方法" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="operation_type" remarks="操作类型" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="http_method" remarks="http method" type="text">
@@ -283,8 +287,8 @@
             <column name="url" remarks="请求路径" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="request_data" remarks="请求参数" type="json"/>
-            <column name="response_data" remarks="响应结果" type="json"/>
+            <column name="request_data" remarks="请求参数" type="text"/>
+            <column name="response_data" remarks="响应结果" type="text"/>
             <column name="time" remarks="请求耗时" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -304,9 +308,9 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="sys_operation_log" constraintName="fk_sys_operation_log_user_id"
-                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
-                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+        <addForeignKeyConstraint baseTableName="sys_operation_log" baseColumnNames="user_id"
+                                 constraintName="fk_sys_operation_log_user_id" referencedTableName="sys_user"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet author="郑查磊" id="创建登录日志表">
@@ -327,15 +331,15 @@
                 <constraints nullable="false"/>
             </column>
             <column name="address" remarks="操作地点" type="text"/>
-            <column name="status" remarks="登录状态 (true: 成功, false: 失败)" type="boolean" defaultValueBoolean="true">
+            <column name="status" remarks="登录状态 (true: 成功, false: 失败)" type="boolean"
+                    defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
             <column name="error_message" remarks="失败原因" type="text"/>
             <column name="user_id" remarks="用户id" type="BIGINT"/>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="sys_login_log"
-                                 constraintName="fk_sys_login_log_user_id" deferrable="false"
-                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
-                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+        <addForeignKeyConstraint baseTableName="sys_login_log" baseColumnNames="user_id"
+                                 constraintName="fk_sys_login_log_user_id" referencedTableName="sys_user"
+                                 referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>

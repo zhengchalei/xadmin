@@ -8,7 +8,6 @@ package com.zhengchalei.cloud.platform.config.security
 
 import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.*
-import com.zhengchalei.cloud.platform.modules.sys.domain.code
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysUserRepository
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.core.Authentication
@@ -67,7 +66,7 @@ class AuthenticationProvider(
             )
         }
 
-        val user = sysUserRepository.findByUsernameAndTenant(username) ?: throw UserNotFoundException()
+        val user = sysUserRepository.findByUsername(username) ?: throw UserNotFoundException()
         if (user.username == Const.AdminUser) {
             if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
             return User(
