@@ -42,6 +42,7 @@ dependencies {
 
     // web
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-aop")
     // jackson
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     // validation
