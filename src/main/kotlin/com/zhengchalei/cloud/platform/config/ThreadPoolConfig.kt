@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.task.SimpleAsyncTaskExecutor
 import org.springframework.scheduling.annotation.EnableAsync
+import java.util.UUID
 
 class VirtualThreadExecutor : SimpleAsyncTaskExecutor()
 
@@ -23,7 +24,7 @@ class ThreadPoolConfig {
     }
 }
 
-fun virtualThreadExecutor(name: String = ""): VirtualThreadExecutor {
+fun virtualThreadExecutor(name: String = UUID.randomUUID().toString()): VirtualThreadExecutor {
     val virtualThreadExecutor = VirtualThreadExecutor()
     virtualThreadExecutor.setVirtualThreads(true)
     virtualThreadExecutor.setTaskDecorator(SecurityContextTaskDecorator())
