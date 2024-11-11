@@ -27,3 +27,7 @@ class InvalidTokenException(message: String = "无效的令牌") : ServiceExcept
 class HasChildrenException(message: String = "当前节点存在子权限，无法删除") : ServiceException(message)
 
 class EmptyFileException(message: String = "空文件不能上传") : ServiceException(message)
+
+class TokenExpiredException(message: String = "令牌过期") : ServiceException(message)
+
+class TokenInvalidException(message: String = "令牌无效") : ServiceException(message)

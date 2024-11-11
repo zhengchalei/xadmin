@@ -15,6 +15,7 @@ import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.InvalidTokenException
+import com.zhengchalei.cloud.platform.config.TokenInvalidException
 import com.zhengchalei.cloud.platform.config.properties.AuthConfigurationProperties
 import java.util.*
 import org.slf4j.LoggerFactory
@@ -35,10 +36,10 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
     override fun run(vararg args: String) {
         val jwtConfigurationProperties = authConfigurationProperties.jwt
         if (jwtConfigurationProperties.secret.isBlank()) {
-            throw RuntimeException("JWT secret is empty")
+            throw TokenInvalidException()
         }
         if (jwtConfigurationProperties.expired <= 0) {
-            throw RuntimeException("JWT expired must be greater than 0")
+            throw TokenInvalidException()
         }
         // 获取 secret
         this.secret = jwtConfigurationProperties.secret.toByteArray(Charsets.UTF_8)
@@ -117,7 +118,7 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
 
     fun getAuthentication(token: String): Authentication {
         val jwt: SignedJWT = parseToken(token)
-        val jwtClaimsSet = jwt.jwtClaimsSet ?: throw RuntimeException("JWT ClaimsSet is null")
+        val jwtClaimsSet = jwt.jwtClaimsSet ?: throw TokenInvalidException()
         val permissions = jwtClaimsSet.getStringClaim("permissions").split(",").filter { it.isNotBlank() }
         val roles =
             jwtClaimsSet
