@@ -43,6 +43,8 @@ class LoggingAspect(
 
     private val log = LoggerFactory.getLogger(LoggingAspect::class.java)
 
+    private val cachedUser = CurrentHashMap<String, SysUser>()
+
     @Before("execution(* com.zhengchalei.cloud.platform.modules..*.*(..))")
     fun logBefore(joinPoint: JoinPoint) {
         val signature = joinPoint.signature
@@ -74,23 +76,21 @@ class LoggingAspect(
 
         var result: Any? = null
         var exception: Exception? = null
-
-        val status =
-            try {
-                result = joinPoint.proceed()
-                true
-            } catch (e: Exception) {
-                exception = e
-                false
-            }
-
+        
+        val status = try {
+            result = joinPoint.proceed()
+            true
+        } catch (e: Exception) {
+            exception = e
+            false
+        }
         // 异步存储日志
         Thread.startVirtualThread {
             val responseData = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result)
-            val user = sysUserRepository.findByUsername(SecurityUtils.getCurrentUsername())
+            val cachedUser = cachedUser.getOrPut(user?.id.toString()) { sysUserRepository.findByUsername(SecurityUtils.getCurrentUsername()) }
             val operationLog =
                 new(SysOperationLog::class).by {
-                    this.user = if (user == null) null else makeIdOnly(SysUser::class, user.id)
+                    this.user = if (cachedUser == null) null else makeIdOnly(SysUser::class, cachedUser.id)
                     this.requestData = requestData
                     this.methodReference = "${signature.declaringTypeName}.${signature.name}"
                     this.httpMethod = HttpMethod.valueOf(httpMethod)
@@ -108,7 +108,7 @@ class LoggingAspect(
             sysOperationLogRepository.insert(operationLog)
         }
         // 重新抛出异常，保证主流程不受影响
-        if (exception != null) throw exception
+        exception?.let { throw it }
         return result
     }
 }
