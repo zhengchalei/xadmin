@@ -32,7 +32,7 @@ object SecurityUtils {
         }
     }
 
-    private fun getTenantCaptchaAuthenticationToken(): AuthenticationToken {
+    private fun getCaptchaAuthenticationToken(): AuthenticationToken {
         if ((SecurityContextHolder.getContext().authentication is AuthenticationToken).not()) {
             throw NotLoginException()
         }
