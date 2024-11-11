@@ -18,7 +18,6 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.by
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysOperationLogRepository
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysUserRepository
 import jakarta.servlet.http.HttpServletRequest
-import java.lang.reflect.Method
 import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.AfterReturning
@@ -30,6 +29,7 @@ import org.babyfish.jimmer.kt.makeIdOnly
 import org.babyfish.jimmer.kt.new
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.lang.reflect.Method
 
 @Aspect
 @Component
@@ -60,13 +60,11 @@ class LoggingAspect(
         log.debug("离开方法: {}.{}，结果: {}", className, methodName, result)
     }
 
-    //    @Around("execution(* com.zhengchalei.cloud.platform.modules.*.controller..*.*(..))")
     @Around("@annotation(com.zhengchalei.cloud.platform.config.log.Log)")
     fun aroundAdvice(joinPoint: ProceedingJoinPoint): Any? {
         val signature: MethodSignature = joinPoint.signature as MethodSignature
         // 获取 URL
         val requestData = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(joinPoint.args.toList())
-        val user = sysUserRepository.findByUsername(SecurityUtils.getCurrentUsername())
         val ipAddress = IPUtil.getIpAddress(httpServletRequest)
         val requestURI = httpServletRequest.requestURI
         val httpMethod = httpServletRequest.method
@@ -74,14 +72,12 @@ class LoggingAspect(
         val method: Method = signature.method
         val log = method.getAnnotation(Log::class.java)
 
-        var responseData: String? = null
         var result: Any? = null
         var exception: Exception? = null
 
         val status =
             try {
                 result = joinPoint.proceed()
-                responseData = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result)
                 true
             } catch (e: Exception) {
                 exception = e
@@ -90,6 +86,8 @@ class LoggingAspect(
 
         // 异步存储日志
         Thread.startVirtualThread {
+            val responseData = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result)
+            val user = sysUserRepository.findByUsername(SecurityUtils.getCurrentUsername())
             val operationLog =
                 new(SysOperationLog::class).by {
                     this.user = if (user == null) null else makeIdOnly(SysUser::class, user.id)
