@@ -27,10 +27,7 @@ interface SysDictItemRepository : KRepository<SysDictItem, Long> {
             }
             .fetchOne()
 
-    fun findPage(
-        specification: SysDictItemListSpecification,
-        pageable: Pageable,
-    ): Page<SysDictItemPageView> =
+    fun findPage(specification: SysDictItemListSpecification, pageable: Pageable): Page<SysDictItemPageView> =
         sql.createQuery(SysDictItem::class) {
                 orderBy(table.id.asc())
                 where(specification)

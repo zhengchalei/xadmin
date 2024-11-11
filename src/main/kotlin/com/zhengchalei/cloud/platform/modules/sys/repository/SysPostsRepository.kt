@@ -26,10 +26,7 @@ interface SysPostsRepository : KRepository<SysPosts, Long> {
             }
             .fetchOne()
 
-    fun findPage(
-        specification: SysPostsListSpecification,
-        pageable: Pageable,
-    ): Page<SysPostsPageView> =
+    fun findPage(specification: SysPostsListSpecification, pageable: Pageable): Page<SysPostsPageView> =
         sql.createQuery(SysPosts::class) {
                 orderBy(table.id.asc())
                 where(specification)

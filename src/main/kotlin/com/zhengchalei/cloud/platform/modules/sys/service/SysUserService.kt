@@ -58,10 +58,7 @@ class SysUserService(
      * @param [specification] 查询条件构造器
      * @param [pageable] 可分页
      */
-    fun findSysUserPage(
-        specification: SysUserListSpecification,
-        pageable: Pageable,
-    ): Page<SysUserPageView> {
+    fun findSysUserPage(specification: SysUserListSpecification, pageable: Pageable): Page<SysUserPageView> {
         // 此处为了查询能够查询到子节点
         val sql =
             """

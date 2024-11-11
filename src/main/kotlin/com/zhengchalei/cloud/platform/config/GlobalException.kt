@@ -69,10 +69,6 @@ class GlobalException {
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): R<Boolean> {
         logger.error("参数错误", e)
-        return R(
-            errorMessage = e.bindingResult.allErrors[0].defaultMessage,
-            success = false,
-            errorCode = 500,
-        )
+        return R(errorMessage = e.bindingResult.allErrors[0].defaultMessage, success = false, errorCode = 500)
     }
 }

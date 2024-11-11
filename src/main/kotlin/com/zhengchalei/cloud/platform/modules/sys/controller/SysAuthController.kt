@@ -29,18 +29,9 @@ class SysAuthController(
     private val log = LoggerFactory.getLogger(SysAuthController::class.java)
 
     @PostMapping("/login")
-    fun login(
-        @RequestBody loginDTO: LoginDTO,
-        httpServletRequest: HttpServletRequest,
-    ): R<LoginResponse> {
+    fun login(@RequestBody loginDTO: LoginDTO, httpServletRequest: HttpServletRequest): R<LoginResponse> {
         val ip = getIpAddress(httpServletRequest)
-        val token =
-            sysAuthService.login(
-                loginDTO.username,
-                loginDTO.password,
-                loginDTO.captcha,
-                ip,
-            )
+        val token = sysAuthService.login(loginDTO.username, loginDTO.password, loginDTO.captcha, ip)
         return R(data = LoginResponse(accessToken = token, refreshToken = token, username = loginDTO.username))
     }
 

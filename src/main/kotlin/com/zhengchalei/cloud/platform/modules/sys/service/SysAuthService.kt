@@ -55,21 +55,13 @@ class SysAuthService(
      * @param [ip] ip
      * @return [String]
      */
-    fun login(
-        username: String,
-        password: String,
-        captcha: String,
-        ip: String,
-    ): String {
+    fun login(username: String, password: String, captcha: String, ip: String): String {
         try {
             log.info("登录: username: {}, ip: {}, captcha: {}", username, ip, captcha)
             val authentication: AuthenticationToken =
                 authenticationManager.authenticate(
-                    AuthenticationToken(
-                        username = username,
-                        password = password,
-                        captcha = captcha,
-                    )) as AuthenticationToken
+                    AuthenticationToken(username = username, password = password, captcha = captcha)
+                ) as AuthenticationToken
             SecurityContextHolder.getContext().authentication = authentication
             log.info("登录成功, username {} ", username)
             val token: String = jwtProvider.createAccessToken(authentication)
@@ -97,13 +89,7 @@ class SysAuthService(
      * @param [ip] ip
      * @param [tenant] 租户
      */
-    private fun saveLoginLog(
-        username: String,
-        password: String,
-        status: Boolean,
-        errorMessage: String?,
-        ip: String,
-    ) {
+    private fun saveLoginLog(username: String, password: String, status: Boolean, errorMessage: String?, ip: String) {
         this.virtualThreadExecutor.submit {
             val address = this.ip2RegionService.search(ip)
             log.info(
@@ -124,7 +110,8 @@ class SysAuthService(
                     this.ip = ip
                     this.address = address
                     this.user = if (status) makeIdOnly(SysUser::class, userService.currentUserId()) else null
-                })
+                }
+            )
         }
     }
 

@@ -102,7 +102,7 @@ spotless {
             it.setContinuationIndent(4)
             it.setMaxWidth(120)
             it.setRemoveUnusedImports(true)
-            it.setManageTrailingCommas(false)
+            it.setManageTrailingCommas(true)
         }
         licenseHeader(
             """

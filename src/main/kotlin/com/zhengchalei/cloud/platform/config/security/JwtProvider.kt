@@ -131,11 +131,6 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
 
         val principal = User(jwtClaimsSet.subject, "", authorities)
 
-        return AuthenticationToken(
-            username = principal,
-            password = "",
-            captcha = "",
-            authorities = authorities,
-        )
+        return AuthenticationToken(username = principal, password = "", captcha = "", authorities = authorities)
     }
 }

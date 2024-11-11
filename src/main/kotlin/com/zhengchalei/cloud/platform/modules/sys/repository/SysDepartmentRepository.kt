@@ -29,10 +29,7 @@ interface SysDepartmentRepository : KRepository<SysDepartment, Long> {
             }
             .fetchOne()
 
-    fun findPage(
-        specification: SysDepartmentListSpecification,
-        pageable: Pageable,
-    ): Page<SysDepartmentPageView> =
+    fun findPage(specification: SysDepartmentListSpecification, pageable: Pageable): Page<SysDepartmentPageView> =
         sql.createQuery(SysDepartment::class) {
                 orderBy(table.sort.asc())
                 where(specification)

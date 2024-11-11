@@ -27,10 +27,8 @@ import org.springframework.stereotype.Component
  * @constructor Create empty Tenant authentication provider
  */
 @Component
-class AuthenticationProvider(
-    val sysUserRepository: SysUserRepository,
-    val passwordEncoder: PasswordEncoder,
-) : AuthenticationProvider {
+class AuthenticationProvider(val sysUserRepository: SysUserRepository, val passwordEncoder: PasswordEncoder) :
+    AuthenticationProvider {
     override fun authenticate(authentication: Authentication): Authentication {
         val username = authentication.name
         val password = authentication.credentials as String
@@ -86,7 +84,8 @@ class AuthenticationProvider(
         val permissions = user.roles.flatMap { it.permissions }
         authorityList.addAll(permissions.map { it.code }.map { SimpleGrantedAuthority(it) })
         authorityList.addAll(
-            roles.map { it.code }.map { Const.SecurityRolePrifix + it }.map { SimpleGrantedAuthority(it) })
+            roles.map { it.code }.map { Const.SecurityRolePrifix + it }.map { SimpleGrantedAuthority(it) }
+        )
         return User(username, user.password, user.status, true, true, true, authorityList)
     }
 }

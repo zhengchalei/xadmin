@@ -26,10 +26,7 @@ interface SysOperationLogRepository : KRepository<SysOperationLog, Long> {
             }
             .fetchOne()
 
-    fun findPage(
-        specification: SysOperationLogListSpecification,
-        pageable: Pageable,
-    ): Page<SysOperationLogPageView> =
+    fun findPage(specification: SysOperationLogListSpecification, pageable: Pageable): Page<SysOperationLogPageView> =
         sql.createQuery(SysOperationLog::class) {
                 orderBy(table.id.asc())
                 where(specification)

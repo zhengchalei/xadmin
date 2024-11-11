@@ -31,24 +31,12 @@ class JacksonConfig {
             builder.deserializerByType(LocalTime::class.java, LocalDateTimeDeserializer(timeFormatter))
 
             // LocalDate
-            builder.serializerByType(
-                LocalDateTime::class.java,
-                LocalDateTimeSerializer(dateTimeFormatter),
-            )
-            builder.deserializerByType(
-                LocalDateTime::class.java,
-                LocalDateTimeDeserializer(dateTimeFormatter),
-            )
+            builder.serializerByType(LocalDateTime::class.java, LocalDateTimeSerializer(dateTimeFormatter))
+            builder.deserializerByType(LocalDateTime::class.java, LocalDateTimeDeserializer(dateTimeFormatter))
 
             // LocalDateTime
-            builder.serializerByType(
-                LocalDateTime::class.java,
-                LocalDateTimeSerializer(dateTimeFormatter),
-            )
-            builder.deserializerByType(
-                LocalDateTime::class.java,
-                LocalDateTimeDeserializer(dateTimeFormatter),
-            )
+            builder.serializerByType(LocalDateTime::class.java, LocalDateTimeSerializer(dateTimeFormatter))
+            builder.deserializerByType(LocalDateTime::class.java, LocalDateTimeDeserializer(dateTimeFormatter))
         }
 
     @Bean

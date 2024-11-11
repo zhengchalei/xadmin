@@ -28,10 +28,7 @@ interface SysPermissionRepository : KRepository<SysPermission, Long> {
             }
             .fetchOne()
 
-    fun findPage(
-        specification: SysPermissionListSpecification,
-        pageable: Pageable,
-    ): Page<SysPermissionPageView> =
+    fun findPage(specification: SysPermissionListSpecification, pageable: Pageable): Page<SysPermissionPageView> =
         sql.createQuery(SysPermission::class) {
                 orderBy(table.id.asc())
                 where(specification)

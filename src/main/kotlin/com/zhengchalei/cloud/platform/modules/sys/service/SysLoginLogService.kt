@@ -49,10 +49,8 @@ class SysLoginLogService(val sysLoginLogRepository: SysLoginLogRepository) {
      * @param [page] 分页
      * @return [Page<SysLoginLogPageView>]
      */
-    fun findSysLoginLogPage(
-        specification: SysLoginLogListSpecification,
-        page: PageRequest,
-    ): Page<SysLoginLogPageView> = this.sysLoginLogRepository.findPage(specification, page)
+    fun findSysLoginLogPage(specification: SysLoginLogListSpecification, page: PageRequest): Page<SysLoginLogPageView> =
+        this.sysLoginLogRepository.findPage(specification, page)
 
     /**
      * 删除系统登录日志通过ID

@@ -21,11 +21,7 @@ interface SysRole : BaseEntity {
     val description: String?
 
     @ManyToMany
-    @JoinTable(
-        name = "sys_role_permission",
-        joinColumnName = "role_id",
-        inverseJoinColumnName = "permission_id",
-    )
+    @JoinTable(name = "sys_role_permission", joinColumnName = "role_id", inverseJoinColumnName = "permission_id")
     val permissions: List<SysPermission>
 
     @ManyToMany(mappedBy = "roles") val users: List<SysUser>
