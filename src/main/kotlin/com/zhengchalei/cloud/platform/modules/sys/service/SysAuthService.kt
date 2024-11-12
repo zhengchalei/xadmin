@@ -51,7 +51,6 @@ class SysAuthService(
      * @param [username] 用户名
      * @param [password] 密码
      * @param [captcha] 验证码
-     * @param [tenant] 租户
      * @param [ip] ip
      * @return [String]
      */
@@ -87,7 +86,6 @@ class SysAuthService(
      * @param [status] 地位
      * @param [errorMessage] 错误信息
      * @param [ip] ip
-     * @param [tenant] 租户
      */
     private fun saveLoginLog(username: String, password: String, status: Boolean, errorMessage: String?, ip: String) {
         this.virtualThreadExecutor.submit {

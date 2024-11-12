@@ -7,8 +7,6 @@
 package com.zhengchalei.cloud.platform.commons
 
 object Const {
-    const val Root = "root"
-
     const val ONLY_ROOT_AUTHORIZE_EL = "authentication.principal.username == 'root'"
 
     const val AdminUser = "admin"

@@ -157,43 +157,4 @@ class SysAuthControllerTest {
     @Test
     fun register() {
     }
-
-    @Test
-    @WithMockUser(
-        username = Const.Root,
-    )
-    fun switchTenant() {
-        mockMvc
-            .post("/api/auth/switch-tenant/default")
-            .andExpect {
-                status { isOk() }
-                content {
-                    contentType(MediaType.APPLICATION_JSON)
-                    jsonPath("$.data.accessToken") { exists() }
-                }
-            }.andDo {
-                log()
-            }
-    }
-
-    @Test
-    @WithMockUser(
-        username = Const.AdminUser,
-    )
-    fun switchTenantFail() {
-        mockMvc
-            .post("/api/auth/switch-tenant/default")
-            .andExpect {
-                status { isOk() }
-                content {
-                    contentType(MediaType.APPLICATION_JSON)
-                    jsonPath("$.success") {
-                        exists()
-                        value(false)
-                    }
-                }
-            }.andDo {
-                log()
-            }
-    }
 }

@@ -7,11 +7,11 @@
 package com.zhengchalei.cloud.platform.config
 
 import com.zhengchalei.cloud.platform.config.security.SecurityContextTaskDecorator
+import java.util.UUID
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.task.SimpleAsyncTaskExecutor
 import org.springframework.scheduling.annotation.EnableAsync
-import java.util.UUID
 
 class VirtualThreadExecutor : SimpleAsyncTaskExecutor()
 

@@ -25,7 +25,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver
 class SpringSecurityConfig(
     @Value("\${spring.profiles.active}") private val profile: String,
     private val objectMapper: ObjectMapper,
-    private val tenantAuthenticationProvider: AuthenticationProvider,
+    private val authenticationProvider: AuthenticationProvider,
     private val handlerExceptionResolver: HandlerExceptionResolver,
 ) {
     @Bean
@@ -42,7 +42,7 @@ class SpringSecurityConfig(
                 UsernamePasswordAuthenticationFilter::class.java,
             )
             .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .authenticationProvider(tenantAuthenticationProvider)
+            .authenticationProvider(authenticationProvider)
             .authorizeHttpRequests { authorize ->
 
                 // favicon.ico

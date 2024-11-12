@@ -19,12 +19,11 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 /**
- * Tenant authentication provider
+ * authentication provider
  *
- * @property sysTenantRepository
  * @property sysUserRepository
  * @property passwordEncoder
- * @constructor Create empty Tenant authentication provider
+ * @constructor Create empty authentication provider
  */
 @Component
 class AuthenticationProvider(val sysUserRepository: SysUserRepository, val passwordEncoder: PasswordEncoder) :
@@ -50,20 +49,6 @@ class AuthenticationProvider(val sysUserRepository: SysUserRepository, val passw
     }
 
     fun loadUserByUsername(username: String, password: String): UserDetails {
-        if (username == Const.Root) {
-            val user = sysUserRepository.findByUsernameForLogin(username) ?: throw UserNotFoundException()
-            if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
-            return User(
-                username,
-                user.password,
-                true,
-                true,
-                true,
-                true,
-                mutableListOf(SimpleGrantedAuthority(Const.SecurityRolePrifix + Const.AdminRole)),
-            )
-        }
-
         val user = sysUserRepository.findByUsername(username) ?: throw UserNotFoundException()
         if (user.username == Const.AdminUser) {
             if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()

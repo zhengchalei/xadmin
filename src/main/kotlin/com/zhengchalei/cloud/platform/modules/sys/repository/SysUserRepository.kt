@@ -6,7 +6,6 @@
  */
 package com.zhengchalei.cloud.platform.modules.sys.repository
 
-import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.security.SecurityUtils
 import com.zhengchalei.cloud.platform.modules.sys.domain.*
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.SysUserDetailView
@@ -107,14 +106,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
 
     fun currentUserId(): Long {
         val username = SecurityUtils.getCurrentUsername()
-        val sqlClient =
-            if (username == Const.Root) {
-                sql
-            } else {
-                sql
-            }
-        return sqlClient
-            .createQuery(SysUser::class) {
+        return sql.createQuery(SysUser::class) {
                 where(table.username eq username)
                 select(table.fetchBy { table.id })
             }

@@ -19,9 +19,6 @@
             <column name="file_data" remarks="文件数据" type="BYTEA">
                 <constraints nullable="false"/>
             </column>
-            <column name="tenant" remarks="租户" type="text">
-                <constraints nullable="false"/>
-            </column>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="上传时间" type="timestamp">
                 <constraints nullable="false"/>
             </column>
