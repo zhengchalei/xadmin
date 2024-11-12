@@ -107,7 +107,6 @@ class SysUserControllerTest {
                     objectMapper.writeValueAsString(
                         SysUserUpdateInput(
                             id = lastId,
-                            username = "xiaoshitou",
                             email = "xiaoshitou@163.com",
                             status = true,
                             roleIds = listOf(1, 2),
@@ -137,7 +136,6 @@ class SysUserControllerTest {
                     objectMapper.writeValueAsString(
                         SysUserUpdateInput(
                             id = 1,
-                            username = "xiaoshitou",
                             email = "xiaoshitou@163.com",
                             status = true,
                             roleIds = listOf(1, 2),
