@@ -10,26 +10,26 @@ import com.zhengchalei.cloud.platform.config.LoginFailException
 import com.zhengchalei.cloud.platform.config.ServiceException
 import com.zhengchalei.cloud.platform.config.VirtualThreadExecutor
 import com.zhengchalei.cloud.platform.config.security.AuthenticationToken
-import com.zhengchalei.cloud.platform.config.security.JwtProvider
+import com.zhengchalei.cloud.platform.config.security.provider.AuthTokenProvider
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysLoginLog
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.by
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysLoginLogRepository
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher
-import java.time.LocalDateTime
 import org.babyfish.jimmer.kt.makeIdOnly
 import org.babyfish.jimmer.kt.new
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 /**
  * 系统授权服务
  *
  * @param [sysLoginLogRepository] 系统登录日志存储库
  * @param [authenticationManager] 认证管理器
- * @param [jwtProvider] jwt 提供商
+ * @param [authTokenProvider] jwt 提供商
  * @constructor 创建[SysAuthService]
  * @author 郑查磊
  * @date 2024-08-17
@@ -38,7 +38,7 @@ import org.springframework.stereotype.Service
 class SysAuthService(
     val sysLoginLogRepository: SysLoginLogRepository,
     val authenticationManager: AuthenticationManager,
-    val jwtProvider: JwtProvider,
+    val authTokenProvider: AuthTokenProvider,
     val userService: SysUserService,
     val ip2regionSearcher: Ip2regionSearcher,
     val virtualThreadExecutor: VirtualThreadExecutor,
@@ -64,7 +64,7 @@ class SysAuthService(
                 ) as AuthenticationToken
             SecurityContextHolder.getContext().authentication = authentication
             log.info("登录成功, username {} ", username)
-            val token: String = jwtProvider.createAccessToken(authentication)
+            val token: String = authTokenProvider.createToken(authentication)
             return token
         } catch (e: ServiceException) {
             log.error("登录失败", e)

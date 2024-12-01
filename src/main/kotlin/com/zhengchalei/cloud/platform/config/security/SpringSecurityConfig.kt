@@ -9,6 +9,7 @@ package com.zhengchalei.cloud.platform.config.security
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.GlobalException
+import com.zhengchalei.cloud.platform.config.security.provider.AuthTokenProvider
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.AuthenticationManager
@@ -31,14 +32,14 @@ class SpringSecurityConfig(
     @Bean
     fun securityFilterChain(
         http: HttpSecurity,
-        jwtProvider: JwtProvider,
+        authTokenProvider: AuthTokenProvider,
         authenticationManager: AuthenticationManager,
     ): SecurityFilterChain {
         val authenticationFilter = AuthenticationFilter()
         authenticationFilter.setAuthenticationManager(authenticationManager)
         return http
             .addFilterBefore(
-                JwtConfigurer.JwtAuthorizationFilter(jwtProvider, handlerExceptionResolver),
+                JwtConfigurer.JwtAuthorizationFilter(authTokenProvider, handlerExceptionResolver),
                 UsernamePasswordAuthenticationFilter::class.java,
             )
             .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter::class.java)

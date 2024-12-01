@@ -6,6 +6,7 @@
  */
 package com.zhengchalei.cloud.platform.config.security
 
+import com.zhengchalei.cloud.platform.config.security.provider.AuthTokenProvider
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -19,18 +20,18 @@ import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.servlet.HandlerExceptionResolver
 
 class JwtConfigurer(
-    private val jwtProvider: JwtProvider,
+    private val authTokenProvider: AuthTokenProvider,
     private val handlerExceptionResolver: HandlerExceptionResolver,
 ) : SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>() {
     override fun configure(http: HttpSecurity) {
         // 实例化 JwtFilter 拦截器, 将Token util bean 传递过来
-        val customFilter = JwtAuthorizationFilter(jwtProvider, handlerExceptionResolver)
+        val customFilter = JwtAuthorizationFilter(authTokenProvider, handlerExceptionResolver)
         // 将这个 jwt filter 配置在 UsernamePasswordAuthenticationFilter.class 之前
         http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter::class.java)
     }
 
     class JwtAuthorizationFilter(
-        private val jwtProvider: JwtProvider,
+        private val authTokenProvider: AuthTokenProvider,
         private val handlerExceptionResolver: HandlerExceptionResolver,
     ) : OncePerRequestFilter() {
         private val AUTHORIZATION: String = "Authorization"
@@ -45,9 +46,9 @@ class JwtConfigurer(
             try {
                 val jwt: String? = resolveToken(request)
                 // 如果 jwt不为空 然后调用了 jwtUtil 效验了 token 是否有效
-                if (!jwt.isNullOrBlank() && jwtProvider.validateToken(jwt)) {
+                if (!jwt.isNullOrBlank() && authTokenProvider.validateToken(jwt)) {
                     // 获取 Authentication
-                    val authentication: Authentication = jwtProvider.getAuthentication(jwt)
+                    val authentication: Authentication = authTokenProvider.getAuthentication(jwt)
                     // 将 认证信息重新set 到 security context 中
                     SecurityContextHolder.getContext().authentication = authentication
                 }

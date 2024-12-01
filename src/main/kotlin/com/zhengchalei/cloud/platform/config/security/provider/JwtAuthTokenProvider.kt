@@ -4,7 +4,7 @@
  *
  * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
  */
-package com.zhengchalei.cloud.platform.config.security
+package com.zhengchalei.cloud.platform.config.security.provider
 
 import com.nimbusds.jose.JOSEException
 import com.nimbusds.jose.JWSAlgorithm
@@ -16,18 +16,21 @@ import com.nimbusds.jwt.SignedJWT
 import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.InvalidTokenException
 import com.zhengchalei.cloud.platform.config.TokenInvalidException
-import com.zhengchalei.cloud.platform.config.properties.AuthConfigurationProperties
-import java.util.*
+import com.zhengchalei.cloud.platform.config.security.AuthenticationToken
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
-class JwtProvider(private val authConfigurationProperties: AuthConfigurationProperties) : CommandLineRunner {
-    private val log = LoggerFactory.getLogger(JwtProvider::class.java)
+@ConditionalOnProperty(value = ["auth.token-type"], havingValue = "JWT", matchIfMissing = false)
+class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigurationProperties) : AuthTokenProvider,
+    CommandLineRunner {
+    private val log = LoggerFactory.getLogger(JwtAuthTokenProvider::class.java)
 
     private var secret: ByteArray = "".toByteArray(Charsets.UTF_8)
 
@@ -53,7 +56,7 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
      * @return 签名后的 JWT 对象
      * @throws JOSEException 如果签名过程中出现错误
      */
-    fun createAccessToken(authentication: AuthenticationToken): String {
+    override fun createToken(authentication: AuthenticationToken): String {
         // Header
         val header = JWSHeader(JWSAlgorithm.HS256)
 
@@ -92,7 +95,7 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
      * @param token JWT 字符串
      * @return 解析后的 SignedJWT 对象
      */
-    fun parseToken(token: String): SignedJWT {
+    private fun parseToken(token: String): SignedJWT {
         try {
             return SignedJWT.parse(token)
         } catch (e: Exception) {
@@ -106,7 +109,7 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
      * @param token 签名后的 JWT 对象
      * @return 如果 JWT 有效则返回 true，否则返回 false
      */
-    fun validateToken(token: String): Boolean {
+    override fun validateToken(token: String): Boolean {
         val jwt = parseToken(token)
         val verifier = MACVerifier(secret)
         if (!jwt.verify(verifier)) {
@@ -116,7 +119,7 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
         return !claimsSet.expirationTime.before(Date())
     }
 
-    fun getAuthentication(token: String): Authentication {
+    override fun getAuthentication(token: String): Authentication {
         val jwt: SignedJWT = parseToken(token)
         val jwtClaimsSet = jwt.jwtClaimsSet ?: throw TokenInvalidException()
         val permissions = jwtClaimsSet.getStringClaim("permissions").split(",").filter { it.isNotBlank() }
@@ -131,6 +134,12 @@ class JwtProvider(private val authConfigurationProperties: AuthConfigurationProp
 
         val principal = User(jwtClaimsSet.subject, "", authorities)
 
-        return AuthenticationToken(username = principal, password = "", captcha = "", captchaID = "", authorities = authorities)
+        return AuthenticationToken(
+            username = principal,
+            password = "",
+            captcha = "",
+            captchaID = "",
+            authorities = authorities
+        )
     }
 }

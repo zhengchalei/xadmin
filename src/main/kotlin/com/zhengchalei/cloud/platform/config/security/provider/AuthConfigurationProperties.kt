@@ -4,7 +4,7 @@
  *
  * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
  */
-package com.zhengchalei.cloud.platform.config.properties
+package com.zhengchalei.cloud.platform.config.security.provider
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration
 @ConfigurationProperties("auth")
 class AuthConfigurationProperties {
 
-    val type: AuthTokenType = AuthTokenType.JWT
+    val tokenType = AuthTokenType.JWT.name
 
     val store: StoreType = StoreType.MEMORY
 
@@ -35,5 +35,5 @@ enum class StoreType {
 
 enum class AuthTokenType {
     JWT,
-    UUID,
+    Stateful,
 }
