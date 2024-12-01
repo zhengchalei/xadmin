@@ -7,6 +7,7 @@
 package com.zhengchalei.cloud.platform.config.aspect
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.IPUtil
 import com.zhengchalei.cloud.platform.config.security.SecurityUtils
 import com.zhengchalei.cloud.platform.modules.sys.domain.*
@@ -14,8 +15,6 @@ import com.zhengchalei.cloud.platform.modules.sys.repository.SysOperationLogRepo
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysUserRepository
 import jakarta.servlet.http.HttpServletRequest
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher
-import java.lang.reflect.Method
-import java.util.concurrent.ConcurrentHashMap
 import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.AfterReturning
@@ -26,7 +25,10 @@ import org.aspectj.lang.reflect.MethodSignature
 import org.babyfish.jimmer.kt.makeIdOnly
 import org.babyfish.jimmer.kt.new
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import java.lang.reflect.Method
+import java.util.concurrent.ConcurrentHashMap
 
 @Aspect
 @Component
@@ -36,6 +38,7 @@ class LoggingAspect(
     private val sysUserRepository: SysUserRepository,
     private val httpServletRequest: HttpServletRequest,
     private val ip2regionSearcher: Ip2regionSearcher,
+    @Value("spring.profiles.active") private val profile: String
 ) {
 
     private val log = LoggerFactory.getLogger(LoggingAspect::class.java)
@@ -48,7 +51,9 @@ class LoggingAspect(
         val className = signature.declaringTypeName
         val methodName = signature.name
         val args = joinPoint.args
-        log.info("进入方法: {}.{}，参数: {}", className, methodName, args.contentDeepToString())
+        if (profile == Const.ENV_DEV) {
+            log.info("进入方法: {}.{}，参数: {}", className, methodName, args.contentDeepToString())
+        }
     }
 
     @AfterReturning(pointcut = "execution(* com.zhengchalei.cloud.platform.modules..*.*(..))", returning = "result")
@@ -56,14 +61,16 @@ class LoggingAspect(
         val signature = joinPoint.signature
         val className = signature.declaringTypeName
         val methodName = signature.name
-        log.debug("离开方法: {}.{}，结果: {}", className, methodName, result)
+        if (profile == Const.ENV_DEV) {
+            log.info("离开方法: {}.{}，结果: {}", className, methodName, result)
+        }
     }
 
     @Around("@annotation(com.zhengchalei.cloud.platform.modules.sys.domain.Log)")
     fun aroundAdvice(joinPoint: ProceedingJoinPoint): Any? {
         val signature: MethodSignature = joinPoint.signature as MethodSignature
         // 获取 URL
-        val requestData = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(joinPoint.args.toList())
+        val params = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(joinPoint.args.toList())
         val ipAddress = IPUtil.getIpAddress(httpServletRequest)
         val requestURI = httpServletRequest.requestURI
         val httpMethod = httpServletRequest.method
@@ -84,7 +91,8 @@ class LoggingAspect(
             }
         // 异步存储日志
         Thread.startVirtualThread {
-            val responseData = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result)
+            val resultJson = if (profile == Const.ENV_DEV) objectMapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsString(result) else objectMapper.writeValueAsString(result)
             val cachedUser =
                 cachedUser[SecurityUtils.getCurrentUsername()]?.let {
                     sysUserRepository.findByUsername(SecurityUtils.getCurrentUsername())
@@ -92,7 +100,7 @@ class LoggingAspect(
             val operationLog =
                 new(SysOperationLog::class).by {
                     this.user = if (cachedUser == null) null else makeIdOnly(SysUser::class, cachedUser.id)
-                    this.params = requestData
+                    this.params = params
                     this.methodReference = "${signature.declaringTypeName}.${signature.name}"
                     this.httpMethod = HttpMethod.valueOf(httpMethod)
                     this.name = log.value
@@ -100,7 +108,7 @@ class LoggingAspect(
                     this.url = requestURI
                     this.ip = ipAddress
                     this.address = ip2regionSearcher.getAddress(ipAddress)
-                    this.result = responseData
+                    this.result = resultJson
                     this.time = System.currentTimeMillis()
                     this.status = status
                     this.errorMessage = if (status) null else exception?.message
