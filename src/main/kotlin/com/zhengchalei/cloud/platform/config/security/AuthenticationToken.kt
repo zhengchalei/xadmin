@@ -13,5 +13,6 @@ class AuthenticationToken(
     username: Any,
     password: Any,
     val captcha: String,
+    val captchaID: String,
     authorities: Collection<GrantedAuthority> = emptyList(),
 ) : UsernamePasswordAuthenticationToken(username, password, authorities)

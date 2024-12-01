@@ -2,11 +2,11 @@ import java.time.LocalDate
 
 plugins {
     jacoco
-    kotlin("jvm") version "2.0.20"
-    kotlin("plugin.spring") version "2.0.20"
-    id("org.springframework.boot") version "3.3.5"
+    kotlin("jvm") version "2.1.0"
+    kotlin("plugin.spring") version "2.1.0"
+    id("org.springframework.boot") version "3.4.0"
     id("io.spring.dependency-management") version "1.1.6"
-    id("com.google.devtools.ksp") version "2.0.20-1.0.24"
+    id("com.google.devtools.ksp") version "2.1.0-1.0.29"
     id("pmd")
     id("com.diffplug.spotless") version "latest.release"
 }
@@ -19,7 +19,18 @@ java { toolchain { languageVersion = JavaLanguageVersion.of(21) } }
 
 kotlin { sourceSets.main { kotlin.srcDir("build/generated/ksp/main/kotlin") } }
 
-repositories { mavenCentral() }
+repositories {
+    mavenCentral()
+    maven(url = "https://repo1.maven.org/maven2")
+    maven(url = "https://maven.aliyun.com/repository/public")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("cn.hutool:hutool-bom:latest.release")
+        mavenBom("net.dreamlu:mica-bom:latest.release")
+    }
+}
 
 configurations { compileOnly { extendsFrom(configurations.annotationProcessor.get()) } }
 
@@ -38,7 +49,13 @@ dependencies {
     ksp("org.babyfish.jimmer:jimmer-ksp:latest.release")
 
     // ip2region
-    implementation("org.lionsoul:ip2region:latest.release")
+    implementation("net.dreamlu:mica-core")
+    implementation("net.dreamlu:mica-ip2region")
+    implementation("net.dreamlu:mica-captcha")
+    implementation("net.dreamlu:mica-redis")
+    implementation("net.dreamlu:mica-xss")
+    implementation("net.dreamlu:mica-logging")
+    annotationProcessor("net.dreamlu:mica-auto")
 
     // web
     implementation("org.springframework.boot:spring-boot-starter-web")

@@ -6,7 +6,6 @@
  */
 package com.zhengchalei.cloud.platform.modules.sys.service
 
-import com.zhengchalei.cloud.platform.config.IP2RegionService
 import com.zhengchalei.cloud.platform.config.LoginFailException
 import com.zhengchalei.cloud.platform.config.ServiceException
 import com.zhengchalei.cloud.platform.config.VirtualThreadExecutor
@@ -16,6 +15,7 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.SysLoginLog
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.by
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysLoginLogRepository
+import net.dreamlu.mica.ip2region.core.Ip2regionSearcher
 import java.time.LocalDateTime
 import org.babyfish.jimmer.kt.makeIdOnly
 import org.babyfish.jimmer.kt.new
@@ -40,7 +40,7 @@ class SysAuthService(
     val authenticationManager: AuthenticationManager,
     val jwtProvider: JwtProvider,
     val userService: SysUserService,
-    val ip2RegionService: IP2RegionService,
+    val ip2regionSearcher: Ip2regionSearcher,
     val virtualThreadExecutor: VirtualThreadExecutor,
 ) {
     private val log = LoggerFactory.getLogger(SysAuthService::class.java)
@@ -51,15 +51,16 @@ class SysAuthService(
      * @param [username] 用户名
      * @param [password] 密码
      * @param [captcha] 验证码
+     * @param [captchaID] 验证码ID
      * @param [ip] ip
      * @return [String]
      */
-    fun login(username: String, password: String, captcha: String, ip: String): String {
+    fun login(username: String, password: String, captcha: String, captchaID: String, ip: String): String {
         try {
             log.info("登录: username: {}, ip: {}, captcha: {}", username, ip, captcha)
             val authentication: AuthenticationToken =
                 authenticationManager.authenticate(
-                    AuthenticationToken(username = username, password = password, captcha = captcha)
+                    AuthenticationToken(username = username, password = password, captcha = captcha, captchaID =  captchaID)
                 ) as AuthenticationToken
             SecurityContextHolder.getContext().authentication = authentication
             log.info("登录成功, username {} ", username)
@@ -89,7 +90,7 @@ class SysAuthService(
      */
     private fun saveLoginLog(username: String, password: String, status: Boolean, errorMessage: String?, ip: String) {
         this.virtualThreadExecutor.submit {
-            val address = this.ip2RegionService.search(ip)
+            val address = this.ip2regionSearcher.getAddress(ip)
             log.info(
                 "保存登录日志: username: {}, ip: {}, address: {}, status: {}, errorMessage: {}",
                 username,

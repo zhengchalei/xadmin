@@ -34,6 +34,7 @@ class SysAuthControllerTest {
                             username = "admin",
                             password = "123456",
                             captcha = "1234",
+                            captchaID = "",
                         ),
                     )
                 contentType = MediaType.APPLICATION_JSON
@@ -55,6 +56,7 @@ class SysAuthControllerTest {
                             username = "root",
                             password = "123456",
                             captcha = "1234",
+                            captchaID = "",
                         ),
                     )
                 contentType = MediaType.APPLICATION_JSON
@@ -79,6 +81,7 @@ class SysAuthControllerTest {
                             username = "admin",
                             password = "1234561",
                             captcha = "1234",
+                            captchaID = "",
                         ),
                     )
                 contentType = MediaType.APPLICATION_JSON
@@ -106,6 +109,7 @@ class SysAuthControllerTest {
                             username = "root",
                             password = "error password",
                             captcha = "1234",
+                            captchaID = "",
                         ),
                     )
                 contentType = MediaType.APPLICATION_JSON
@@ -133,6 +137,7 @@ class SysAuthControllerTest {
                             username = "root",
                             password = "123456",
                             captcha = "1234",
+                            captchaID = "",
                         ),
                     )
                 contentType = MediaType.APPLICATION_JSON

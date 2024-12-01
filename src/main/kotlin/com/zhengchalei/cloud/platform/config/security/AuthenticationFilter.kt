@@ -16,8 +16,13 @@ class AuthenticationFilter : UsernamePasswordAuthenticationFilter() {
         val username = request.getParameter("username")
         val password = request.getParameter("password")
         val captcha = request.getParameter("captcha")
-
-        val authRequest = AuthenticationToken(username, password, captcha)
+        val captchaID = request.getParameter("captchaID")
+        val authRequest = AuthenticationToken(
+            username = username,
+            password = password,
+            captcha = captcha,
+            captchaID = captchaID
+        )
         super.setDetails(request, authRequest)
         return authenticationManager.authenticate(authRequest)
     }

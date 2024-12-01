@@ -7,7 +7,6 @@
 package com.zhengchalei.cloud.platform.modules.sys.domain
 
 import com.zhengchalei.cloud.platform.config.jimmer.BaseEntity
-import com.zhengchalei.cloud.platform.config.log.OperationType
 import java.util.*
 import org.babyfish.jimmer.sql.*
 
@@ -34,9 +33,9 @@ interface SysOperationLog : BaseEntity {
 
     val address: String?
 
-    val requestData: String?
+    val params: String?
 
-    val responseData: String?
+    val result: String?
 
     val time: Long
 
@@ -66,4 +65,14 @@ enum class HttpMethod {
             }
         }
     }
+}
+
+annotation class Log(val value: String, val type: OperationType)
+
+enum class OperationType {
+    CREATE,
+    DELETE,
+    UPDATE,
+    QUERY,
+    OTHER,
 }

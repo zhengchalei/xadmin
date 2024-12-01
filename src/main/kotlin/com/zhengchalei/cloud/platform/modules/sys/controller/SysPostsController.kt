@@ -8,8 +8,8 @@ package com.zhengchalei.cloud.platform.modules.sys.controller
 
 import com.zhengchalei.cloud.platform.commons.QueryPage
 import com.zhengchalei.cloud.platform.commons.R
-import com.zhengchalei.cloud.platform.config.log.Log
-import com.zhengchalei.cloud.platform.config.log.OperationType
+import com.zhengchalei.cloud.platform.modules.sys.domain.Log
+import com.zhengchalei.cloud.platform.modules.sys.domain.OperationType
 import com.zhengchalei.cloud.platform.modules.sys.domain.dto.*
 import com.zhengchalei.cloud.platform.modules.sys.service.SysPostsService
 import jakarta.validation.constraints.NotNull

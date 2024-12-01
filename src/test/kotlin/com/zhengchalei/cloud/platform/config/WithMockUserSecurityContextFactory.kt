@@ -31,7 +31,9 @@ class WithMockUserSecurityContextFactory : WithSecurityContextFactory<WithMockUs
         )
         val principal: UserDetails = User(annotation.username, annotation.password, authorities)
         val auth: Authentication =
-            AuthenticationToken(principal, annotation.password, "", authorities)
+            AuthenticationToken(
+                principal, annotation.password, "", "", authorities
+            )
         context.authentication = auth
         return context
     }
