@@ -40,20 +40,19 @@ class SpringSecurityConfig(
         authTokenProvider: AuthTokenProvider,
         authenticationManager: AuthenticationManager,
     ): SecurityFilterChain {
-//        val authenticationFilter = AuthenticationFilter()
-//        authenticationFilter.setAuthenticationManager(authenticationManager)
+        //        val authenticationFilter = AuthenticationFilter()
+        //        authenticationFilter.setAuthenticationManager(authenticationManager)
 
-        val authTokenFilter = when (authConfigurationProperties.tokenType) {
-            AuthTokenType.JWT -> JwtAuthorizationFilter(authTokenProvider, handlerExceptionResolver)
-            AuthTokenType.Stateful -> StatefulTokenAuthorizationFilter(authTokenProvider, handlerExceptionResolver)
-        }
+        val authTokenFilter =
+            when (authConfigurationProperties.tokenType) {
+                AuthTokenType.JWT -> JwtAuthorizationFilter(authTokenProvider, handlerExceptionResolver)
+                AuthTokenType.Stateful -> StatefulTokenAuthorizationFilter(authTokenProvider, handlerExceptionResolver)
+            }
 
         return http
-            .addFilterBefore(
-                authTokenFilter,
-                UsernamePasswordAuthenticationFilter::class.java,
-            )
-//            .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
+            //            .addFilterBefore(authenticationFilter,
+            // UsernamePasswordAuthenticationFilter::class.java)
             .authenticationProvider(authenticationProvider)
             .authorizeHttpRequests { authorize ->
 
@@ -85,11 +84,7 @@ class SpringSecurityConfig(
                 it.accessDeniedHandler { _, response, accessDeniedException ->
                     response.sendError(
                         403,
-                        objectMapper.writeValueAsString(
-                            GlobalException.Error(
-                                accessDeniedException.message ?: "无权限"
-                            )
-                        ),
+                        objectMapper.writeValueAsString(GlobalException.Error(accessDeniedException.message ?: "无权限")),
                     )
                 }
             }

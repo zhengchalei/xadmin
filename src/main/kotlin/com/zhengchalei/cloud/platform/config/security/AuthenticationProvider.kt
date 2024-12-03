@@ -13,10 +13,10 @@ import com.zhengchalei.cloud.platform.config.UserPasswordErrorException
 import com.zhengchalei.cloud.platform.config.security.authentication.SysUserDetails
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysUserRepository
 import org.springframework.security.authentication.AuthenticationProvider
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
@@ -29,9 +29,9 @@ import org.springframework.stereotype.Component
  */
 @Component
 class AuthenticationProvider(
-    private val sysUserRepository: SysUserRepository, private val passwordEncoder: PasswordEncoder,
-) :
-    AuthenticationProvider {
+    private val sysUserRepository: SysUserRepository,
+    private val passwordEncoder: PasswordEncoder,
+) : AuthenticationProvider {
     override fun authenticate(authentication: Authentication): Authentication {
         val username = authentication.name
         val password = authentication.credentials as String
@@ -46,7 +46,7 @@ class AuthenticationProvider(
     }
 
     override fun supports(authentication: Class<*>): Boolean =
-        SysUserAuthentication::class.java.isAssignableFrom(authentication)
+        UsernamePasswordAuthenticationToken::class.java.isAssignableFrom(authentication)
 
     fun loadUserByUsername(username: String, password: String): SysUserDetails {
         val user = sysUserRepository.findUserDetailsByUsername(username) ?: throw UserNotFoundException()

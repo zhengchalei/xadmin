@@ -69,6 +69,9 @@ dependencies {
     // jwt
     implementation("com.nimbusds:nimbus-jose-jwt:latest.release")
 
+    // redisson
+    implementation("org.redisson:redisson-spring-boot-starter:latest.release")
+
     // openapi
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     // configuration processor

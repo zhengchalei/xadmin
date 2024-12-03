@@ -14,6 +14,8 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.*
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysOperationLogRepository
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysUserRepository
 import jakarta.servlet.http.HttpServletRequest
+import java.lang.reflect.Method
+import java.util.concurrent.ConcurrentHashMap
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher
 import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.ProceedingJoinPoint
@@ -27,8 +29,6 @@ import org.babyfish.jimmer.kt.new
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import java.lang.reflect.Method
-import java.util.concurrent.ConcurrentHashMap
 
 @Aspect
 @Component
@@ -38,7 +38,7 @@ class LoggingAspect(
     private val sysUserRepository: SysUserRepository,
     private val httpServletRequest: HttpServletRequest,
     private val ip2regionSearcher: Ip2regionSearcher,
-    @Value("spring.profiles.active") private val profile: String
+    @Value("spring.profiles.active") private val profile: String,
 ) {
 
     private val log = LoggerFactory.getLogger(LoggingAspect::class.java)
@@ -91,8 +91,9 @@ class LoggingAspect(
             }
         // 异步存储日志
         Thread.startVirtualThread {
-            val resultJson = if (profile == Const.ENV_DEV) objectMapper.writerWithDefaultPrettyPrinter()
-                .writeValueAsString(result) else objectMapper.writeValueAsString(result)
+            val resultJson =
+                if (profile == Const.ENV_DEV) objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result)
+                else objectMapper.writeValueAsString(result)
             val cachedUser =
                 cachedUser[SecurityUtils.getCurrentUsername()]?.let {
                     sysUserRepository.findUserDetailsByUsername(SecurityUtils.getCurrentUsername())

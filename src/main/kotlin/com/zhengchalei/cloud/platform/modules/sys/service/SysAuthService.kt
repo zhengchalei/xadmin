@@ -15,15 +15,16 @@ import com.zhengchalei.cloud.platform.modules.sys.domain.SysLoginLog
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.by
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysLoginLogRepository
+import java.time.LocalDateTime
 import net.dreamlu.mica.captcha.service.ICaptchaService
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher
 import org.babyfish.jimmer.kt.makeIdOnly
 import org.babyfish.jimmer.kt.new
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 
 /**
  * 系统授权服务
@@ -61,11 +62,12 @@ class SysAuthService(
         try {
             log.info("登录: username: {}, ip: {}, captcha: {}", username, ip, captcha)
             // 验证码验证
-            this.captchaService.validate(captchaID, captcha)
+            if (this.captchaService.validate(captchaID, captcha).not()) {
+                throw LoginFailException("验证码错误")
+            }
             val authentication: SysUserAuthentication =
-                authenticationManager.authenticate(
-                    SysUserAuthentication(id = 0, username = username, password = password)
-                ) as SysUserAuthentication
+                authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
+                    as SysUserAuthentication
             SecurityContextHolder.getContext().authentication = authentication
             log.info("登录成功, username {} ", username)
             val token: String = authTokenProvider.createToken(authentication)

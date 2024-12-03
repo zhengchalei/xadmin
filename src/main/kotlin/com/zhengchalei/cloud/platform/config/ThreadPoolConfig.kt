@@ -7,7 +7,7 @@
 package com.zhengchalei.cloud.platform.config
 
 import com.zhengchalei.cloud.platform.config.security.SecurityContextTaskDecorator
-import java.util.UUID
+import java.util.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.task.SimpleAsyncTaskExecutor

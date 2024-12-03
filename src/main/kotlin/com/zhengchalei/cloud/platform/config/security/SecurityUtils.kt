@@ -7,9 +7,9 @@
 package com.zhengchalei.cloud.platform.config.security
 
 import com.zhengchalei.cloud.platform.config.NotLoginException
+import com.zhengchalei.cloud.platform.config.security.authentication.SysUserDetails
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
 
 object SecurityUtils {
     fun getCurrentUsername(): String {
@@ -17,13 +17,28 @@ object SecurityUtils {
             SecurityContextHolder.getContext().authentication ?: throw NotLoginException()
 
         when (authentication.principal) {
-            is UserDetails -> {
-                val userDetails = authentication.principal as UserDetails
+            is SysUserDetails -> {
+                val userDetails = authentication.principal as SysUserDetails
                 return userDetails.username
             }
 
             is String -> {
                 return authentication.principal as String
+            }
+
+            else -> {
+                throw NotLoginException()
+            }
+        }
+    }
+
+    fun getCurrentUserId(): Long {
+        val authentication: Authentication =
+            SecurityContextHolder.getContext().authentication ?: throw NotLoginException()
+
+        when (authentication) {
+            is SysUserAuthentication -> {
+                return authentication.id
             }
 
             else -> {

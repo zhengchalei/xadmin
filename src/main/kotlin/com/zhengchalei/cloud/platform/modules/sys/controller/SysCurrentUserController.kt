@@ -7,6 +7,7 @@
 package com.zhengchalei.cloud.platform.modules.sys.controller
 
 import com.zhengchalei.cloud.platform.commons.R
+import com.zhengchalei.cloud.platform.config.security.SecurityUtils
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
 import com.zhengchalei.cloud.platform.modules.sys.service.SysUserService
 import org.babyfish.jimmer.client.meta.Api
@@ -23,6 +24,7 @@ class SysCurrentUserController(val sysUserService: SysUserService) {
 
     @GetMapping("/info")
     fun currentUserInfo(): R<SysUser> {
+        val currentUserId = SecurityUtils.getCurrentUserId()
         val userInfo = this.sysUserService.currentUserInfo()
         return R(data = userInfo)
     }

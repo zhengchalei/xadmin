@@ -17,19 +17,17 @@ import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.InvalidTokenException
 import com.zhengchalei.cloud.platform.config.TokenInvalidException
 import com.zhengchalei.cloud.platform.config.security.SysUserAuthentication
+import java.util.*
 import org.slf4j.LoggerFactory
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
-import java.util.*
 
 @Component
 @ConditionalOnProperty(value = ["auth.token-type"], havingValue = "JWT", matchIfMissing = false)
 class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigurationProperties) : AuthTokenProvider {
     private val log = LoggerFactory.getLogger(JwtAuthTokenProvider::class.java)
-
 
     val secret: ByteArray by lazy {
         val jwtConfigurationProperties = authConfigurationProperties.jwt
@@ -132,12 +130,7 @@ class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigur
 
         val id = jwtClaimsSet.getClaim("id") as Long
         val username = jwtClaimsSet.getClaim("username") as String
-        return SysUserAuthentication(
-            id = id,
-            username = username,
-            password = "",
-            authorities = authorities
-        )
+        return SysUserAuthentication(id = id, username = username, password = "", authorities = authorities)
     }
 
     override fun logout(token: String) {
