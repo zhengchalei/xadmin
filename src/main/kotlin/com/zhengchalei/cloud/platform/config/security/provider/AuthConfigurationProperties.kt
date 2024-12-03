@@ -13,11 +13,11 @@ import org.springframework.context.annotation.Configuration
 @ConfigurationProperties("auth")
 class AuthConfigurationProperties {
 
-    val tokenType = AuthTokenType.JWT.name
+    var tokenType = AuthTokenType.JWT
 
-    val store: StoreType = StoreType.MEMORY
+    var store: StoreType = StoreType.MEMORY
 
-    val jwt: JwtConfigurationProperties = JwtConfigurationProperties()
+    var jwt: JwtConfigurationProperties = JwtConfigurationProperties()
 }
 
 class JwtConfigurationProperties {

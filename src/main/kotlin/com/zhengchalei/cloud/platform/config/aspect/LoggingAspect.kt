@@ -95,7 +95,7 @@ class LoggingAspect(
                 .writeValueAsString(result) else objectMapper.writeValueAsString(result)
             val cachedUser =
                 cachedUser[SecurityUtils.getCurrentUsername()]?.let {
-                    sysUserRepository.findByUsername(SecurityUtils.getCurrentUsername())
+                    sysUserRepository.findUserDetailsByUsername(SecurityUtils.getCurrentUsername())
                 }
             val operationLog =
                 new(SysOperationLog::class).by {

@@ -1,7 +1,7 @@
 package com.zhengchalei.cloud.platform.config
 
 import com.zhengchalei.cloud.platform.commons.Const
-import com.zhengchalei.cloud.platform.config.security.AuthenticationToken
+import com.zhengchalei.cloud.platform.config.security.SysUserAuthentication
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -31,8 +31,8 @@ class WithMockUserSecurityContextFactory : WithSecurityContextFactory<WithMockUs
         )
         val principal: UserDetails = User(annotation.username, annotation.password, authorities)
         val auth: Authentication =
-            AuthenticationToken(
-                principal, annotation.password, "", "", authorities
+            SysUserAuthentication(
+                principal, annotation.password, authorities
             )
         context.authentication = auth
         return context

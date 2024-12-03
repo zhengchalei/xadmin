@@ -32,13 +32,13 @@ object SecurityUtils {
         }
     }
 
-    private fun getCaptchaAuthenticationToken(): AuthenticationToken {
-        if ((SecurityContextHolder.getContext().authentication is AuthenticationToken).not()) {
+    private fun getCaptchaAuthenticationToken(): SysUserAuthentication {
+        if ((SecurityContextHolder.getContext().authentication is SysUserAuthentication).not()) {
             throw NotLoginException()
         }
-        return SecurityContextHolder.getContext().authentication as AuthenticationToken
+        return SecurityContextHolder.getContext().authentication as SysUserAuthentication
     }
 
     // 判断是否登录
-    fun isLogin(): Boolean = SecurityContextHolder.getContext().authentication is AuthenticationToken
+    fun isLogin(): Boolean = SecurityContextHolder.getContext().authentication is SysUserAuthentication
 }

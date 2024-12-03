@@ -9,7 +9,11 @@ package com.zhengchalei.cloud.platform.config.security
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.GlobalException
+import com.zhengchalei.cloud.platform.config.security.filter.JwtAuthorizationFilter
+import com.zhengchalei.cloud.platform.config.security.filter.StatefulTokenAuthorizationFilter
+import com.zhengchalei.cloud.platform.config.security.provider.AuthConfigurationProperties
 import com.zhengchalei.cloud.platform.config.security.provider.AuthTokenProvider
+import com.zhengchalei.cloud.platform.config.security.provider.AuthTokenType
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.AuthenticationManager
@@ -25,6 +29,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class SpringSecurityConfig(
     @Value("\${spring.profiles.active}") private val profile: String,
+    private val authConfigurationProperties: AuthConfigurationProperties,
     private val objectMapper: ObjectMapper,
     private val authenticationProvider: AuthenticationProvider,
     private val handlerExceptionResolver: HandlerExceptionResolver,
@@ -35,14 +40,20 @@ class SpringSecurityConfig(
         authTokenProvider: AuthTokenProvider,
         authenticationManager: AuthenticationManager,
     ): SecurityFilterChain {
-        val authenticationFilter = AuthenticationFilter()
-        authenticationFilter.setAuthenticationManager(authenticationManager)
+//        val authenticationFilter = AuthenticationFilter()
+//        authenticationFilter.setAuthenticationManager(authenticationManager)
+
+        val authTokenFilter = when (authConfigurationProperties.tokenType) {
+            AuthTokenType.JWT -> JwtAuthorizationFilter(authTokenProvider, handlerExceptionResolver)
+            AuthTokenType.Stateful -> StatefulTokenAuthorizationFilter(authTokenProvider, handlerExceptionResolver)
+        }
+
         return http
             .addFilterBefore(
-                JwtConfigurer.JwtAuthorizationFilter(authTokenProvider, handlerExceptionResolver),
+                authTokenFilter,
                 UsernamePasswordAuthenticationFilter::class.java,
             )
-            .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+//            .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .authenticationProvider(authenticationProvider)
             .authorizeHttpRequests { authorize ->
 
@@ -74,7 +85,11 @@ class SpringSecurityConfig(
                 it.accessDeniedHandler { _, response, accessDeniedException ->
                     response.sendError(
                         403,
-                        objectMapper.writeValueAsString(GlobalException.Error(accessDeniedException.message ?: "无权限")),
+                        objectMapper.writeValueAsString(
+                            GlobalException.Error(
+                                accessDeniedException.message ?: "无权限"
+                            )
+                        ),
                     )
                 }
             }

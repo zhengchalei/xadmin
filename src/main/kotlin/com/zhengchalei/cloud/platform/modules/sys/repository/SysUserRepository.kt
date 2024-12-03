@@ -74,7 +74,7 @@ interface SysUserRepository : KRepository<SysUser, Long> {
             .fetchOne()
     }
 
-    fun findByUsername(username: String) =
+    fun findUserDetailsByUsername(username: String) =
         sql.createQuery(SysUser::class) {
                 where(table.username eq username)
                 select(

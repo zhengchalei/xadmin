@@ -16,38 +16,35 @@ import com.nimbusds.jwt.SignedJWT
 import com.zhengchalei.cloud.platform.commons.Const
 import com.zhengchalei.cloud.platform.config.InvalidTokenException
 import com.zhengchalei.cloud.platform.config.TokenInvalidException
-import com.zhengchalei.cloud.platform.config.security.AuthenticationToken
+import com.zhengchalei.cloud.platform.config.security.SysUserAuthentication
 import org.slf4j.LoggerFactory
-import org.springframework.boot.CommandLineRunner
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
 @ConditionalOnProperty(value = ["auth.token-type"], havingValue = "JWT", matchIfMissing = false)
-class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigurationProperties) : AuthTokenProvider,
-    CommandLineRunner {
+class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigurationProperties) : AuthTokenProvider {
     private val log = LoggerFactory.getLogger(JwtAuthTokenProvider::class.java)
 
-    private var secret: ByteArray = "".toByteArray(Charsets.UTF_8)
 
-    private var expiration: Long = 3600L
-
-    override fun run(vararg args: String) {
+    val secret: ByteArray by lazy {
         val jwtConfigurationProperties = authConfigurationProperties.jwt
         if (jwtConfigurationProperties.secret.isBlank()) {
             throw TokenInvalidException()
         }
+        jwtConfigurationProperties.secret.toByteArray(Charsets.UTF_8)
+    }
+
+    val expiration: Long by lazy {
+        val jwtConfigurationProperties = authConfigurationProperties.jwt
         if (jwtConfigurationProperties.expired <= 0) {
             throw TokenInvalidException()
         }
-        // 获取 secret
-        this.secret = jwtConfigurationProperties.secret.toByteArray(Charsets.UTF_8)
-        // 获取 expired
-        this.expiration = jwtConfigurationProperties.expired * 1000 // 转换为毫秒
+        jwtConfigurationProperties.expired * 1000 // 转换为毫秒
     }
 
     /**
@@ -56,7 +53,7 @@ class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigur
      * @return 签名后的 JWT 对象
      * @throws JOSEException 如果签名过程中出现错误
      */
-    override fun createToken(authentication: AuthenticationToken): String {
+    override fun createToken(authentication: SysUserAuthentication): String {
         // Header
         val header = JWSHeader(JWSAlgorithm.HS256)
 
@@ -64,6 +61,7 @@ class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigur
         val claimsSet =
             JWTClaimsSet.Builder()
                 .subject(authentication.name)
+                .claim("id", authentication.id)
                 .claim("username", authentication.name)
                 .claim(
                     "roles",
@@ -132,14 +130,17 @@ class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigur
         // 构建权限
         val authorities = mutableListOf(permissions, roles).flatten().map { SimpleGrantedAuthority(it) }
 
-        val principal = User(jwtClaimsSet.subject, "", authorities)
-
-        return AuthenticationToken(
-            username = principal,
+        val id = jwtClaimsSet.getClaim("id") as Long
+        val username = jwtClaimsSet.getClaim("username") as String
+        return SysUserAuthentication(
+            id = id,
+            username = username,
             password = "",
-            captcha = "",
-            captchaID = "",
             authorities = authorities
         )
+    }
+
+    override fun logout(token: String) {
+        // 什么也不做 , 因为 JWT 是无状态的
     }
 }

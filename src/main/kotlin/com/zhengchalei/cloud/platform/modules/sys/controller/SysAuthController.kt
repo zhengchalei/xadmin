@@ -45,9 +45,10 @@ class SysAuthController(
         val uuid = UUID.randomUUID().toString()
         val byteArrayResource: ByteArrayResource = captchaService.generateByteResource(uuid)
         httpServletResponse.contentType = "image/png"
+        httpServletResponse.setContentLength(byteArrayResource.byteArray.size)
         httpServletResponse.setHeader("Cache-Control", "no-store, no-cache")
         httpServletResponse.setHeader("Pragma", "no-cache")
-        httpServletResponse.setHeader("Captcha-Token", uuid)
+        httpServletResponse.setHeader("captchaID", uuid)
         httpServletResponse.setDateHeader("Expires", 0)
         httpServletResponse.outputStream.write(byteArrayResource.byteArray)
         httpServletResponse.flushBuffer()

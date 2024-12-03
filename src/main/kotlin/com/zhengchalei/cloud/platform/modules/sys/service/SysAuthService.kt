@@ -9,12 +9,13 @@ package com.zhengchalei.cloud.platform.modules.sys.service
 import com.zhengchalei.cloud.platform.config.LoginFailException
 import com.zhengchalei.cloud.platform.config.ServiceException
 import com.zhengchalei.cloud.platform.config.VirtualThreadExecutor
-import com.zhengchalei.cloud.platform.config.security.AuthenticationToken
+import com.zhengchalei.cloud.platform.config.security.SysUserAuthentication
 import com.zhengchalei.cloud.platform.config.security.provider.AuthTokenProvider
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysLoginLog
 import com.zhengchalei.cloud.platform.modules.sys.domain.SysUser
 import com.zhengchalei.cloud.platform.modules.sys.domain.by
 import com.zhengchalei.cloud.platform.modules.sys.repository.SysLoginLogRepository
+import net.dreamlu.mica.captcha.service.ICaptchaService
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher
 import org.babyfish.jimmer.kt.makeIdOnly
 import org.babyfish.jimmer.kt.new
@@ -36,12 +37,13 @@ import java.time.LocalDateTime
  */
 @Service
 class SysAuthService(
-    val sysLoginLogRepository: SysLoginLogRepository,
-    val authenticationManager: AuthenticationManager,
-    val authTokenProvider: AuthTokenProvider,
-    val userService: SysUserService,
-    val ip2regionSearcher: Ip2regionSearcher,
-    val virtualThreadExecutor: VirtualThreadExecutor,
+    private val sysLoginLogRepository: SysLoginLogRepository,
+    private val authenticationManager: AuthenticationManager,
+    private val authTokenProvider: AuthTokenProvider,
+    private val userService: SysUserService,
+    private val ip2regionSearcher: Ip2regionSearcher,
+    private val virtualThreadExecutor: VirtualThreadExecutor,
+    private val captchaService: ICaptchaService,
 ) {
     private val log = LoggerFactory.getLogger(SysAuthService::class.java)
 
@@ -58,10 +60,12 @@ class SysAuthService(
     fun login(username: String, password: String, captcha: String, captchaID: String, ip: String): String {
         try {
             log.info("登录: username: {}, ip: {}, captcha: {}", username, ip, captcha)
-            val authentication: AuthenticationToken =
+            // 验证码验证
+            this.captchaService.validate(captchaID, captcha)
+            val authentication: SysUserAuthentication =
                 authenticationManager.authenticate(
-                    AuthenticationToken(username = username, password = password, captcha = captcha, captchaID =  captchaID)
-                ) as AuthenticationToken
+                    SysUserAuthentication(id = 0, username = username, password = password)
+                ) as SysUserAuthentication
             SecurityContextHolder.getContext().authentication = authentication
             log.info("登录成功, username {} ", username)
             val token: String = authTokenProvider.createToken(authentication)
