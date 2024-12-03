@@ -6,7 +6,7 @@
  */
 package com.zhengchalei.xadmin.modules.file.service
 
-import com.zhengchalei.xadmin.config.EmptyFileException
+import com.zhengchalei.xadmin.config.exceptions.EmptyFileException
 import com.zhengchalei.xadmin.modules.file.domain.DataBaseFile
 import com.zhengchalei.xadmin.modules.file.domain.by
 import com.zhengchalei.xadmin.modules.file.repository.DataBaseFileRepository

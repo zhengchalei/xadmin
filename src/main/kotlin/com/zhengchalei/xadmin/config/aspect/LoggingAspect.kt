@@ -8,7 +8,7 @@ package com.zhengchalei.xadmin.config.aspect
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zhengchalei.xadmin.commons.Const
-import com.zhengchalei.xadmin.config.IPUtil
+import com.zhengchalei.xadmin.commons.util.IPUtil
 import com.zhengchalei.xadmin.config.security.SecurityUtils
 import com.zhengchalei.xadmin.modules.sys.domain.*
 import com.zhengchalei.xadmin.modules.sys.repository.SysOperationLogRepository

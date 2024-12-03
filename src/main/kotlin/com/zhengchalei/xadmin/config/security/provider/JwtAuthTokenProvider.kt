@@ -14,8 +14,8 @@ import com.nimbusds.jose.crypto.MACVerifier
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import com.zhengchalei.xadmin.commons.Const
-import com.zhengchalei.xadmin.config.InvalidTokenException
-import com.zhengchalei.xadmin.config.TokenInvalidException
+import com.zhengchalei.xadmin.config.exceptions.InvalidTokenException
+import com.zhengchalei.xadmin.config.exceptions.TokenInvalidException
 import com.zhengchalei.xadmin.config.security.SysUserAuthentication
 import java.util.*
 import org.slf4j.LoggerFactory

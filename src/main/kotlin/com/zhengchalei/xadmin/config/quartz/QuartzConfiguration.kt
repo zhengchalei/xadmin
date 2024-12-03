@@ -4,8 +4,9 @@
  *
  * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
  */
-package com.zhengchalei.xadmin.config
+package com.zhengchalei.xadmin.config.quartz
 
+import com.zhengchalei.xadmin.config.virtualThread.virtualThreadExecutor
 import java.util.*
 import org.quartz.Calendar
 import org.quartz.JobDetail

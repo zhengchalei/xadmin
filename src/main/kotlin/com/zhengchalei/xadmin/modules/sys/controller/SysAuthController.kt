@@ -7,7 +7,7 @@
 package com.zhengchalei.xadmin.modules.sys.controller
 
 import com.zhengchalei.xadmin.commons.R
-import com.zhengchalei.xadmin.config.IPUtil.getIpAddress
+import com.zhengchalei.xadmin.commons.util.IPUtil.getIpAddress
 import com.zhengchalei.xadmin.modules.sys.domain.dto.LoginDTO
 import com.zhengchalei.xadmin.modules.sys.domain.dto.LoginResponse
 import com.zhengchalei.xadmin.modules.sys.service.SysAuthService

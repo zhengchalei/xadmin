@@ -7,7 +7,7 @@
 package com.zhengchalei.xadmin.modules.sys.service
 
 import com.zhengchalei.xadmin.commons.Const
-import com.zhengchalei.xadmin.config.ServiceException
+import com.zhengchalei.xadmin.config.exceptions.ServiceException
 import com.zhengchalei.xadmin.modules.sys.domain.SysRole
 import com.zhengchalei.xadmin.modules.sys.domain.dto.SysRoleCreateInput
 import com.zhengchalei.xadmin.modules.sys.domain.dto.SysRoleDetailView

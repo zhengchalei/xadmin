@@ -7,9 +7,9 @@
 package com.zhengchalei.xadmin.config.security
 
 import com.zhengchalei.xadmin.commons.Const
-import com.zhengchalei.xadmin.config.UserDisabledException
-import com.zhengchalei.xadmin.config.UserNotFoundException
-import com.zhengchalei.xadmin.config.UserPasswordErrorException
+import com.zhengchalei.xadmin.config.exceptions.UserDisabledException
+import com.zhengchalei.xadmin.config.exceptions.UserNotFoundException
+import com.zhengchalei.xadmin.config.exceptions.UserPasswordErrorException
 import com.zhengchalei.xadmin.config.security.authentication.SysUserDetails
 import com.zhengchalei.xadmin.modules.sys.repository.SysUserRepository
 import org.springframework.security.authentication.AuthenticationProvider

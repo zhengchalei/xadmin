@@ -6,7 +6,7 @@
  */
 package com.zhengchalei.xadmin.config.security.provider
 
-import com.zhengchalei.xadmin.config.NotLoginException
+import com.zhengchalei.xadmin.config.exceptions.NotLoginException
 import com.zhengchalei.xadmin.config.security.SysUserAuthentication
 import java.util.*
 import org.redisson.api.RedissonClient

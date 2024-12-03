@@ -7,7 +7,7 @@
 package com.zhengchalei.xadmin.modules.sys.service
 
 import com.zhengchalei.xadmin.commons.Const
-import com.zhengchalei.xadmin.config.ServiceException
+import com.zhengchalei.xadmin.config.exceptions.ServiceException
 import com.zhengchalei.xadmin.modules.sys.domain.SysUser
 import com.zhengchalei.xadmin.modules.sys.domain.by
 import com.zhengchalei.xadmin.modules.sys.domain.dto.*

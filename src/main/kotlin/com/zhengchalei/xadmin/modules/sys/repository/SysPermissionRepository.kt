@@ -6,7 +6,7 @@
  */
 package com.zhengchalei.xadmin.modules.sys.repository
 
-import com.zhengchalei.xadmin.config.HasChildrenException
+import com.zhengchalei.xadmin.config.exceptions.HasChildrenException
 import com.zhengchalei.xadmin.modules.sys.domain.SysPermission
 import com.zhengchalei.xadmin.modules.sys.domain.dto.*
 import com.zhengchalei.xadmin.modules.sys.domain.id

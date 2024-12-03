@@ -4,7 +4,7 @@
  *
  * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
  */
-package com.zhengchalei.xadmin.config
+package com.zhengchalei.xadmin.commons.util
 
 import jakarta.servlet.http.HttpServletRequest
 import java.net.InetAddress
