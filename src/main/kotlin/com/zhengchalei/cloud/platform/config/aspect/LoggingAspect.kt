@@ -57,7 +57,7 @@ class LoggingAspect(
     }
 
     @AfterReturning(pointcut = "execution(* com.zhengchalei.cloud.platform.modules..*.*(..))", returning = "result")
-    fun logAfterReturning(joinPoint: JoinPoint, result: Any) {
+    fun logAfterReturning(joinPoint: JoinPoint, result: Any?) {
         val signature = joinPoint.signature
         val className = signature.declaringTypeName
         val methodName = signature.name

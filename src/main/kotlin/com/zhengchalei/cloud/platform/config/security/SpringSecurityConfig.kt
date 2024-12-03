@@ -40,9 +40,6 @@ class SpringSecurityConfig(
         authTokenProvider: AuthTokenProvider,
         authenticationManager: AuthenticationManager,
     ): SecurityFilterChain {
-        //        val authenticationFilter = AuthenticationFilter()
-        //        authenticationFilter.setAuthenticationManager(authenticationManager)
-
         val authTokenFilter =
             when (authConfigurationProperties.tokenType) {
                 AuthTokenType.JWT -> JwtAuthorizationFilter(authTokenProvider, handlerExceptionResolver)
@@ -51,8 +48,6 @@ class SpringSecurityConfig(
 
         return http
             .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
-            //            .addFilterBefore(authenticationFilter,
-            // UsernamePasswordAuthenticationFilter::class.java)
             .authenticationProvider(authenticationProvider)
             .authorizeHttpRequests { authorize ->
 
