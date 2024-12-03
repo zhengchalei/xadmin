@@ -2,9 +2,9 @@ services:
   postgres:
     image: 'postgres:latest'
     environment:
-      - 'POSTGRES_DB=cloud-platform'
-      - 'POSTGRES_PASSWORD=cloud-platform'
-      - 'POSTGRES_USER=cloud-platform'
+      - 'POSTGRES_DB=xadmin'
+      - 'POSTGRES_PASSWORD=xadmin'
+      - 'POSTGRES_USER=xadmin'
     ports:
       - '5432:5432'
   redis:

@@ -1,1 +1,1 @@
-rootProject.name = "cloud-platform"
+rootProject.name = "xadmin"

@@ -11,7 +11,7 @@ plugins {
     id("com.diffplug.spotless") version "latest.release"
 }
 
-group = "com.zhengchalei.cloud.platform"
+group = "com.zhengchalei.xadmin"
 
 version = "0.0.1-SNAPSHOT"
 
