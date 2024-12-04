@@ -4,7 +4,7 @@
  *
  * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
  */
-package com.zhengchalei.xadmin.modules.file.service
+package com.zhengchalei.xadmin.config.oss.provider
 
 import com.zhengchalei.xadmin.config.exceptions.EmptyFileException
 import com.zhengchalei.xadmin.modules.file.domain.DataBaseFile

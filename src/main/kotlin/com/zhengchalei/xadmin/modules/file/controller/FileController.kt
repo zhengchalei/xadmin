@@ -7,7 +7,7 @@
 package com.zhengchalei.xadmin.modules.file.controller
 
 import com.zhengchalei.xadmin.commons.R
-import com.zhengchalei.xadmin.modules.file.service.FileService
+import com.zhengchalei.xadmin.config.oss.provider.FileService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import java.io.InputStream
@@ -26,9 +26,14 @@ class FileController(val fileService: FileService) {
      * @return [R<String>]
      */
     @PostMapping(path = ["/upload"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun uploadFile(@RequestParam("file") file: MultipartFile): R<String> {
+    fun uploadFile(@RequestParam("file") file: MultipartFile, httpServletRequest: HttpServletRequest): R<String> {
         val uuid = this.fileService.uploadFile(file)
-        return R.success(data = "/api/external/file/download/$uuid")
+        // 获取请求的来源域名
+        val host = httpServletRequest.getHeader("Host")
+        // 获取协议
+        val protocol = httpServletRequest.scheme
+        // 防止第三方对接出现各种问题
+        return R.success(data = "$protocol://$host/api/external/file/download/$uuid")
     }
 
     // 下载文件
