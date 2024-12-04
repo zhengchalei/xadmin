@@ -7,7 +7,6 @@
 package com.zhengchalei.xadmin.modules.sys.controller
 
 import com.zhengchalei.xadmin.commons.R
-import com.zhengchalei.xadmin.config.security.SecurityUtils
 import com.zhengchalei.xadmin.modules.sys.domain.SysUser
 import com.zhengchalei.xadmin.modules.sys.service.SysUserService
 import org.babyfish.jimmer.client.meta.Api
@@ -20,11 +19,10 @@ import org.springframework.web.bind.annotation.RestController
 @Validated
 @RestController
 @RequestMapping("/api/user")
-class SysCurrentUserController(val sysUserService: SysUserService) {
+class SysCurrentUserController(private val sysUserService: SysUserService) {
 
     @GetMapping("/info")
     fun currentUserInfo(): R<SysUser> {
-        val currentUserId = SecurityUtils.getCurrentUserId()
         val userInfo = this.sysUserService.currentUserInfo()
         return R(data = userInfo)
     }

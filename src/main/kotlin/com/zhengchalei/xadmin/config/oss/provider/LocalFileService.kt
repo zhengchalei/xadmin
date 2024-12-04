@@ -7,12 +7,12 @@
 package com.zhengchalei.xadmin.config.oss.provider
 
 import com.zhengchalei.xadmin.config.oss.FileConfigurationProperties
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import org.springframework.stereotype.Service
-import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.util.*
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 
 @ConditionalOnProperty(prefix = "file", name = ["storage"], havingValue = "local")
 @Service

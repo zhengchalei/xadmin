@@ -4,19 +4,13 @@
  *
  * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
  */
-package com.zhengchalei.xadmin.config.security
+package com.zhengchalei.xadmin.config.security.authentication
 
-import com.zhengchalei.xadmin.commons.Const
-import com.zhengchalei.xadmin.config.exceptions.UserDisabledException
 import com.zhengchalei.xadmin.config.exceptions.UserNotFoundException
-import com.zhengchalei.xadmin.config.exceptions.UserPasswordErrorException
-import com.zhengchalei.xadmin.config.security.authentication.SysUserDetails
 import com.zhengchalei.xadmin.modules.sys.repository.SysUserRepository
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
@@ -50,16 +44,6 @@ class AuthenticationProvider(
 
     fun loadUserByUsername(username: String, password: String): SysUserDetails {
         val user = sysUserRepository.findUserDetailsByUsername(username) ?: throw UserNotFoundException()
-        if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
-        if (!user.status) throw UserDisabledException()
-        if (!passwordEncoder.matches(password, user.password)) throw UserPasswordErrorException()
-        val authorityList = mutableListOf<GrantedAuthority>()
-        val roles = user.roles
-        val permissions = user.roles.flatMap { it.permissions }
-        authorityList.addAll(permissions.map { it.code }.map { SimpleGrantedAuthority(it) })
-        authorityList.addAll(
-            roles.map { it.code }.map { Const.SecurityRolePrifix + it }.map { SimpleGrantedAuthority(it) }
-        )
         return SysUserDetails(user)
     }
 }

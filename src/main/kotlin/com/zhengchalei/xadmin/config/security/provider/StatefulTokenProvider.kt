@@ -7,7 +7,7 @@
 package com.zhengchalei.xadmin.config.security.provider
 
 import com.zhengchalei.xadmin.config.exceptions.NotLoginException
-import com.zhengchalei.xadmin.config.security.SysUserAuthentication
+import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
 import java.util.*
 import org.redisson.api.RedissonClient
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty

@@ -6,9 +6,9 @@
  */
 package com.zhengchalei.xadmin.config.oss
 
+import java.util.*
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
-import java.util.*
 
 @Configuration
 @ConfigurationProperties(prefix = "file")
@@ -40,7 +40,9 @@ class LocalStorageConfiguration {
     }
 
     enum class Platform {
-        WIN, LINUX, UNKNOWN;
+        WIN,
+        LINUX,
+        UNKNOWN;
 
         fun defaultStoragePath(): String {
             return when (this) {
@@ -51,5 +53,3 @@ class LocalStorageConfiguration {
         }
     }
 }
-
-

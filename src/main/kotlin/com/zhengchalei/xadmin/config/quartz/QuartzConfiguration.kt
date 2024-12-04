@@ -6,7 +6,7 @@
  */
 package com.zhengchalei.xadmin.config.quartz
 
-import com.zhengchalei.xadmin.config.virtualThread.virtualThreadExecutor
+import com.zhengchalei.xadmin.config.virtualThread.ThreadPoolExecutorConfig
 import java.util.*
 import org.quartz.Calendar
 import org.quartz.JobDetail
@@ -31,6 +31,7 @@ class QuartzConfiguration {
         calendars: Map<String, Calendar>,
         triggers: ObjectProvider<Trigger>,
         applicationContext: ApplicationContext,
+        threadPoolExecutorConfig: ThreadPoolExecutorConfig,
     ): SchedulerFactoryBean {
         val schedulerFactoryBean = SchedulerFactoryBean()
         val jobFactory = SpringBeanJobFactory()
@@ -44,7 +45,7 @@ class QuartzConfiguration {
         schedulerFactoryBean.setStartupDelay(properties.startupDelay.seconds.toInt())
         schedulerFactoryBean.setWaitForJobsToCompleteOnShutdown(properties.isWaitForJobsToCompleteOnShutdown)
         schedulerFactoryBean.setOverwriteExistingJobs(properties.isOverwriteExistingJobs)
-        schedulerFactoryBean.setTaskExecutor(virtualThreadExecutor("quartz"))
+        schedulerFactoryBean.setTaskExecutor(threadPoolExecutorConfig.virtualThreadExecutor("Quartz"))
         if (properties.properties.isNotEmpty()) {
             schedulerFactoryBean.setQuartzProperties(this.asProperties(properties.properties))
         }

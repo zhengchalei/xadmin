@@ -21,7 +21,9 @@ class DemoTask {
         override fun execute(context: JobExecutionContext) {
             // 判断当前是否为虚拟线程
 
-            log.info("DemoJob execute, 是否为虚拟线程: ${Thread.currentThread().isVirtual}")
+            log.info(
+                "DemoJob execute,线程名称: ${Thread.currentThread().name} 是否为虚拟线程: ${Thread.currentThread().isVirtual}"
+            )
         }
     }
 

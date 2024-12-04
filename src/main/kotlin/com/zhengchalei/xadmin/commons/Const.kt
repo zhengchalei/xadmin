@@ -7,8 +7,6 @@
 package com.zhengchalei.xadmin.commons
 
 object Const {
-    const val ONLY_ROOT_AUTHORIZE_EL = "authentication.principal.username == 'root'"
-
     const val AdminUser = "admin"
 
     const val AdminRole = "admin"

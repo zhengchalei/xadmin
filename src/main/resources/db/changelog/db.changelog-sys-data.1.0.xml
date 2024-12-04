@@ -121,13 +121,6 @@
     <changeSet id="初始化用户数据" author="郑查磊">
         <sql>
 
-            insert into sys_user(id, username, email, password, avatar, status, department_id, posts_id, gender,
-                                 birthday,
-                                 phone_number)
-            values (-1, 'root', 'mail@gmail.com', '$2a$10$teGAavoNRwk36qcJQX9IaOHQoOYtnxnkakCMQKJwtDGMbULkVd5e2',
-                    'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', true, null, null, 'MALE',
-                    '2019-01-01', '16255198881');
-
             insert into sys_user(username, email, password, avatar, status, department_id, posts_id, gender, birthday,
                                  phone_number)
             values ('admin', 'mail@163.com', '$2a$10$teGAavoNRwk36qcJQX9IaOHQoOYtnxnkakCMQKJwtDGMbULkVd5e2',

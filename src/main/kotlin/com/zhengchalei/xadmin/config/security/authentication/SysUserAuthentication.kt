@@ -4,7 +4,7 @@
  *
  * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
  */
-package com.zhengchalei.xadmin.config.security
+package com.zhengchalei.xadmin.config.security.authentication
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.GrantedAuthority

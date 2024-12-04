@@ -6,7 +6,7 @@
  */
 package com.zhengchalei.xadmin.config.security.provider
 
-import com.zhengchalei.xadmin.config.security.SysUserAuthentication
+import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
 import org.springframework.security.core.Authentication
 
 interface AuthTokenProvider {

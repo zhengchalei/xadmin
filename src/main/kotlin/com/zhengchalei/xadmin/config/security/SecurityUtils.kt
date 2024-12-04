@@ -7,6 +7,7 @@
 package com.zhengchalei.xadmin.config.security
 
 import com.zhengchalei.xadmin.config.exceptions.NotLoginException
+import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
 import com.zhengchalei.xadmin.config.security.authentication.SysUserDetails
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder

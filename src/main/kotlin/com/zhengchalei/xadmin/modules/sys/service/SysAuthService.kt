@@ -8,9 +8,9 @@ package com.zhengchalei.xadmin.modules.sys.service
 
 import com.zhengchalei.xadmin.config.exceptions.LoginFailException
 import com.zhengchalei.xadmin.config.exceptions.ServiceException
-import com.zhengchalei.xadmin.config.virtualThread.VirtualThreadExecutor
-import com.zhengchalei.xadmin.config.security.SysUserAuthentication
+import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
 import com.zhengchalei.xadmin.config.security.provider.AuthTokenProvider
+import com.zhengchalei.xadmin.config.virtualThread.VirtualThreadExecutor
 import com.zhengchalei.xadmin.modules.sys.domain.SysLoginLog
 import com.zhengchalei.xadmin.modules.sys.domain.SysUser
 import com.zhengchalei.xadmin.modules.sys.domain.by

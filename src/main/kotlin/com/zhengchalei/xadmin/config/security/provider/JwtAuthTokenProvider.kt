@@ -16,7 +16,7 @@ import com.nimbusds.jwt.SignedJWT
 import com.zhengchalei.xadmin.commons.Const
 import com.zhengchalei.xadmin.config.exceptions.InvalidTokenException
 import com.zhengchalei.xadmin.config.exceptions.TokenInvalidException
-import com.zhengchalei.xadmin.config.security.SysUserAuthentication
+import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
 import java.util.*
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -66,15 +66,13 @@ class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigur
                     authentication.authorities
                         .filter { it.authority.startsWith(Const.SecurityRolePrifix) }
                         .map { it.authority }
-                        .map { it.replaceFirst(Const.SecurityRolePrifix, "") }
-                        .joinToString(","),
+                        .joinToString(",") { it.replaceFirst(Const.SecurityRolePrifix, "") },
                 )
                 .claim(
                     "permissions",
                     authentication.authorities
                         .filter { !it.authority.startsWith(Const.SecurityRolePrifix) }
-                        .map { it.authority }
-                        .joinToString(","),
+                        .joinToString(",") { it.authority },
                 )
                 .expirationTime(Date(System.currentTimeMillis() + expiration)) // 1 hour from now
                 .build()
