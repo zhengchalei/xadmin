@@ -6,7 +6,6 @@
  */
 package com.zhengchalei.xadmin.config.jimmer
 
-import com.zhengchalei.xadmin.modules.sys.domain.SysDepartment
 import com.zhengchalei.xadmin.modules.sys.domain.SysUser
 import org.babyfish.jimmer.sql.IdView
 import org.babyfish.jimmer.sql.JoinColumn
@@ -20,8 +19,4 @@ interface DataScopeAware {
 
     @IdView("createUser") val createUserId: Long
 
-    // 数据关联部门
-    @ManyToOne @JoinColumn(name = "department_id") val department: SysDepartment
-
-    @IdView("department") val departmentId: Long
 }

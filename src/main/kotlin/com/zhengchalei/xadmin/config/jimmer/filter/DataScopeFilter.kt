@@ -8,9 +8,9 @@ package com.zhengchalei.xadmin.config.jimmer.filter
 
 import com.zhengchalei.xadmin.config.jimmer.DataScopeAware
 import com.zhengchalei.xadmin.config.jimmer.createUser
-import com.zhengchalei.xadmin.config.jimmer.department
 import com.zhengchalei.xadmin.config.jimmer.filter.DataScope.*
 import com.zhengchalei.xadmin.config.security.SecurityUtils
+import com.zhengchalei.xadmin.modules.sys.domain.department
 import com.zhengchalei.xadmin.modules.sys.domain.id
 import org.babyfish.jimmer.sql.EnumType
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
@@ -54,7 +54,7 @@ class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationInte
                 // 如果当前用户只能查看本部门的数据，获取当前用户的部门ID，并添加过滤条件
                 val currentUserDepartmentId = SecurityUtils.getCurrentUserDepartmentIdOrNull()
                 if (currentUserDepartmentId != null) {
-                    args.apply { where(table.department.id.eq(currentUserDepartmentId)) }
+                    args.apply { where(table.createUser.department.id.eq(currentUserDepartmentId)) }
                 }
             }
 
@@ -73,7 +73,7 @@ class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationInte
                         SELECT id FROM DepartmentHierarchy
                     """
                     val childrenIds = this.jdbcTemplate.queryForList(sql, Long::class.java, currentUserDepartmentId)
-                    args.apply { where(table.department.id valueIn childrenIds) }
+                    args.apply { where(table.createUser.department.id valueIn childrenIds) }
                 }
             }
 
@@ -86,7 +86,7 @@ class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationInte
                         Long::class.java,
                         currentUserDepartmentId
                     )
-                    args.apply { where(table.department.id valueIn list) }
+                    args.apply { where(table.createUser.department.id valueIn list) }
                 }
             }
         }
