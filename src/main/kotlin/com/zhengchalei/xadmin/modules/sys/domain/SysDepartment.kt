@@ -12,7 +12,9 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "sys_department")
 interface SysDepartment : BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long
 
     val name: String
 
@@ -22,7 +24,10 @@ interface SysDepartment : BaseEntity {
 
     val description: String?
 
-    @ManyToOne val parent: SysDepartment?
+    @ManyToOne
+    val parent: SysDepartment?
 
-    @OneToMany(mappedBy = "parent") val children: List<SysDepartment>
+    @OneToMany(mappedBy = "parent")
+    val children: List<SysDepartment>
+
 }

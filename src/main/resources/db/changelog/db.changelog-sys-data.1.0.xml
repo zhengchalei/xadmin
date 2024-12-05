@@ -84,9 +84,9 @@
 
     <changeSet id="初始化角色数据" author="郑查磊">
         <sql>
-            insert into sys_role(name, code, status, description)
-            values ('超级管理员', 'admin', true, '超级管理员'),
-                   ('普通用户', 'user', true, '普通用户');
+            insert into sys_role(name, code, status, data_scope, description)
+            values ('超级管理员', 'admin', true, 'ALL', '超级管理员'),
+                   ('普通用户', 'user', true, 'ALL', '普通用户');
 
             insert into sys_role_permission(role_id, permission_id)
             values (1, 1),
