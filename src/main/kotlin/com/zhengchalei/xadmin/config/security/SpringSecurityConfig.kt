@@ -58,6 +58,7 @@ class SpringSecurityConfig(
                 authorize.requestMatchers("/api/auth/login").permitAll()
                 authorize.requestMatchers("/api/auth/register").permitAll()
                 authorize.requestMatchers("/api/auth/captcha").permitAll()
+                authorize.requestMatchers("/api/auth/captcha/**").permitAll()
                 // dev
                 if (profile != Const.ENV_PROD) {
                     authorize.requestMatchers("/openapi.html").permitAll()

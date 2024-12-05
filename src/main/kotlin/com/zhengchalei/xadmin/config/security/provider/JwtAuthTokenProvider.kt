@@ -18,12 +18,12 @@ import com.zhengchalei.xadmin.config.exceptions.InvalidTokenException
 import com.zhengchalei.xadmin.config.exceptions.TokenInvalidException
 import com.zhengchalei.xadmin.config.jimmer.filter.DataScope
 import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
-import java.util.*
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 @ConditionalOnProperty(value = ["auth.token-type"], havingValue = "JWT", matchIfMissing = false)
@@ -132,14 +132,14 @@ class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigur
         val id = jwtClaimsSet.getClaim("id") as Long
         val username = jwtClaimsSet.getClaim("username") as String
         val departmentId = jwtClaimsSet.getClaim("departmentId") as Long?
-        val dataScope = jwtClaimsSet.getClaim("dataScope") as DataScope?
+        val dataScope = jwtClaimsSet.getClaim("dataScope") as String?
         return SysUserAuthentication(
             id = id,
             username = username,
             password = "",
             departmentId = departmentId,
             authorities = authorities,
-            dataScope = dataScope,
+            dataScope = dataScope?.let { DataScope.value(dataScope) },
         )
     }
 

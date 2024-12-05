@@ -84,6 +84,9 @@ interface SysUserRepository : KRepository<SysUser, Long> {
                             allScalarFields()
                             permissions { allScalarFields() }
                         }
+                        department {
+                            allScalarFields()
+                        }
                     }
                 )
             }
