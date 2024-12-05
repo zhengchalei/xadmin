@@ -6,12 +6,14 @@
  */
 package com.zhengchalei.xadmin.modules.sys.domain
 
+import com.zhengchalei.xadmin.config.jimmer.DataScopeAware
+import com.zhengchalei.xadmin.config.jimmer.filter.DataScope
 import java.time.LocalDateTime
 import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_login_log")
-interface SysLoginLog {
+interface SysLoginLog: DataScopeAware {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val username: String
@@ -28,5 +30,4 @@ interface SysLoginLog {
 
     val errorMessage: String?
 
-    @ManyToOne @JoinColumn(name = "user_id") val user: SysUser?
 }

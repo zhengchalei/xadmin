@@ -1,9 +1,6 @@
 package com.zhengchalei.xadmin.config.jimmer.interceptor
 
-import com.zhengchalei.xadmin.config.jimmer.BaseEntity
-import com.zhengchalei.xadmin.config.jimmer.BaseEntityDraft
-import com.zhengchalei.xadmin.config.jimmer.DataScopeAware
-import com.zhengchalei.xadmin.config.jimmer.DataScopeAwareDraft
+import com.zhengchalei.xadmin.config.jimmer.*
 import com.zhengchalei.xadmin.config.security.SecurityUtils
 import com.zhengchalei.xadmin.modules.sys.domain.SysUser
 import org.babyfish.jimmer.kt.isLoaded
@@ -17,14 +14,14 @@ class DataScopeDraftInterceptor(
 ) : DraftInterceptor<DataScopeAware, DataScopeAwareDraft> {
 
     override fun beforeSave(draft: DataScopeAwareDraft, original: DataScopeAware?) {
-        if (!isLoaded(draft, DataScopeAware::createUser)) {
+        if (!isLoaded(draft, DataScopeAware::user)) {
             // 这里是修改
         }
 
         if (original === null) {
-            if (!isLoaded(draft, DataScopeAware::createUser)) {
+            if (!isLoaded(draft, DataScopeAware::user)) {
                 SecurityUtils.getCurrentUserIdOrNull()?.let { id ->
-                    draft.createUser = makeIdOnly(SysUser::class, id)
+                    draft.user = makeIdOnly(SysUser::class, id)
                 }
             }
         }
