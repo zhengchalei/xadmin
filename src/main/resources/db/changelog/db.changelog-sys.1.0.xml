@@ -36,6 +36,29 @@
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="id" referencedTableName="sys_department" validate="true"/>
     </changeSet>
+
+    <changeSet author="郑查磊" id="创建部门数据权限表">
+        <createTable tableName="sys_department_data_scope">
+            <column name="department_id" remarks="部门" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="data_scope_department_id" remarks="关联的部门" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="department_id" baseTableName="sys_department_data_scope"
+                                 constraintName="fk_sys_department_data_scope_department_id" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_department" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="data_scope_department_id" baseTableName="sys_department_data_scope"
+                                 constraintName="fk_sys_department_data_scope_data_scope_department_id" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_department" validate="true"/>
+        <addUniqueConstraint columnNames="department_id, data_scope_department_id"
+                             constraintName="uk_sys_department_data_scope_department_id_data_scope_department_id"
+                             tableName="sys_department_data_scope"/>
+    </changeSet>
+
     <changeSet author="郑查磊" id="创建字典表">
         <createTable tableName="sys_dict">
             <column autoIncrement="true" name="id" type="BIGINT">

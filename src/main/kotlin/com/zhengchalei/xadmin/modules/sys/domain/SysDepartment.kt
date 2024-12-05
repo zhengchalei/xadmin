@@ -31,9 +31,9 @@ interface SysDepartment : BaseEntity {
 
     @ManyToMany
     @JoinTable(
-        name = "sys_role_department_data_scope",
-        joinColumnName = "role_id",
-        inverseJoinColumnName = "department_id",
+        name = "sys_department_data_scope",
+        joinColumnName = "department_id",
+        inverseJoinColumnName = "data_scope_department_id",
     )
     val dataScopeDepartments: List<SysDepartment>
 

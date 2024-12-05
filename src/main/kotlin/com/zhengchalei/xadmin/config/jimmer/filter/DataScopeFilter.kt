@@ -12,17 +12,17 @@ import com.zhengchalei.xadmin.config.jimmer.department
 import com.zhengchalei.xadmin.config.jimmer.filter.DataScope.*
 import com.zhengchalei.xadmin.config.security.SecurityUtils
 import com.zhengchalei.xadmin.modules.sys.domain.id
-import com.zhengchalei.xadmin.modules.sys.service.SysDepartmentService
 import org.babyfish.jimmer.sql.EnumType
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.valueIn
 import org.babyfish.jimmer.sql.kt.filter.KAssociationIntegrityAssuranceFilter
 import org.babyfish.jimmer.sql.kt.filter.KFilterArgs
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Component
 
 @Component
-class DataScopeFilter(private val sysDepartmentService: SysDepartmentService) :
-    KAssociationIntegrityAssuranceFilter<DataScopeAware> {
+class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationIntegrityAssuranceFilter<DataScopeAware> {
+
     /**
      * 根据当前用户的数据权限过滤查询范围
      *
@@ -62,7 +62,17 @@ class DataScopeFilter(private val sysDepartmentService: SysDepartmentService) :
                 // 如果当前用户可以查看本部门及子部门的数据，获取当前用户的部门ID，以及所有子部门的ID，并添加过滤条件
                 val currentUserDepartmentId = SecurityUtils.getCurrentUserDepartmentIdOrNull()
                 if (currentUserDepartmentId != null) {
-                    val childrenIds = sysDepartmentService.findChildrenIds(currentUserDepartmentId)
+                    val sql =
+                        """
+                        WITH RECURSIVE DepartmentHierarchy AS (
+                            SELECT id FROM sys_department WHERE id = ?
+                            UNION ALL
+                            SELECT d.id FROM sys_department d
+                            INNER JOIN DepartmentHierarchy dh ON d.parent_id = dh.id
+                        )
+                        SELECT id FROM DepartmentHierarchy
+                    """
+                    val childrenIds = this.jdbcTemplate.queryForList(sql, Long::class.java, currentUserDepartmentId)
                     args.apply { where(table.department.id valueIn childrenIds) }
                 }
             }
@@ -71,8 +81,12 @@ class DataScopeFilter(private val sysDepartmentService: SysDepartmentService) :
                 // 如果当前用户的数据权限是自定义的，根据自定义规则获取当前用户的部门，以及该部门有权限访问的数据范围，并添加过滤条件
                 val currentUserDepartmentId = SecurityUtils.getCurrentUserDepartmentIdOrNull()
                 if (currentUserDepartmentId != null) {
-                    val sysDepartment = sysDepartmentService.findSysDepartmentById(currentUserDepartmentId)
-                    args.apply { where(table.department.id valueIn sysDepartment.dataScopeDepartmentIds) }
+                    val list = this.jdbcTemplate.queryForList(
+                        "select data_scope_department_id from sys_department_data_scope where department_id = ?",
+                        Long::class.java,
+                        currentUserDepartmentId
+                    )
+                    args.apply { where(table.department.id valueIn list) }
                 }
             }
         }
