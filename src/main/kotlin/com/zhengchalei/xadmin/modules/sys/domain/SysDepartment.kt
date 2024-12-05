@@ -7,14 +7,13 @@
 package com.zhengchalei.xadmin.modules.sys.domain
 
 import com.zhengchalei.xadmin.config.jimmer.BaseEntity
+import com.zhengchalei.xadmin.config.jimmer.filter.DataScope
 import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_department")
 interface SysDepartment : BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val name: String
 
@@ -24,10 +23,19 @@ interface SysDepartment : BaseEntity {
 
     val description: String?
 
-    @ManyToOne
-    val parent: SysDepartment?
+    @ManyToOne val parent: SysDepartment?
 
-    @OneToMany(mappedBy = "parent")
-    val children: List<SysDepartment>
+    @OneToMany(mappedBy = "parent") val children: List<SysDepartment>
 
+    val dataScope: DataScope
+
+    @ManyToMany
+    @JoinTable(
+        name = "sys_role_department_data_scope",
+        joinColumnName = "role_id",
+        inverseJoinColumnName = "department_id",
+    )
+    val dataScopeDepartments: List<SysDepartment>
+
+    @IdView("dataScopeDepartments") val dataScopeDepartmentIds: List<Long>
 }

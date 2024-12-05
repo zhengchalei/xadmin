@@ -1,6 +1,5 @@
 specification SysRoleListSpecification {
     eq(id)
-    eq(dataScope)
     like/i(name)
     like/i(code)
     like/i(description)
@@ -16,10 +15,6 @@ SysRolePageView {
 SysRoleDetailView {
     #allScalars
     permissions {
-        #allScalars
-    }
-    dataScopeDepartmentIds
-    dataScopeDepartments {
         #allScalars
     }
 }

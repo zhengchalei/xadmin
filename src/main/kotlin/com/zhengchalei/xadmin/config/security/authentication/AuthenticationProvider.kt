@@ -36,6 +36,8 @@ class AuthenticationProvider(
             username = username,
             password = password,
             authorities = userDetails.authorities,
+            departmentId = userDetails.user.department?.id,
+            dataScope = userDetails.user.department?.dataScope,
         )
     }
 

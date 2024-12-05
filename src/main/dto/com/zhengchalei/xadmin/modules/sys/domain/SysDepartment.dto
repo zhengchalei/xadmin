@@ -2,8 +2,10 @@ specification SysDepartmentListSpecification {
     eq(id)
     like/i(name)
     eq(status)
+    eq(dataScope)
     like/i(description)
     associatedIdEq(parent)
+    associatedIdEq(dataScopeDepartments) as dataScopeDepartmentId
     ge(createTime) as startTime
     le(createTime) as endTime
 }
@@ -41,6 +43,10 @@ SysDepartmentPageView {
 SysDepartmentDetailView {
     #allScalars
     parent {
+        #allScalars
+    }
+    dataScopeDepartmentIds
+    dataScopeDepartments {
         #allScalars
     }
 }

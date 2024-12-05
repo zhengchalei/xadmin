@@ -29,7 +29,12 @@ class WithMockUserSecurityContextFactory : WithSecurityContextFactory<WithMockUs
         )
         val auth: Authentication =
             SysUserAuthentication(
-                annotation.id, annotation.username, annotation.password, authorities
+                id = annotation.id,
+                username = annotation.username,
+                password = annotation.password,
+                authorities = authorities,
+                dataScope = annotation.dataScope,
+                departmentId = annotation.departmentId
             )
         context.authentication = auth
         return context

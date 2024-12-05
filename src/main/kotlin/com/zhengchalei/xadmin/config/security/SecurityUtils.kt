@@ -7,6 +7,8 @@
 package com.zhengchalei.xadmin.config.security
 
 import com.zhengchalei.xadmin.config.exceptions.NotLoginException
+import com.zhengchalei.xadmin.config.exceptions.ServiceException
+import com.zhengchalei.xadmin.config.jimmer.filter.DataScope
 import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
 import com.zhengchalei.xadmin.config.security.authentication.SysUserDetails
 import org.springframework.security.core.Authentication
@@ -48,11 +50,57 @@ object SecurityUtils {
         }
     }
 
+    fun getCurrentUserIdOrNull(): Long? {
+        val authentication: Authentication =
+            SecurityContextHolder.getContext().authentication ?: throw NotLoginException()
+        return when (authentication) {
+            is SysUserAuthentication -> {
+                authentication.id
+            }
+
+            else -> {
+                null
+            }
+        }
+    }
+
+    fun getCurrentUserDepartmentId(): Long {
+        val authentication: Authentication =
+            SecurityContextHolder.getContext().authentication ?: throw NotLoginException()
+        return when (authentication) {
+            is SysUserAuthentication -> {
+                authentication.departmentId ?: throw ServiceException("未绑定部门信息")
+            }
+            else -> {
+                throw NotLoginException()
+            }
+        }
+    }
+
+    fun getCurrentUserDepartmentIdOrNull(): Long? {
+        val authentication: Authentication =
+            SecurityContextHolder.getContext().authentication ?: throw NotLoginException()
+        return when (authentication) {
+            is SysUserAuthentication -> {
+                authentication.departmentId
+            }
+
+            else -> {
+                null
+            }
+        }
+    }
+
     private fun getCaptchaAuthenticationToken(): SysUserAuthentication {
         if ((SecurityContextHolder.getContext().authentication is SysUserAuthentication).not()) {
             throw NotLoginException()
         }
         return SecurityContextHolder.getContext().authentication as SysUserAuthentication
+    }
+
+    fun getCurrentUserDataScope(): DataScope {
+        val authentication = getCaptchaAuthenticationToken()
+        return authentication.dataScope ?: DataScope.ALL
     }
 
     // 判断是否登录

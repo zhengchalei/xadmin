@@ -16,6 +16,7 @@ import com.nimbusds.jwt.SignedJWT
 import com.zhengchalei.xadmin.commons.Const
 import com.zhengchalei.xadmin.config.exceptions.InvalidTokenException
 import com.zhengchalei.xadmin.config.exceptions.TokenInvalidException
+import com.zhengchalei.xadmin.config.jimmer.filter.DataScope
 import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
 import java.util.*
 import org.slf4j.LoggerFactory
@@ -74,6 +75,8 @@ class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigur
                         .filter { !it.authority.startsWith(Const.SecurityRolePrifix) }
                         .joinToString(",") { it.authority },
                 )
+                .claim("departmentId", authentication.departmentId)
+                .claim("dataScope", authentication.dataScope?.name)
                 .expirationTime(Date(System.currentTimeMillis() + expiration)) // 1 hour from now
                 .build()
 
@@ -128,7 +131,16 @@ class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigur
 
         val id = jwtClaimsSet.getClaim("id") as Long
         val username = jwtClaimsSet.getClaim("username") as String
-        return SysUserAuthentication(id = id, username = username, password = "", authorities = authorities)
+        val departmentId = jwtClaimsSet.getClaim("departmentId") as Long?
+        val dataScope = jwtClaimsSet.getClaim("dataScope") as DataScope?
+        return SysUserAuthentication(
+            id = id,
+            username = username,
+            password = "",
+            departmentId = departmentId,
+            authorities = authorities,
+            dataScope = dataScope,
+        )
     }
 
     override fun logout(token: String) {

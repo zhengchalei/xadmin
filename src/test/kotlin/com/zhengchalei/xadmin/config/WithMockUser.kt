@@ -1,5 +1,6 @@
 package com.zhengchalei.xadmin.config
 
+import com.zhengchalei.xadmin.config.jimmer.filter.DataScope
 import org.springframework.security.test.context.support.WithSecurityContext
 
 @Retention(AnnotationRetention.RUNTIME)
@@ -11,4 +12,6 @@ annotation class WithMockUser(
     val password: String = "admin",
     val roles: Array<String> = ["ADMIN"],
     val authorities: Array<String> = [],
+    val departmentId: Long = 1L,
+    val dataScope: DataScope = DataScope.ALL,
 )

@@ -12,7 +12,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-class SysUserDetails(private val user: SysUser) : UserDetails {
+class SysUserDetails(val user: SysUser) : UserDetails {
 
     val id: Long = user.id
 

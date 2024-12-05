@@ -11,6 +11,7 @@ import com.zhengchalei.xadmin.modules.sys.domain.dto.*
 import com.zhengchalei.xadmin.modules.sys.repository.SysDepartmentRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -24,8 +25,28 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service
 @Transactional(rollbackFor = [Exception::class])
-class SysDepartmentService(private val sysDepartmentRepository: SysDepartmentRepository) {
+class SysDepartmentService(
+    private val sysDepartmentRepository: SysDepartmentRepository,
+    private val jdbcTemplate: JdbcTemplate,
+) {
+
     private val log = org.slf4j.LoggerFactory.getLogger(SysDepartmentService::class.java)
+
+    // 查询当前节点和所有子节点的id
+    fun findChildrenIds(id: Long): List<Long> {
+        val sql =
+            """
+            WITH RECURSIVE DepartmentHierarchy AS (
+                SELECT id FROM sys_department WHERE id = ?
+                UNION ALL
+                SELECT d.id FROM sys_department d
+                INNER JOIN DepartmentHierarchy dh ON d.parent_id = dh.id
+            )
+            SELECT id FROM DepartmentHierarchy
+        """
+        val sysDepartmentIds = jdbcTemplate.queryForList(sql, Long::class.java, id)
+        return sysDepartmentIds
+    }
 
     /**
      * 查找系统部门通过ID

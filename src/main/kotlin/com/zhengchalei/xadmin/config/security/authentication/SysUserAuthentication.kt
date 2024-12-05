@@ -6,6 +6,7 @@
  */
 package com.zhengchalei.xadmin.config.security.authentication
 
+import com.zhengchalei.xadmin.config.jimmer.filter.DataScope
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
@@ -13,5 +14,7 @@ class SysUserAuthentication(
     var id: Long,
     var username: String,
     var password: String,
+    val departmentId: Long?,
+    val dataScope: DataScope?,
     authorities: Collection<GrantedAuthority> = emptyList(),
 ) : UsernamePasswordAuthenticationToken(username, password, authorities)

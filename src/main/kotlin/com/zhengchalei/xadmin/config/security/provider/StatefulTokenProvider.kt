@@ -7,6 +7,7 @@
 package com.zhengchalei.xadmin.config.security.provider
 
 import com.zhengchalei.xadmin.config.exceptions.NotLoginException
+import com.zhengchalei.xadmin.config.jimmer.filter.DataScope
 import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
 import java.util.*
 import org.redisson.api.RedissonClient
@@ -25,10 +26,12 @@ class StatefulTokenProvider(private val redissonClient: RedissonClient) : AuthTo
         val token = UUID.randomUUID().toString()
         val statefulTokenUser =
             StatefulTokenUser(
-                authentication.id,
-                authentication.username,
-                authentication.password,
-                authentication.authorities.map { it.authority },
+                id = authentication.id,
+                username = authentication.username,
+                password = authentication.password,
+                departmentId = authentication.departmentId,
+                dataScope = authentication.dataScope,
+                authorities = authentication.authorities.map { it.authority },
             )
         tokenMap[token] = statefulTokenUser
         return token
@@ -41,10 +44,12 @@ class StatefulTokenProvider(private val redissonClient: RedissonClient) : AuthTo
     override fun getAuthentication(token: String): Authentication {
         val statefulTokenUser: StatefulTokenUser = tokenMap[token] ?: throw NotLoginException()
         return SysUserAuthentication(
-            statefulTokenUser.id,
-            statefulTokenUser.username,
-            statefulTokenUser.password,
-            statefulTokenUser.authorities.map { SimpleGrantedAuthority(it) },
+            id = statefulTokenUser.id,
+            username = statefulTokenUser.username,
+            password = statefulTokenUser.password,
+            departmentId = statefulTokenUser.departmentId,
+            dataScope = statefulTokenUser.dataScope,
+            authorities = statefulTokenUser.authorities.map { SimpleGrantedAuthority(it) },
         )
     }
 
@@ -53,4 +58,11 @@ class StatefulTokenProvider(private val redissonClient: RedissonClient) : AuthTo
     }
 }
 
-data class StatefulTokenUser(val id: Long, val username: String, val password: String, val authorities: List<String>)
+data class StatefulTokenUser(
+    val id: Long,
+    val username: String,
+    val password: String,
+    val departmentId: Long?,
+    val dataScope: DataScope?,
+    val authorities: List<String>,
+)
