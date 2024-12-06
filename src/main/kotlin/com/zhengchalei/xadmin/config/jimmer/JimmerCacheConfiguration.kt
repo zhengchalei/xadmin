@@ -15,9 +15,11 @@ import org.babyfish.jimmer.sql.cache.caffeine.CaffeineValueBinder
 import org.babyfish.jimmer.sql.cache.chain.ChainCacheBuilder
 import org.babyfish.jimmer.sql.kt.cache.AbstractKCacheFactory
 import org.babyfish.jimmer.sql.kt.cache.KCacheFactory
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
+@ConditionalOnProperty(value = ["jimmer.cache.enabled"], havingValue = "true", matchIfMissing = false)
 @Configuration
 class JimmerCacheConfiguration {
 
