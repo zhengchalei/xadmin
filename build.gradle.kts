@@ -73,7 +73,7 @@ dependencies {
     implementation("org.redisson:redisson-spring-boot-starter:latest.release")
 
     // openapi
-//    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
+    //    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
     implementation("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:latest.release")
 
     // configuration processor
