@@ -12,14 +12,8 @@ specification SysLoginLogListSpecification {
 
 SysLoginLogPageView {
     #allScalars
-    user {
-        username
-    }
 }
 
 SysLoginLogDetailView {
     #allScalars
-    user {
-        #allScalars
-    }
 }

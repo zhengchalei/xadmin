@@ -28,4 +28,5 @@ interface SysLoginLog : DataScopeAware {
     val status: Boolean
 
     val errorMessage: String?
+
 }

@@ -9,7 +9,7 @@ package com.zhengchalei.xadmin.config.aspect
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zhengchalei.xadmin.commons.Const
 import com.zhengchalei.xadmin.commons.util.IPUtil
-import com.zhengchalei.xadmin.config.security.SecurityUtils
+import com.zhengchalei.xadmin.config.virtualThread.VirtualThreadExecutor
 import com.zhengchalei.xadmin.modules.sys.domain.*
 import com.zhengchalei.xadmin.modules.sys.repository.SysOperationLogRepository
 import com.zhengchalei.xadmin.modules.sys.repository.SysUserRepository
@@ -38,6 +38,7 @@ class LoggingAspect(
     private val sysUserRepository: SysUserRepository,
     private val httpServletRequest: HttpServletRequest,
     private val ip2regionSearcher: Ip2regionSearcher,
+    private val virtualThreadExecutor: VirtualThreadExecutor,
     @Value("spring.profiles.active") private val profile: String,
 ) {
 
@@ -90,17 +91,12 @@ class LoggingAspect(
                 false
             }
         // 异步存储日志
-        Thread.startVirtualThread {
+        virtualThreadExecutor.execute {
             val resultJson =
                 if (profile == Const.ENV_DEV) objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result)
                 else objectMapper.writeValueAsString(result)
-            val cachedUser =
-                cachedUser[SecurityUtils.getCurrentUsername()]?.let {
-                    sysUserRepository.findUserDetailsByUsername(SecurityUtils.getCurrentUsername())
-                }
             val operationLog =
                 new(SysOperationLog::class).by {
-                    this.user = if (cachedUser == null) null else makeIdOnly(SysUser::class, cachedUser.id)
                     this.params = params
                     this.methodReference = "${signature.declaringTypeName}.${signature.name}"
                     this.httpMethod = HttpMethod.valueOf(httpMethod)

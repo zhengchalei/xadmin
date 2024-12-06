@@ -15,7 +15,7 @@ import org.babyfish.jimmer.sql.MappedSuperclass
 @MappedSuperclass
 interface DataScopeAware {
 
-    @ManyToOne @JoinColumn(name = "user_id") val user: SysUser?
+    @ManyToOne @JoinColumn(name = "create_by") val createBy: SysUser?
 
-    @IdView("user") val userId: Long?
+    @IdView("createBy") val createById: Long?
 }

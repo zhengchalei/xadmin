@@ -18,13 +18,13 @@ import org.springframework.stereotype.Component
 class DataScopeDraftInterceptor() : DraftInterceptor<DataScopeAware, DataScopeAwareDraft> {
 
     override fun beforeSave(draft: DataScopeAwareDraft, original: DataScopeAware?) {
-        if (!isLoaded(draft, DataScopeAware::user)) {
+        if (!isLoaded(draft, DataScopeAware::createBy)) {
             // 这里是修改
         }
 
         if (original === null) {
-            if (!isLoaded(draft, DataScopeAware::user)) {
-                SecurityUtils.getCurrentUserIdOrNull()?.let { id -> draft.user = makeIdOnly(SysUser::class, id) }
+            if (!isLoaded(draft, DataScopeAware::createBy)) {
+                SecurityUtils.getCurrentUserIdOrNull()?.let { id -> draft.createBy = makeIdOnly(SysUser::class, id) }
             }
         }
     }

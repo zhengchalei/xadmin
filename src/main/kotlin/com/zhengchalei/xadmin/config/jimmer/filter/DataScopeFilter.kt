@@ -7,8 +7,8 @@
 package com.zhengchalei.xadmin.config.jimmer.filter
 
 import com.zhengchalei.xadmin.config.jimmer.DataScopeAware
+import com.zhengchalei.xadmin.config.jimmer.`createBy?`
 import com.zhengchalei.xadmin.config.jimmer.filter.DataScope.*
-import com.zhengchalei.xadmin.config.jimmer.`user?`
 import com.zhengchalei.xadmin.config.security.SecurityUtils
 import com.zhengchalei.xadmin.modules.sys.domain.`department?`
 import com.zhengchalei.xadmin.modules.sys.domain.id
@@ -41,12 +41,12 @@ class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationInte
             // 如果当前用户只能查看自己的数据，获取当前用户的ID，并添加过滤条件
             SELF ->
                 SecurityUtils.getCurrentUserIdOrNull()?.let { currentUserId ->
-                    args.apply { where(table.`user?`.id eq currentUserId) }
+                    args.apply { where(table.`createBy?`.id eq currentUserId) }
                 }
             // 如果当前用户只能查看本部门的数据，获取当前用户的部门ID，并添加过滤条件
             DEPARTMENT ->
                 SecurityUtils.getCurrentUserDepartmentIdOrNull()?.let { currentUserDepartmentId ->
-                    args.apply { where(table.`user?`.`department?`.id eq currentUserDepartmentId) }
+                    args.apply { where(table.`createBy?`.`department?`.id eq currentUserDepartmentId) }
                 }
             // 如果当前用户可以查看本部门及子部门的数据，获取当前用户的部门ID，以及所有子部门的ID，并添加过滤条件
             DEPARTMENT_AND_SUB_DEPARTMENT ->
@@ -62,7 +62,7 @@ class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationInte
                         SELECT id FROM DepartmentHierarchy
                     """
                     val childrenIds = this.jdbcTemplate.queryForList(sql, Long::class.java, currentUserDepartmentId)
-                    args.apply { where(table.`user?`.`department?`.id valueIn childrenIds) }
+                    args.apply { where(table.`createBy?`.`department?`.id valueIn childrenIds) }
                 }
             // 如果当前用户的数据权限是自定义的，根据自定义规则获取当前用户的部门，以及该部门有权限访问的数据范围，并添加过滤条件
             CUSTOM ->
@@ -73,7 +73,7 @@ class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationInte
                             Long::class.java,
                             currentUserDepartmentId,
                         )
-                    args.apply { where(table.`user?`.`department?`.id valueIn list) }
+                    args.apply { where(table.`createBy?`.`department?`.id valueIn list) }
                 }
         }
     }

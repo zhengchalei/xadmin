@@ -7,22 +7,19 @@
 package com.zhengchalei.xadmin.modules.sys.domain
 
 import com.zhengchalei.xadmin.config.jimmer.BaseEntity
+import com.zhengchalei.xadmin.config.jimmer.DataScopeAware
 import java.util.*
 import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_operation_log")
-interface SysOperationLog : BaseEntity {
+interface SysOperationLog : BaseEntity, DataScopeAware {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
-    @ManyToOne val user: SysUser?
-
-    // 操作名称
     val name: String
 
     val methodReference: String
 
-    // 操作类型
     val operationType: OperationType
 
     val httpMethod: HttpMethod

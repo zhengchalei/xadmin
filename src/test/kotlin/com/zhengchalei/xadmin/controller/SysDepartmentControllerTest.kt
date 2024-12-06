@@ -3,6 +3,7 @@ package com.zhengchalei.xadmin.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.jsonpath.JsonPath
 import com.zhengchalei.xadmin.config.WithMockUser
+import com.zhengchalei.xadmin.config.jimmer.filter.DataScope
 import com.zhengchalei.xadmin.modules.sys.domain.dto.SysDepartmentCreateInput
 import com.zhengchalei.xadmin.modules.sys.domain.dto.SysDepartmentUpdateInput
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
@@ -50,6 +51,7 @@ class SysDepartmentControllerTest {
                                 sort = 1,
                                 status = true,
                                 parentId = 1,
+                                dataScope = DataScope.ALL,
                             ),
                         )
                     contentType = MediaType.APPLICATION_JSON
@@ -83,6 +85,7 @@ class SysDepartmentControllerTest {
                             sort = 1,
                             status = true,
                             parentId = null,
+                            dataScope = DataScope.ALL,
                         ),
                     )
                 contentType = MediaType.APPLICATION_JSON

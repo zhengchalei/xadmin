@@ -3,7 +3,7 @@ package com.zhengchalei.xadmin.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jayway.jsonpath.JsonPath
 import com.zhengchalei.xadmin.config.WithMockUser
-import com.zhengchalei.xadmin.modules.sys.domain.DataScope
+import com.zhengchalei.xadmin.config.jimmer.filter.DataScope
 import com.zhengchalei.xadmin.modules.sys.domain.dto.SysRoleCreateInput
 import com.zhengchalei.xadmin.modules.sys.domain.dto.SysRoleUpdateInput
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
@@ -50,7 +50,6 @@ class SysRoleControllerTest {
                                 code = "test-role",
                                 description = "角色",
                                 permissionIds = listOf(1, 2, 3),
-                                dataScope = DataScope.ALL
                             ),
                         )
                     contentType = MediaType.APPLICATION_JSON
@@ -80,7 +79,6 @@ class SysRoleControllerTest {
                             code = "test-role",
                             description = "角色 update",
                             permissionIds = listOf(1, 2, 3),
-                            dataScope = DataScope.ALL
                         ),
                     )
                 contentType = MediaType.APPLICATION_JSON

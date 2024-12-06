@@ -12,13 +12,11 @@ import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthenticati
 import com.zhengchalei.xadmin.config.security.provider.AuthTokenProvider
 import com.zhengchalei.xadmin.config.virtualThread.VirtualThreadExecutor
 import com.zhengchalei.xadmin.modules.sys.domain.SysLoginLog
-import com.zhengchalei.xadmin.modules.sys.domain.SysUser
 import com.zhengchalei.xadmin.modules.sys.domain.by
 import com.zhengchalei.xadmin.modules.sys.repository.SysLoginLogRepository
 import java.time.LocalDateTime
 import net.dreamlu.mica.captcha.service.ICaptchaService
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher
-import org.babyfish.jimmer.kt.makeIdOnly
 import org.babyfish.jimmer.kt.new
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
@@ -41,7 +39,6 @@ class SysAuthService(
     private val sysLoginLogRepository: SysLoginLogRepository,
     private val authenticationManager: AuthenticationManager,
     private val authTokenProvider: AuthTokenProvider,
-    private val userService: SysUserService,
     private val ip2regionSearcher: Ip2regionSearcher,
     private val virtualThreadExecutor: VirtualThreadExecutor,
     private val captchaService: ICaptchaService,
@@ -114,7 +111,6 @@ class SysAuthService(
                     this.loginTime = LocalDateTime.now()
                     this.ip = ip
                     this.address = address
-                    this.user = if (status) makeIdOnly(SysUser::class, userService.currentUserId()) else null
                 }
             )
         }

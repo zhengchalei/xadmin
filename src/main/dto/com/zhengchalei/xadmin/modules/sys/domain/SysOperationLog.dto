@@ -8,14 +8,14 @@ specification SysOperationLogListSpecification {
 SysOperationLogPageView {
     #allScalars
     -errorStack
-    user {
+    createBy {
         username
     }
 }
 
 SysOperationLogDetailView {
     #allScalars
-    user {
+    createBy {
         #allScalars
     }
 }
