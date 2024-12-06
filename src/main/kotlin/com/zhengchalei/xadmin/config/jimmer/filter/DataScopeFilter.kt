@@ -8,17 +8,12 @@ package com.zhengchalei.xadmin.config.jimmer.filter
 
 import com.zhengchalei.xadmin.config.jimmer.DataScopeAware
 import com.zhengchalei.xadmin.config.jimmer.filter.DataScope.*
-import com.zhengchalei.xadmin.config.jimmer.user
 import com.zhengchalei.xadmin.config.jimmer.`user?`
-import com.zhengchalei.xadmin.config.jimmer.userId
 import com.zhengchalei.xadmin.config.security.SecurityUtils
-import com.zhengchalei.xadmin.modules.sys.domain.SysUser
-import com.zhengchalei.xadmin.modules.sys.domain.department
 import com.zhengchalei.xadmin.modules.sys.domain.`department?`
 import com.zhengchalei.xadmin.modules.sys.domain.id
 import org.babyfish.jimmer.sql.EnumType
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
-import org.babyfish.jimmer.sql.kt.ast.expression.exists
 import org.babyfish.jimmer.sql.kt.ast.expression.valueIn
 import org.babyfish.jimmer.sql.kt.filter.KAssociationIntegrityAssuranceFilter
 import org.babyfish.jimmer.sql.kt.filter.KFilterArgs
@@ -31,8 +26,7 @@ class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationInte
     /**
      * 根据当前用户的数据权限过滤查询范围
      *
-     * 此函数重写了KFilterArgs<DataScopeAware>接口的filter方法，根据当前用户所属的数据权限类型，
-     * 动态修改查询条件，以限制查询结果范围这使得每个用户只能查询自己有权限看到的数据
+     * 此函数重写了KFilterArgs<DataScopeAware>接口的filter方法，根据当前用户所属的数据权限类型， 动态修改查询条件，以限制查询结果范围这使得每个用户只能查询自己有权限看到的数据
      *
      * @param args 查询参数对象，包含查询所需的表格信息和条件构建器通过这个参数，我们可以添加额外的查询条件
      */
@@ -45,22 +39,18 @@ class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationInte
             // 如果当前用户可以查看所有数据，则不进行任何过滤
             ALL -> return
             // 如果当前用户只能查看自己的数据，获取当前用户的ID，并添加过滤条件
-            SELF -> SecurityUtils.getCurrentUserIdOrNull()?.let { currentUserId ->
-                args.apply {
-                    where(table.`user?`.id eq currentUserId)
+            SELF ->
+                SecurityUtils.getCurrentUserIdOrNull()?.let { currentUserId ->
+                    args.apply { where(table.`user?`.id eq currentUserId) }
                 }
-            }
             // 如果当前用户只能查看本部门的数据，获取当前用户的部门ID，并添加过滤条件
-            DEPARTMENT -> SecurityUtils.getCurrentUserDepartmentIdOrNull()?.let { currentUserDepartmentId ->
-                args.apply {
-                    where(
-                        table.`user?`.`department?`.id eq currentUserDepartmentId
-                    )
+            DEPARTMENT ->
+                SecurityUtils.getCurrentUserDepartmentIdOrNull()?.let { currentUserDepartmentId ->
+                    args.apply { where(table.`user?`.`department?`.id eq currentUserDepartmentId) }
                 }
-            }
             // 如果当前用户可以查看本部门及子部门的数据，获取当前用户的部门ID，以及所有子部门的ID，并添加过滤条件
-            DEPARTMENT_AND_SUB_DEPARTMENT -> SecurityUtils.getCurrentUserDepartmentIdOrNull()
-                ?.let { currentUserDepartmentId ->
+            DEPARTMENT_AND_SUB_DEPARTMENT ->
+                SecurityUtils.getCurrentUserDepartmentIdOrNull()?.let { currentUserDepartmentId ->
                     val sql =
                         """
                         WITH RECURSIVE DepartmentHierarchy AS (
@@ -75,14 +65,16 @@ class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationInte
                     args.apply { where(table.`user?`.`department?`.id valueIn childrenIds) }
                 }
             // 如果当前用户的数据权限是自定义的，根据自定义规则获取当前用户的部门，以及该部门有权限访问的数据范围，并添加过滤条件
-            CUSTOM -> SecurityUtils.getCurrentUserDepartmentIdOrNull()?.let { currentUserDepartmentId ->
-                val list = this.jdbcTemplate.queryForList(
-                    "select data_scope_department_id from sys_department_data_scope where department_id = ?",
-                    Long::class.java,
-                    currentUserDepartmentId
-                )
-                args.apply { where(table.`user?`.`department?`.id valueIn list) }
-            }
+            CUSTOM ->
+                SecurityUtils.getCurrentUserDepartmentIdOrNull()?.let { currentUserDepartmentId ->
+                    val list =
+                        this.jdbcTemplate.queryForList(
+                            "select data_scope_department_id from sys_department_data_scope where department_id = ?",
+                            Long::class.java,
+                            currentUserDepartmentId,
+                        )
+                    args.apply { where(table.`user?`.`department?`.id valueIn list) }
+                }
         }
     }
 }

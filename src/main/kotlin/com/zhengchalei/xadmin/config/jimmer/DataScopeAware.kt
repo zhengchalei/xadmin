@@ -18,5 +18,4 @@ interface DataScopeAware {
     @ManyToOne @JoinColumn(name = "user_id") val user: SysUser?
 
     @IdView("user") val userId: Long?
-
 }

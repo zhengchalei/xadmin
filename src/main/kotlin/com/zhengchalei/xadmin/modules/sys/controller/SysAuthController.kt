@@ -13,6 +13,7 @@ import com.zhengchalei.xadmin.modules.sys.domain.dto.LoginResponse
 import com.zhengchalei.xadmin.modules.sys.service.SysAuthService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import java.util.*
 import net.dreamlu.mica.captcha.service.ICaptchaService
 import org.babyfish.jimmer.client.meta.Api
 import org.slf4j.LoggerFactory
@@ -20,7 +21,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 @Api("sys")
 @Validated
@@ -42,10 +42,7 @@ class SysAuthController(
     }
 
     @GetMapping("/captcha")
-    fun captcha(
-        httpServletRequest: HttpServletRequest,
-        httpServletResponse: HttpServletResponse,
-    ) {
+    fun captcha(httpServletRequest: HttpServletRequest, httpServletResponse: HttpServletResponse) {
         val uuid = UUID.randomUUID().toString()
         val byteArrayResource: ByteArrayResource = captchaService.generateByteResource(uuid)
         httpServletResponse.contentType = "image/png"

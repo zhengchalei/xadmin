@@ -18,12 +18,12 @@ import com.zhengchalei.xadmin.config.exceptions.InvalidTokenException
 import com.zhengchalei.xadmin.config.exceptions.TokenInvalidException
 import com.zhengchalei.xadmin.config.jimmer.filter.DataScope
 import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
+import java.util.*
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
-import java.util.*
 
 @Component
 @ConditionalOnProperty(value = ["auth.token-type"], havingValue = "JWT", matchIfMissing = false)
