@@ -61,6 +61,8 @@ class SpringSecurityConfig(
                 authorize.requestMatchers("/api/auth/captcha/**").permitAll()
                 // dev
                 if (profile != Const.ENV_PROD) {
+                    authorize.requestMatchers("/doc.html").permitAll()
+                    authorize.requestMatchers("/webjars/**").permitAll()
                     authorize.requestMatchers("/openapi.html").permitAll()
                     authorize.requestMatchers("/openapi.yml").permitAll()
                     authorize.requestMatchers("/swagger-ui/**").permitAll()
