@@ -6,8 +6,8 @@
  */
 package com.zhengchalei.xadmin.config.jimmer.filter
 
-import com.zhengchalei.xadmin.config.jimmer.DataScopeAware
-import com.zhengchalei.xadmin.config.jimmer.`createBy?`
+import com.zhengchalei.xadmin.config.jimmer.entity.DataScopeEntity
+import com.zhengchalei.xadmin.config.jimmer.entity.`createBy?`
 import com.zhengchalei.xadmin.config.jimmer.filter.DataScope.*
 import com.zhengchalei.xadmin.config.security.SecurityUtils
 import com.zhengchalei.xadmin.modules.sys.domain.`department?`
@@ -21,7 +21,7 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Component
 
 @Component
-class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationIntegrityAssuranceFilter<DataScopeAware> {
+class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationIntegrityAssuranceFilter<DataScopeEntity> {
 
     /**
      * 根据当前用户的数据权限过滤查询范围
@@ -30,7 +30,7 @@ class DataScopeFilter(private val jdbcTemplate: JdbcTemplate) : KAssociationInte
      *
      * @param args 查询参数对象，包含查询所需的表格信息和条件构建器通过这个参数，我们可以添加额外的查询条件
      */
-    override fun filter(args: KFilterArgs<DataScopeAware>) {
+    override fun filter(args: KFilterArgs<DataScopeEntity>) {
         // 获取当前用户的数据权限范围
         val currentUserDataScope = SecurityUtils.getCurrentUserDataScope()
 

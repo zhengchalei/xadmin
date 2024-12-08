@@ -7,7 +7,7 @@
 package com.zhengchalei.xadmin.modules.sys.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.zhengchalei.xadmin.config.jimmer.BaseEntity
+import com.zhengchalei.xadmin.config.jimmer.entity.BaseEntity
 import java.time.LocalDate
 import org.babyfish.jimmer.sql.*
 

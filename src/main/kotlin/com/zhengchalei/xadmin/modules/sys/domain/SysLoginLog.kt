@@ -6,13 +6,13 @@
  */
 package com.zhengchalei.xadmin.modules.sys.domain
 
-import com.zhengchalei.xadmin.config.jimmer.DataScopeAware
+import com.zhengchalei.xadmin.config.jimmer.entity.DataScopeEntity
 import java.time.LocalDateTime
 import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_login_log")
-interface SysLoginLog : DataScopeAware {
+interface SysLoginLog : DataScopeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val username: String

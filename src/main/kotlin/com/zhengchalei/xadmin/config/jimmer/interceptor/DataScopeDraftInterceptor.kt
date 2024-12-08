@@ -6,7 +6,8 @@
  */
 package com.zhengchalei.xadmin.config.jimmer.interceptor
 
-import com.zhengchalei.xadmin.config.jimmer.*
+import com.zhengchalei.xadmin.config.jimmer.entity.DataScopeEntity
+import com.zhengchalei.xadmin.config.jimmer.entity.DataScopeEntityDraft
 import com.zhengchalei.xadmin.config.security.SecurityUtils
 import com.zhengchalei.xadmin.modules.sys.domain.SysUser
 import org.babyfish.jimmer.kt.isLoaded
@@ -15,15 +16,15 @@ import org.babyfish.jimmer.sql.DraftInterceptor
 import org.springframework.stereotype.Component
 
 @Component
-class DataScopeDraftInterceptor() : DraftInterceptor<DataScopeAware, DataScopeAwareDraft> {
+class DataScopeDraftInterceptor() : DraftInterceptor<DataScopeEntity, DataScopeEntityDraft> {
 
-    override fun beforeSave(draft: DataScopeAwareDraft, original: DataScopeAware?) {
-        if (!isLoaded(draft, DataScopeAware::createBy)) {
+    override fun beforeSave(draft: DataScopeEntityDraft, original: DataScopeEntity?) {
+        if (!isLoaded(draft, DataScopeEntity::createBy)) {
             // 这里是修改
         }
 
         if (original === null) {
-            if (!isLoaded(draft, DataScopeAware::createBy)) {
+            if (!isLoaded(draft, DataScopeEntity::createBy)) {
                 SecurityUtils.getCurrentUserIdOrNull()?.let { id -> draft.createBy = makeIdOnly(SysUser::class, id) }
             }
         }

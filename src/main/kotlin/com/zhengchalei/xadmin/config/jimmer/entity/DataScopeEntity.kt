@@ -4,8 +4,8 @@
  *
  * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
  */
-package com.zhengchalei.xadmin.config.jimmer
+package com.zhengchalei.xadmin.config.jimmer.entity
 
 import org.babyfish.jimmer.sql.MappedSuperclass
 
-@MappedSuperclass interface DataScopeAware : BaseEntity {}
+@MappedSuperclass interface DataScopeEntity : BaseEntity {}

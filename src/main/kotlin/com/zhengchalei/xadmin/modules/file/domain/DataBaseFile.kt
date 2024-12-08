@@ -6,7 +6,7 @@
  */
 package com.zhengchalei.xadmin.modules.file.domain
 
-import com.zhengchalei.xadmin.config.jimmer.BaseEntity
+import com.zhengchalei.xadmin.config.jimmer.entity.BaseEntity
 import java.io.InputStream
 import org.babyfish.jimmer.sql.*
 

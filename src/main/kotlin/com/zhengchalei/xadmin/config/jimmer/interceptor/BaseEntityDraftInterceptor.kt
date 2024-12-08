@@ -6,8 +6,8 @@
  */
 package com.zhengchalei.xadmin.config.jimmer.interceptor
 
-import com.zhengchalei.xadmin.config.jimmer.BaseEntity
-import com.zhengchalei.xadmin.config.jimmer.BaseEntityDraft
+import com.zhengchalei.xadmin.config.jimmer.entity.BaseEntity
+import com.zhengchalei.xadmin.config.jimmer.entity.BaseEntityDraft
 import java.time.LocalDateTime
 import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.DraftInterceptor

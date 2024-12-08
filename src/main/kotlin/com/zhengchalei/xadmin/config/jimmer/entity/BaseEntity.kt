@@ -4,7 +4,7 @@
  *
  * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
  */
-package com.zhengchalei.xadmin.config.jimmer
+package com.zhengchalei.xadmin.config.jimmer.entity
 
 import com.zhengchalei.xadmin.modules.sys.domain.SysUser
 import java.time.LocalDateTime
