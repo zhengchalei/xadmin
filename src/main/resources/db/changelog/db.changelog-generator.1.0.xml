@@ -1,0 +1,36 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="创建代码生成表结构" author="郑查磊">
+        <createTable tableName="gen_model">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="名称" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <!--      包名      -->
+            <column name="package_name" remarks="包名" type="text"/>
+            <!--      表前缀      -->
+            <column name="table_prefix" remarks="表前缀" type="text"/>
+            <!--     权限id       -->
+            <column name="permission_id" remarks="权限id" type="BIGINT"/>
+
+            <column name="description" remarks="描述" type="text"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="gen_model"
+                                 constraintName="gen_model_permission_id"
+                                 referencedColumnNames="id" referencedTableName="sys_permission"/>
+    </changeSet>
+
+</databaseChangeLog>

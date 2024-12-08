@@ -3,8 +3,8 @@ databaseChangeLog:
       file: db.changelog-sys.1.0.xml
       relativeToChangelogFile: true
   - include:
-      file: db.changelog-sys-data.1.0.xml
+      file: db.changelog-file.1.0.xml
       relativeToChangelogFile: true
   - include:
-      file: db.changelog-file.1.0.xml
+      file: db.changelog-generator.1.0.xml
       relativeToChangelogFile: true
