@@ -2,6 +2,52 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="郑查磊" id="创建用户表">
+        <createTable tableName="sys_user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="username" remarks="用户名" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" remarks="密码" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" remarks="邮箱" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" remarks="手机号" type="text">
+                <constraints/>
+            </column>
+            <column name="gender" remarks="性别" type="text"/>
+            <column name="birthday" remarks="生日" type="DATE"/>
+            <!--      岗位      -->
+            <column name="posts_id" remarks="岗位ID" type="BIGINT"/>
+            <column name="department_id" remarks="部门ID" type="BIGINT"/>
+            <column name="avatar" remarks="头像" type="text"/>
+            <column defaultValueBoolean="true" name="status" remarks="状态  false：禁用   true：正常" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="create_by" baseTableName="sys_user"
+                                 constraintName="fk_sys_user_create_by" deferrable="false" initiallyDeferred="false"
+                                 onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+                                 referencedTableName="sys_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="update_by" baseTableName="sys_user"
+                                 constraintName="fk_sys_user_update_by" deferrable="false" initiallyDeferred="false"
+                                 onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+                                 referencedTableName="sys_user" validate="true"/>
+    </changeSet>
+
     <changeSet author="郑查磊" id="创建部门表">
         <createTable tableName="sys_department">
             <column autoIncrement="true" name="id" type="BIGINT">
@@ -28,13 +74,67 @@
                     remarks="更新时间" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
         </createTable>
         <addUniqueConstraint columnNames="parent_id, name" constraintName="uk_sys_department_parent_id_name"
                              tableName="sys_department"/>
+        <addForeignKeyConstraint baseColumnNames="department_id" baseTableName="sys_user"
+                                 constraintName="fk_sys_user_department_id" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_department" validate="true"/>
         <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="sys_department"
                                  constraintName="fk_sys_department_parent_id" deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="id" referencedTableName="sys_department" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="create_by" baseTableName="sys_department"
+                                 constraintName="fk_sys_department_create_by" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="update_by" baseTableName="sys_department"
+                                 constraintName="fk_sys_department_update_by" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+    </changeSet>
+
+    <changeSet author="郑查磊" id="创建岗位表">
+        <createTable tableName="sys_posts">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" remarks="岗位名称" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="sort" remarks="排序" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="true" name="status" remarks="状态  false：停用   true：正常" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" remarks="描述" type="text"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
+        </createTable>
+        <addUniqueConstraint columnNames="name" constraintName="uk_sys_posts_name" tableName="sys_posts"/>
+        <addForeignKeyConstraint baseColumnNames="create_by" baseTableName="sys_posts"
+                                 constraintName="fk_sys_posts_create_by" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="update_by" baseTableName="sys_posts"
+                                 constraintName="fk_sys_posts_update_by" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="posts_id" baseTableName="sys_user"
+                                 constraintName="fk_sys_user_posts_id"
+                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_posts" validate="true"/>
     </changeSet>
 
     <changeSet author="郑查磊" id="创建部门数据权限表">
@@ -85,7 +185,18 @@
                     remarks="更新时间" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
         </createTable>
+        <addUniqueConstraint columnNames="code" constraintName="uk_sys_dict_code" tableName="sys_dict"/>
+        <addForeignKeyConstraint baseColumnNames="create_by" baseTableName="sys_dict"
+                                 constraintName="fk_sys_dict_create_by" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="update_by" baseTableName="sys_dict"
+                                 constraintName="fk_sys_dict_update_by" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
     </changeSet>
     <changeSet author="郑查磊" id="创建字典详情表">
         <createTable tableName="sys_dict_item">
@@ -118,6 +229,8 @@
                     remarks="更新时间" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
         </createTable>
 
         <createIndex associatedWith="" indexName="fk_sys_dict_item_dict_id" tableName="sys_dict_item">
@@ -135,6 +248,14 @@
                              tableName="sys_dict_item"/>
         <addUniqueConstraint columnNames="dict_id, name" constraintName="uk_sys_dict_item_dict_id_name"
                              tableName="sys_dict_item"/>
+        <addForeignKeyConstraint baseColumnNames="create_by" baseTableName="sys_dict_item"
+                                 constraintName="fk_sys_dict_item_create_by" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="update_by" baseTableName="sys_dict_item"
+                                 constraintName="fk_sys_dict_item_update_by" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
     </changeSet>
     <changeSet author="郑查磊" id="创建权限表">
         <createTable tableName="sys_permission">
@@ -159,6 +280,8 @@
                     remarks="更新时间" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
         </createTable>
         <addUniqueConstraint columnNames="parent_id, code" constraintName="uk_sys_permission_parent_id_code"
                              tableName="sys_permission"/>
@@ -166,32 +289,16 @@
                                  constraintName="fk_sys_permission_parent_id" deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="id" referencedTableName="sys_permission" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="create_by" baseTableName="sys_permission"
+                                 constraintName="fk_sys_permission_create_by" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="update_by" baseTableName="sys_permission"
+                                 constraintName="fk_sys_permission_update_by" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
     </changeSet>
-    <changeSet author="郑查磊" id="创建岗位表">
-        <createTable tableName="sys_posts">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="name" remarks="岗位名称" type="text">
-                <constraints nullable="false"/>
-            </column>
-            <column defaultValueNumeric="0" name="sort" remarks="排序" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column defaultValueBoolean="true" name="status" remarks="状态  false：停用   true：正常" type="BOOLEAN">
-                <constraints nullable="false"/>
-            </column>
-            <column name="description" remarks="描述" type="text"/>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
-                    remarks="更新时间" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <addUniqueConstraint columnNames="name" constraintName="uk_sys_posts_name" tableName="sys_posts"/>
-    </changeSet>
+
     <changeSet author="郑查磊" id="创建角色表">
         <createTable tableName="sys_role">
             <column autoIncrement="true" name="id" type="BIGINT">
@@ -214,7 +321,19 @@
                     remarks="更新时间" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
         </createTable>
+        <addUniqueConstraint columnNames="name" constraintName="uk_sys_role_name" tableName="sys_role"/>
+        <addUniqueConstraint columnNames="code" constraintName="uk_sys_role_code" tableName="sys_role"/>
+        <addForeignKeyConstraint baseColumnNames="create_by" baseTableName="sys_role"
+                                 constraintName="fk_sys_role_create_by" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="update_by" baseTableName="sys_role"
+                                 constraintName="fk_sys_role_update_by" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="id" referencedTableName="sys_user" validate="true"/>
     </changeSet>
     <changeSet author="郑查磊" id="创建角色权限中间表">
         <createTable tableName="sys_role_permission">
@@ -236,54 +355,6 @@
                                  constraintName="fk_sys_role_permission_role_id" deferrable="false"
                                  initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
                                  referencedColumnNames="id" referencedTableName="sys_role" validate="true"/>
-    </changeSet>
-    <changeSet author="郑查磊" id="创建用户表">
-        <createTable tableName="sys_user">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="username" remarks="用户名" type="text">
-                <constraints nullable="false"/>
-            </column>
-            <column name="password" remarks="密码" type="text">
-                <constraints nullable="false"/>
-            </column>
-            <column name="email" remarks="邮箱" type="text">
-                <constraints nullable="false"/>
-            </column>
-            <column name="phone_number" remarks="手机号" type="text">
-                <constraints/>
-            </column>
-            <column name="gender" remarks="性别" type="text"/>
-            <column name="birthday" remarks="生日" type="DATE"/>
-            <!--      岗位      -->
-            <column name="posts_id" remarks="岗位ID" type="BIGINT"/>
-            <column name="department_id" remarks="部门ID" type="BIGINT"/>
-            <column name="avatar" remarks="头像" type="text"/>
-            <column defaultValueBoolean="true" name="status" remarks="状态  false：禁用   true：正常" type="boolean">
-                <constraints nullable="false"/>
-            </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
-                    remarks="更新时间" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="create_by" remarks="创建用户" type="BIGINT"/>
-        </createTable>
-        <addForeignKeyConstraint baseColumnNames="posts_id" baseTableName="sys_user"
-                                 constraintName="fk_sys_user_posts_id"
-                                 deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
-                                 referencedColumnNames="id" referencedTableName="sys_posts" validate="true"/>
-        <addForeignKeyConstraint baseColumnNames="department_id" baseTableName="sys_user"
-                                 constraintName="fk_sys_user_department_id" deferrable="false"
-                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
-                                 referencedColumnNames="id" referencedTableName="sys_department" validate="true"/>
-        <addForeignKeyConstraint baseColumnNames="create_by" baseTableName="sys_user"
-                                 constraintName="fk_sys_user_create_by" deferrable="false" initiallyDeferred="false"
-                                 onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
-                                 referencedTableName="sys_user" validate="true"/>
     </changeSet>
     <changeSet author="郑查磊" id="创建用户角色关联表">
         <createTable tableName="sys_user_role">
@@ -349,10 +420,14 @@
                     remarks="更新时间" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="create_by" remarks="创建用户" type="BIGINT"/>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
         </createTable>
         <addForeignKeyConstraint baseTableName="sys_operation_log" baseColumnNames="create_by"
                                  constraintName="fk_sys_operation_log_create_by" referencedTableName="sys_user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="sys_operation_log" baseColumnNames="update_by"
+                                 constraintName="fk_sys_operation_log_update_by" referencedTableName="sys_user"
                                  referencedColumnNames="id"/>
     </changeSet>
 
@@ -379,10 +454,21 @@
                 <constraints nullable="false"/>
             </column>
             <column name="error_message" remarks="失败原因" type="text"/>
-            <column name="create_by" remarks="创建用户" type="BIGINT"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP" name="update_time"
+                    remarks="更新时间" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
         </createTable>
         <addForeignKeyConstraint baseTableName="sys_login_log" baseColumnNames="create_by"
                                  constraintName="fk_sys_login_log_create_by" referencedTableName="sys_user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="sys_login_log" baseColumnNames="update_by"
+                                 constraintName="fk_sys_login_log_update_by" referencedTableName="sys_user"
                                  referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>

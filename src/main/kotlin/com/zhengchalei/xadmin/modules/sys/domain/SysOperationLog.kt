@@ -6,14 +6,13 @@
  */
 package com.zhengchalei.xadmin.modules.sys.domain
 
-import com.zhengchalei.xadmin.config.jimmer.BaseEntity
 import com.zhengchalei.xadmin.config.jimmer.DataScopeAware
 import java.util.*
 import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_operation_log")
-interface SysOperationLog : BaseEntity, DataScopeAware {
+interface SysOperationLog : DataScopeAware {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val name: String

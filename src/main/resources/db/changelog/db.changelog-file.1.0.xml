@@ -26,6 +26,12 @@
                     remarks="更新时间" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
         </createTable>
+        <addForeignKeyConstraint baseColumnNames="create_by" baseTableName="sys_file" constraintName="sys_file_create_by"
+                                  referencedColumnNames="id" referencedTableName="sys_user"/>
+        <addForeignKeyConstraint baseColumnNames="update_by" baseTableName="sys_file" constraintName="sys_file_update_by"
+                                  referencedColumnNames="id" referencedTableName="sys_user"/>
     </changeSet>
 </databaseChangeLog>

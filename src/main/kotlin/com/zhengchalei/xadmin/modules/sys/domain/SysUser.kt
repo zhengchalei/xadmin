@@ -41,6 +41,8 @@ interface SysUser : BaseEntity {
     val roles: List<SysRole>
 
     @IdView("roles") val roleIds: List<Long>
+
+    @IdView("department") val departmentId: Long?
 }
 
 @EnumType(EnumType.Strategy.NAME)
