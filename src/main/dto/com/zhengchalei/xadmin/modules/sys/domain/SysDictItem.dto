@@ -25,7 +25,6 @@ SysDictItemDetailView {
 input SysDictItemCreateInput {
     #allScalars(this)
     id(dict) as dictId
-    -id
 }
 
 input SysDictItemUpdateInput {

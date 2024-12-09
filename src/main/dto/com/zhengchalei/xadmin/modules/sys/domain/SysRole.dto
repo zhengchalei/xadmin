@@ -22,7 +22,6 @@ SysRoleDetailView {
 input SysRoleCreateInput {
     #allScalars(this)
     id(permissions) as permissionIds
-    -id
 }
 
 input SysRoleUpdateInput {

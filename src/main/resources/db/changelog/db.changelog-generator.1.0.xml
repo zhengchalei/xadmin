@@ -3,7 +3,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet id="创建代码生成表结构" author="郑查磊">
-        <createTable tableName="gen_model">
+        <createTable tableName="gen_table">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -11,9 +11,14 @@
                 <constraints nullable="false"/>
             </column>
             <!--      包名      -->
-            <column name="package_name" remarks="包名" type="text"/>
+            <column name="package_name" remarks="包名" type="text">
+                <constraints nullable="false"/>
+            </column>
             <!--      表前缀      -->
             <column name="table_prefix" remarks="表前缀" type="text"/>
+            <column name="table_name" remarks="表名" type="text">
+                <constraints nullable="false" unique="true"/>
+            </column>
             <!--     权限id       -->
             <column name="permission_id" remarks="权限id" type="BIGINT"/>
 
@@ -28,9 +33,15 @@
             <column name="create_by" remarks="创建者" type="BIGINT"/>
             <column name="update_by" remarks="更新者" type="BIGINT"/>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="gen_model"
-                                 constraintName="gen_model_permission_id"
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="gen_table"
+                                 constraintName="gen_table_permission_id"
                                  referencedColumnNames="id" referencedTableName="sys_permission"/>
+        <addForeignKeyConstraint baseColumnNames="create_by" baseTableName="gen_table"
+                                 constraintName="gen_table_create_by"
+                                 referencedColumnNames="id" referencedTableName="sys_user"/>
+        <addForeignKeyConstraint baseColumnNames="update_by" baseTableName="gen_table"
+                                 constraintName="gen_table_update_by"
+                                 referencedColumnNames="id" referencedTableName="sys_user"/>
     </changeSet>
 
 </databaseChangeLog>

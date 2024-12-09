@@ -13,7 +13,6 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "sys_department")
 interface SysDepartment : BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val name: String
 

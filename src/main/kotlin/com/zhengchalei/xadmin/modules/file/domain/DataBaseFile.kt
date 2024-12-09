@@ -13,7 +13,6 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "sys_file")
 interface DataBaseFile : BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val uid: String
 

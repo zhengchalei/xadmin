@@ -17,7 +17,6 @@ SysPostsDetailView {
 
 input SysPostsCreateInput {
     #allScalars(this)
-    -id
 }
 
 input SysPostsUpdateInput {

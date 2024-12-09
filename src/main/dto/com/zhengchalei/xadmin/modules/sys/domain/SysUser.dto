@@ -40,7 +40,6 @@ input SysUserCreateInput {
     id(department)
     id(posts)
     id(roles) as roleIds
-    -id
     -password
     -avatar
 }

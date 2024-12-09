@@ -13,7 +13,6 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "sys_login_log")
 interface SysLoginLog : DataScopeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     val username: String
 

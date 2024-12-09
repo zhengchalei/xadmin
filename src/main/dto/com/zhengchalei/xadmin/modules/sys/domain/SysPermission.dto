@@ -46,7 +46,6 @@ SysPermissionDetailView {
 input SysPermissionCreateInput {
     #allScalars(this)
     id(parent)
-    -id
 }
 
 input SysPermissionUpdateInput {

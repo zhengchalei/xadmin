@@ -6,12 +6,12 @@
  */
 package com.zhengchalei.xadmin.modules.sys.domain
 
+import com.zhengchalei.xadmin.config.jimmer.entity.BaseEntity
 import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_permission")
-interface SysPermission {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
+interface SysPermission: BaseEntity {
 
     val name: String
 

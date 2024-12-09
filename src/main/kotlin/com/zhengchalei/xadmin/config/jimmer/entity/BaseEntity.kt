@@ -8,13 +8,13 @@ package com.zhengchalei.xadmin.config.jimmer.entity
 
 import com.zhengchalei.xadmin.modules.sys.domain.SysUser
 import java.time.LocalDateTime
-import org.babyfish.jimmer.sql.IdView
-import org.babyfish.jimmer.sql.JoinColumn
-import org.babyfish.jimmer.sql.ManyToOne
-import org.babyfish.jimmer.sql.MappedSuperclass
+import org.babyfish.jimmer.sql.*
 
 @MappedSuperclass
 interface BaseEntity {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
+
     val createTime: LocalDateTime
 
     val updateTime: LocalDateTime

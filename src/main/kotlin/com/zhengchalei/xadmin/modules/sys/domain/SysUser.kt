@@ -14,7 +14,6 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "sys_user")
 interface SysUser : BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long
 
     @Key val username: String
 

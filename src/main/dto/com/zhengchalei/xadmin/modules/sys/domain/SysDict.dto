@@ -19,7 +19,6 @@ SysDictDetailView {
 
 input SysDictCreateInput {
     #allScalars(this)
-    -id
 }
 
 input SysDictUpdateInput {
