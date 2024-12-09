@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(rollbackFor = [Exception::class])
 class TableService(
     private val tableRepository: TableRepository,
-    private val defaultGeneratorTemplate: DefaultGeneratorTemplate
+    private val defaultGeneratorTemplate: DefaultGeneratorTemplate,
 ) {
     private val logger = org.slf4j.LoggerFactory.getLogger(TableService::class.java)
 
