@@ -23,21 +23,21 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/generator/table")
 class TableController(val tableService: TableService) {
-    @PreAuthorize("hasAuthority('sys:post:read') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:table:read') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findTableById(@PathVariable id: Long): R<TableDetailView> {
         val data = tableService.findTableById(id)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:read') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:table:read') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findTableList(@NotNull specification: TableListSpecification): R<List<TablePageView>> {
         val data = tableService.findTableList(specification)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:read') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:table:read') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findTablePage(
         @NotNull specification: TableListSpecification,
@@ -47,24 +47,24 @@ class TableController(val tableService: TableService) {
         return R.success(data)
     }
 
-    @Log(value = "创建表", type = OperationType.CREATE)
-    @PreAuthorize("hasAuthority('sys:post:create') or hasAnyRole('admin')")
+    @Log(value = "创建代码生成表", type = OperationType.CREATE)
+    @PreAuthorize("hasAuthority('sys:table:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createTable(@NotNull @RequestBody tableCreateInput: TableCreateInput): R<TableDetailView> {
         val data = tableService.createTable(tableCreateInput)
         return R(data = data)
     }
 
-    @Log(value = "修改表", type = OperationType.UPDATE)
-    @PreAuthorize("hasAuthority('sys:post:edit') or hasAnyRole('admin')")
+    @Log(value = "修改代码生成表", type = OperationType.UPDATE)
+    @PreAuthorize("hasAuthority('sys:table:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateTableById(@NotNull @RequestBody tableUpdateInput: TableUpdateInput): R<TableDetailView> {
         val data = tableService.updateTableById(tableUpdateInput)
         return R(data = data)
     }
 
-    @Log(value = "删除表", type = OperationType.DELETE)
-    @PreAuthorize("hasAuthority('sys:post:delete') or hasAnyRole('admin')")
+    @Log(value = "删除代码生成表", type = OperationType.DELETE)
+    @PreAuthorize("hasAuthority('sys:table:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteTableById(@NotNull @PathVariable id: Long): R<Boolean> {
         tableService.deleteTableById(id)
