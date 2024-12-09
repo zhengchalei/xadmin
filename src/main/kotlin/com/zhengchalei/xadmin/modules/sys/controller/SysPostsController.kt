@@ -23,21 +23,21 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/sys/posts")
 class SysPostsController(val sysPostsService: SysPostsService) {
-    @PreAuthorize("hasAuthority('sys:post:read') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:posts:read') or hasAnyRole('admin')")
     @GetMapping("/id/{id}")
     fun findSysPostsById(@PathVariable id: Long): R<SysPostsDetailView> {
         val data = sysPostsService.findSysPostsById(id)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:read') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:posts:read') or hasAnyRole('admin')")
     @GetMapping("/list")
     fun findSysPostsList(@NotNull specification: SysPostsListSpecification): R<List<SysPostsPageView>> {
         val data = sysPostsService.findSysPostsList(specification)
         return R(data = data)
     }
 
-    @PreAuthorize("hasAuthority('sys:post:read') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:posts:read') or hasAnyRole('admin')")
     @GetMapping("/page")
     fun findSysPostsPage(
         @NotNull specification: SysPostsListSpecification,
@@ -48,7 +48,7 @@ class SysPostsController(val sysPostsService: SysPostsService) {
     }
 
     @Log(value = "创建岗位", type = OperationType.CREATE)
-    @PreAuthorize("hasAuthority('sys:post:create') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:posts:create') or hasAnyRole('admin')")
     @PostMapping("/create")
     fun createSysPosts(@NotNull @RequestBody sysPostsCreateInput: SysPostsCreateInput): R<SysPostsDetailView> {
         val data = sysPostsService.createSysPosts(sysPostsCreateInput)
@@ -56,7 +56,7 @@ class SysPostsController(val sysPostsService: SysPostsService) {
     }
 
     @Log(value = "修改岗位", type = OperationType.UPDATE)
-    @PreAuthorize("hasAuthority('sys:post:edit') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:posts:edit') or hasAnyRole('admin')")
     @PostMapping("/update")
     fun updateSysPostsById(@NotNull @RequestBody sysPostsUpdateInput: SysPostsUpdateInput): R<SysPostsDetailView> {
         val data = sysPostsService.updateSysPostsById(sysPostsUpdateInput)
@@ -64,7 +64,7 @@ class SysPostsController(val sysPostsService: SysPostsService) {
     }
 
     @Log(value = "删除岗位", type = OperationType.DELETE)
-    @PreAuthorize("hasAuthority('sys:post:delete') or hasAnyRole('admin')")
+    @PreAuthorize("hasAuthority('sys:posts:delete') or hasAnyRole('admin')")
     @DeleteMapping("/delete/{id}")
     fun deleteSysPostsById(@NotNull @PathVariable id: Long): R<Boolean> {
         sysPostsService.deleteSysPostsById(id)

@@ -1,0 +1,22 @@
+specification TableColumnListSpecification {
+    eq(id)
+    ge(createTime) as startTime
+    le(createTime) as endTime
+}
+
+TableColumnPageView {
+    #allScalars
+}
+
+TableColumnDetailView {
+    #allScalars
+}
+
+input TableColumnCreateInput {
+    #allScalars(this)
+}
+
+input TableColumnUpdateInput {
+    #allScalars(this)
+    id!
+}

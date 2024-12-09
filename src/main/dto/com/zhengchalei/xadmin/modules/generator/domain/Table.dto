@@ -1,0 +1,24 @@
+specification TableListSpecification {
+    eq(id)
+    like/i(name)
+    like/i(description)
+    ge(createTime) as startTime
+    le(createTime) as endTime
+}
+
+TablePageView {
+    #allScalars
+}
+
+TableDetailView {
+    #allScalars
+}
+
+input TableCreateInput {
+    #allScalars(this)
+}
+
+input TableUpdateInput {
+    #allScalars(this)
+    id!
+}
