@@ -12,6 +12,7 @@ import com.zhengchalei.xadmin.modules.generator.domain.dto.TableDetailView
 import com.zhengchalei.xadmin.modules.generator.domain.dto.TableListSpecification
 import com.zhengchalei.xadmin.modules.generator.domain.dto.TableUpdateInput
 import com.zhengchalei.xadmin.modules.generator.repository.TableRepository
+import com.zhengchalei.xadmin.modules.generator.template.DefaultGeneratorTemplate
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -26,7 +27,10 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service
 @Transactional(rollbackFor = [Exception::class])
-class TableService(private val tableRepository: TableRepository) {
+class TableService(
+    private val tableRepository: TableRepository,
+    private val defaultGeneratorTemplate: DefaultGeneratorTemplate
+) {
     private val logger = org.slf4j.LoggerFactory.getLogger(TableService::class.java)
 
     /**
@@ -82,5 +86,10 @@ class TableService(private val tableRepository: TableRepository) {
      */
     fun deleteTableById(id: Long) {
         this.tableRepository.deleteById(id)
+    }
+
+    fun generate(id: Long) {
+        val table = this.tableRepository.findDetailById(id)
+        defaultGeneratorTemplate.generator(table)
     }
 }

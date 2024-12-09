@@ -70,4 +70,12 @@ class TableController(val tableService: TableService) {
         tableService.deleteTableById(id)
         return R()
     }
+
+    // 生成代码
+    @Log(value = "生成代码", type = OperationType.OTHER)
+    @PostMapping("/generate/{id}")
+    fun generate(@NotNull @PathVariable id: Long): R<Boolean> {
+        tableService.generate(id)
+        return R()
+    }
 }

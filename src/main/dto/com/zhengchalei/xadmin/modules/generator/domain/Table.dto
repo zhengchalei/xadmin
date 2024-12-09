@@ -12,6 +12,10 @@ TablePageView {
 
 TableDetailView {
     #allScalars
+    columnIds
+    columns {
+        #allScalars
+    }
 }
 
 input TableCreateInput {

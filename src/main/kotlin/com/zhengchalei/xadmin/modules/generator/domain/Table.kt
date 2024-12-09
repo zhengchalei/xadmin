@@ -34,4 +34,8 @@ interface Table : BaseEntity {
 
     /** 创建时间 */
     val description: String?
+
+    @OneToMany(mappedBy = "table") val columns: List<TableColumn>
+
+    @IdView(value = "columns") val columnIds: List<Long>
 }
