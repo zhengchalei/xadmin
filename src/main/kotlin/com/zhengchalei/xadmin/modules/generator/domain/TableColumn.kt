@@ -8,15 +8,20 @@ package com.zhengchalei.xadmin.modules.generator.domain
 
 import com.zhengchalei.xadmin.config.jimmer.entity.BaseEntity
 import org.babyfish.jimmer.sql.Entity
+import org.babyfish.jimmer.sql.IdView
+import org.babyfish.jimmer.sql.JoinColumn
 import org.babyfish.jimmer.sql.Key
+import org.babyfish.jimmer.sql.ManyToOne
 import org.babyfish.jimmer.sql.Table
 
 @Entity
 @Table(name = "gen_table_column")
 interface TableColumn : BaseEntity {
 
+    @Key @ManyToOne @JoinColumn(name = "table_id") val table: com.zhengchalei.xadmin.modules.generator.domain.Table
+
     /** 表id */
-    @Key val tableId: Long
+    @IdView("table") val tableId: Long
 
     /** 字段名 */
     @Key val columnName: String
@@ -34,5 +39,5 @@ interface TableColumn : BaseEntity {
     val columnPrecision: Int?
 
     /** 是否为空 */
-    val columnNullable: Boolean?
+    val columnNullable: Boolean
 }

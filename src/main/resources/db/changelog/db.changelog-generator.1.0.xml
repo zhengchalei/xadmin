@@ -59,7 +59,9 @@
             <column name="column_type" remarks="字段类型" type="text"/>
             <column name="column_length" remarks="字段长度" type="int"/>
             <column name="column_precision" remarks="字段精度" type="int"/>
-            <column name="column_nullable" remarks="是否为空" type="boolean"/>
+            <column name="column_nullable" remarks="是否为空" type="boolean">
+                    <constraints nullable="false"/>
+            </column>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
                 <constraints nullable="false"/>
             </column>
