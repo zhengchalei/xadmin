@@ -11,7 +11,7 @@ import org.babyfish.jimmer.sql.*
 
 @Entity
 @Table(name = "sys_permission")
-interface SysPermission: BaseEntity {
+interface SysPermission : BaseEntity {
 
     val name: String
 

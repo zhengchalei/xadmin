@@ -25,16 +25,12 @@ interface Table : BaseEntity {
     val tablePrefix: String?
 
     /** 权限id */
-    @Key
-    val tableName: String
+    @Key val tableName: String
 
     /** 权限 */
-    @ManyToOne
-    @JoinColumn(name = "permission_id")
-    val permission: SysPermission?
+    @ManyToOne @JoinColumn(name = "permission_id") val permission: SysPermission?
 
-    @IdView("permission")
-    val permissionId: Long?
+    @IdView("permission") val permissionId: Long?
 
     /** 创建时间 */
     val description: String?
