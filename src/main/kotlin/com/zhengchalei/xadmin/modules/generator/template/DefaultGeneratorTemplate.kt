@@ -72,7 +72,12 @@ class DefaultGeneratorTemplate {
         val entityName = convertTableNameToClassName(table.tableName, table.tablePrefix)
         val columnsStr =
             table.columns
+                .asSequence()
                 .filter { it.columnName != "id" }
+                .filter { it.columnName != "create_time" }
+                .filter { it.columnName != "update_time" }
+                .filter { it.columnName != "create_by" }
+                .filter { it.columnName != "update_by" }
                 .joinToString(separator = "\n    ") { column ->
                     val nullable = if (column.columnNullable) "" else "?"
                     "val ${column.columnName}: ${column.columnType}$nullable"
