@@ -21,6 +21,9 @@ interface Table : BaseEntity {
     /** 包名 */
     val packageName: String
 
+    /** 模块 */
+    val module: String
+
     /** 表前缀 */
     val tablePrefix: String?
 

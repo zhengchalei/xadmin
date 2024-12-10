@@ -10,6 +10,10 @@
             <column name="name" remarks="名称" type="text">
                 <constraints nullable="false"/>
             </column>
+            <!--      模块      -->
+            <column name="module" remarks="模块" type="text">
+                <constraints nullable="false"/>
+            </column>
             <!--      包名      -->
             <column name="package_name" remarks="包名" type="text">
                 <constraints nullable="false"/>
@@ -60,7 +64,7 @@
             <column name="column_length" remarks="字段长度" type="int"/>
             <column name="column_precision" remarks="字段精度" type="int"/>
             <column name="column_nullable" remarks="是否为空" type="boolean">
-                    <constraints nullable="false"/>
+                <constraints nullable="false"/>
             </column>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
                 <constraints nullable="false"/>
@@ -88,15 +92,15 @@
 
     <changeSet id="创建公告表数据" author="郑查磊">
         <sql>
-            insert into gen_table(name, package_name, table_prefix, table_name, permission_id, description)
-            values ('用户', 'com.zhengchalei.xadmin.modules.system', 'sys_', 'sys_notice', 1, '公告');
+            insert into gen_table(name, module, package_name, table_prefix, table_name, permission_id, description)
+            values ('用户', 'sys', 'com.zhengchalei.xadmin.modules', 'sys_', 'sys_notice', 1, '公告');
 
             insert into gen_table_column(table_id, column_name, column_comment, column_type, column_nullable)
-            values (1, 'id', '编号', 'BIGINT', true),
-                   (1, 'title', '标题', 'text', true),
-                   (1, 'content', '内容', 'text', true),
-                   (1, 'type', '类型', 'text', true),
-                   (1, 'status', '状态', 'boolean', true);
+            values (1, 'id', '编号', 'Long', false),
+                   (1, 'title', '标题', 'String', false),
+                   (1, 'content', '内容', 'String', false),
+                   (1, 'type', '类型', 'String', false),
+                   (1, 'status', '状态', 'String', false);
         </sql>
     </changeSet>
 </databaseChangeLog>
