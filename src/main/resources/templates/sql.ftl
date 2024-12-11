@@ -8,26 +8,12 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <#list table.columns as column>
-                <column name="${column.type}"
-                        remarks="${column.comment}" <#if column.defaultValue??> defaultValueComputed="${column.defaultValue}"</#if>
-                        <#if column.type == "String">
-                            type="text"
-                        <#elseif column.type == "Long">
-                            type="bigint"
-                        <#elseif column.type == "Int">
-                            type="int"
-                        <#elseif column.type == "DateTime">
-                            type="timestamp"
-                        <#else>
-                            type="text"
-                        </#if>
-                >
+            <column name="${column.name}" remarks="${column.comment}" <#if column.defaultValue??>defaultValueComputed="${column.defaultValue}" </#if> type="<#if column.type == "String">text<#elseif column.type == "Long">bigint<#elseif column.type == "Int">int<#elseif column.type == "DateTime">timestamp<#else>text</#if>" >
                     <#if !column.nullable>
-                        <constraints nullable="false" <#if column.unique>  unique="true"  </#if> />
+                        <constraints nullable="false" <#if column.unique>unique="true"</#if> />
                     </#if>
-                </column>
+            </column>
             </#list>
-
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="上传时间" type="timestamp">
                 <constraints nullable="false"/>
             </column>

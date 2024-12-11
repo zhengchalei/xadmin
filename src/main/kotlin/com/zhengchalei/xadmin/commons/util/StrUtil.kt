@@ -21,30 +21,25 @@ object StrUtil {
 
     fun convertToPascalCase(tableName: String, tablePrefix: String? = null): String {
         val nameWithoutPrefix = removeTablePrefix(tableName, tablePrefix)
-        return nameWithoutPrefix.split("_")
-            .joinToString("") { it.capitalize(Locale.getDefault()) }
+        return nameWithoutPrefix.split("_").joinToString("") { it.capitalize(Locale.getDefault()) }
     }
 
     fun convertToCamelCase(tableName: String, tablePrefix: String? = null): String {
         val nameWithoutPrefix = removeTablePrefix(tableName, tablePrefix)
-        return nameWithoutPrefix.split("_")
+        return nameWithoutPrefix
+            .split("_")
             .joinToString("") { it.capitalize(Locale.getDefault()) }
             .replaceFirstChar { it.lowercaseChar() }
     }
 
     fun convertToKebabCase(tableName: String, tablePrefix: String? = null): String {
         val nameWithoutPrefix = removeTablePrefix(tableName, tablePrefix)
-        return nameWithoutPrefix.split("_")
-            .joinToString("-") { it.lowercase(Locale.getDefault()) }
+        return nameWithoutPrefix.split("_").joinToString("-") { it.lowercase(Locale.getDefault()) }
     }
 
     fun removeTablePrefix(tableName: String, tablePrefix: String?): String {
         if (tableName.isBlank()) return ""
-        return tablePrefix
-            ?.takeIf { it.isNotEmpty() && tableName.startsWith(it) }
-            ?.let { tableName.removePrefix(it) }
+        return tablePrefix?.takeIf { it.isNotEmpty() && tableName.startsWith(it) }?.let { tableName.removePrefix(it) }
             ?: tableName
     }
-
-
 }

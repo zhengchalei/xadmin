@@ -20,12 +20,12 @@ import com.zhengchalei.xadmin.commons.util.StrUtil.convertToKebabCase
 import com.zhengchalei.xadmin.commons.util.StrUtil.convertToPascalCase
 import com.zhengchalei.xadmin.modules.generator.domain.dto.TableDetailView
 import freemarker.template.Configuration
-import org.springframework.stereotype.Service
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
+import org.springframework.stereotype.Service
 
 @Service
 class DefaultGeneratorTemplate(private val freemarkerConfiguration: Configuration) {
@@ -43,7 +43,7 @@ class DefaultGeneratorTemplate(private val freemarkerConfiguration: Configuratio
 
     private fun generatorDTO(table: TableDetailView) {
         val entityName = convertToPascalCase(table.tableName, table.tablePrefix)
-        val filePath = generateDTOFilePath(table, "$entityName.dto")
+        val filePath = generateDTOFilePath(table, table.module, "$entityName.dto")
         val dataModel = mapOf("table" to table, "StrUtil" to StrUtil)
         generateFile("dto.ftl", dataModel, filePath)
     }
@@ -86,42 +86,34 @@ class DefaultGeneratorTemplate(private val freemarkerConfiguration: Configuratio
     // Helper method for file path generation
     private fun generateFilePath(table: TableDetailView, module: String, fileName: String): String {
         return Paths.get(
-            projectPath,
-            "src",
-            "main",
-            "kotlin",
-            table.packageName.replace(".", File.separator),
-            table.module,
-            module,
-            fileName,
-        )
+                projectPath,
+                "src",
+                "main",
+                "kotlin",
+                table.packageName.replace(".", File.separator),
+                table.module,
+                module,
+                fileName,
+            )
             .toString()
     }
 
-    private fun generateDTOFilePath(table: TableDetailView, fileName: String): String {
+    private fun generateDTOFilePath(table: TableDetailView, module: String, fileName: String): String {
         return Paths.get(
-            projectPath,
-            "src",
-            "main",
-            "dto",
-            table.packageName.replace(".", File.separator),
-            "domain",
-            "dto",
-            fileName,
-        )
+                projectPath,
+                "src",
+                "main",
+                "dto",
+                table.packageName.replace(".", File.separator),
+                module,
+                "domain",
+                fileName,
+            )
             .toString()
     }
 
     private fun generateResourceFilePath(table: TableDetailView, fileName: String): String {
-        return Paths.get(
-            projectPath,
-            "src",
-            "main",
-            "resources",
-            "db",
-            "changelog",
-            convertToKebabCase(fileName),
-        )
+        return Paths.get(projectPath, "src", "main", "resources", "db", "changelog", convertToKebabCase(fileName))
             .toString()
     }
 
