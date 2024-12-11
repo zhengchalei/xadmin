@@ -1,4 +1,4 @@
-import java.time.LocalDate
+import java.util.*
 
 plugins {
     jacoco
@@ -59,6 +59,8 @@ dependencies {
 
     // web
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-freemarker")
+
     implementation("org.springframework.boot:spring-boot-starter-aop")
     // jackson
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
@@ -129,13 +131,23 @@ spotless {
         licenseHeader(
             """
             /*
-             * 版权所有 © ${LocalDate.now().year} 郑查磊.
-             * 保留所有权利.
-             *
-             * 注意: 本文件受著作权法保护，未经授权不得复制或传播。
-             */
+            Copyright ${Calendar.getInstance().get(Calendar.YEAR)} [郑查磊]
+            
+            Licensed under the Apache License, Version 2.0 (the "License");
+            you may not use this file except in compliance with the License.
+            You may obtain a copy of the License at
+            
+                http://www.apache.org/licenses/LICENSE-2.0
+            
+            Unless required by applicable law or agreed to in writing, software
+            distributed under the License is distributed on an "AS IS" BASIS,
+            WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+            See the License for the specific language governing permissions and
+            limitations under the License.
+            */
         """
-                .trimIndent())
+                .trimIndent()
+        )
         target("src/main/kotlin/**/*.kt")
     }
     kotlinGradle {
