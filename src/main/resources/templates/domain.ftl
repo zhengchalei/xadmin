@@ -8,12 +8,15 @@ import org.babyfish.jimmer.sql.*
 @Table(name = "${entityPascalCaseName}")
 interface ${entityPascalCaseName} {
 <#list table.columns as column>
-    <#if column.columnName == "id">
+    <#if column.name == "id">
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long
     <#else>
-        val ${StrUtil.convertToCamelCase(column.columnName, "")}: ${column.columnType}<#if !column.columnNullable>?</#if>
+        <#if column.unique>
+        @Key
+        </#if>
+        val ${StrUtil.convertToCamelCase(column.name, "")}: ${column.type}<#if column.nullable>?</#if>
     </#if>
 </#list>
 }

@@ -56,15 +56,18 @@
             <column name="table_id" remarks="表id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="column_name" remarks="字段名" type="text">
+            <column name="name" remarks="字段名" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="column_comment" remarks="字段描述" type="text"/>
-            <column name="column_type" remarks="字段类型" type="text"/>
-            <column name="column_length" remarks="字段长度" type="int"/>
-            <column name="column_precision" remarks="字段精度" type="int"/>
-            <column name="column_nullable" remarks="是否为空" type="boolean">
+            <column name="comment" remarks="字段描述" type="text"/>
+            <column name="type" remarks="字段类型" type="text"/>
+            <column name="length" remarks="字段长度" type="int"/>
+            <column name="nullable" remarks="是否为空" type="boolean">
                 <constraints nullable="false"/>
+            </column>
+            <column name="default_value" remarks="默认值" type="text"/>
+            <column name="unique" remarks="是否唯一" type="boolean" defaultValue="false">
+                    <constraints nullable="false"/>
             </column>
             <column defaultValueComputed="CURRENT_TIMESTAMP" name="create_time" remarks="创建时间" type="timestamp">
                 <constraints nullable="false"/>
@@ -85,8 +88,8 @@
         <addForeignKeyConstraint baseColumnNames="table_id" baseTableName="gen_table_column"
                                  constraintName="gen_table_column_table_id"
                                  referencedColumnNames="id" referencedTableName="gen_table"/>
-        <addUniqueConstraint columnNames="table_id, column_name"
-                             constraintName="gen_table_column_table_id_column_name_unique"
+        <addUniqueConstraint columnNames="table_id, name"
+                             constraintName="gen_table_column_table_id_name_unique"
                              tableName="gen_table_column"/>
     </changeSet>
 
@@ -95,7 +98,7 @@
             insert into gen_table(name, module, package_name, table_prefix, table_name, permission_id, description)
             values ('用户', 'sys', 'com.zhengchalei.xadmin.modules', 'sys_', 'sys_notice', 1, '公告');
 
-            insert into gen_table_column(table_id, column_name, column_comment, column_type, column_nullable)
+            insert into gen_table_column(table_id, name, comment, type, nullable)
             values (1, 'id', '编号', 'Long', false),
                    (1, 'title', '标题', 'String', false),
                    (1, 'content', '内容', 'String', false),

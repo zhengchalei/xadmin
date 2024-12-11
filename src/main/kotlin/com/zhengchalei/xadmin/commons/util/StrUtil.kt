@@ -15,37 +15,36 @@ limitations under the License.
 */
 package com.zhengchalei.xadmin.commons.util
 
-import org.apache.commons.lang3.StringUtils
+import java.util.*
 
 object StrUtil {
 
     fun convertToPascalCase(tableName: String, tablePrefix: String? = null): String {
-        if (tableName.isBlank()) return ""
-        val nameWithoutPrefix =
-            tablePrefix?.takeIf { it.isNotEmpty() && tableName.startsWith(it) }?.let { tableName.removePrefix(it) }
-                ?: tableName
-        return nameWithoutPrefix.split("_").filter { it.isNotEmpty() }.joinToString("") { StringUtils.capitalize(it) }
+        val nameWithoutPrefix = removeTablePrefix(tableName, tablePrefix)
+        return nameWithoutPrefix.split("_")
+            .joinToString("") { it.capitalize(Locale.getDefault()) }
     }
 
     fun convertToCamelCase(tableName: String, tablePrefix: String? = null): String {
-        if (tableName.isBlank()) return ""
-        val nameWithoutPrefix =
-            tablePrefix?.takeIf { it.isNotEmpty() && tableName.startsWith(it) }?.let { tableName.removePrefix(it) }
-                ?: tableName
-        val pascalCase =
-            nameWithoutPrefix.split("_").filter { it.isNotEmpty() }.joinToString("") { StringUtils.capitalize(it) }
-        return pascalCase.replaceFirstChar { it.lowercaseChar() }
+        val nameWithoutPrefix = removeTablePrefix(tableName, tablePrefix)
+        return nameWithoutPrefix.split("_")
+            .joinToString("") { it.capitalize(Locale.getDefault()) }
+            .replaceFirstChar { it.lowercaseChar() }
     }
 
     fun convertToKebabCase(tableName: String, tablePrefix: String? = null): String {
-        if (tableName.isBlank()) return ""
-        val nameWithoutPrefix =
-            tablePrefix?.takeIf { it.isNotEmpty() && tableName.startsWith(it) }?.let { tableName.removePrefix(it) }
-                ?: tableName
-        return nameWithoutPrefix
-            .split("_")
-            .filter { it.isNotEmpty() }
-            .joinToString("-") { StringUtils.capitalize(it) }
-            .replaceFirstChar { it.lowercaseChar() }
+        val nameWithoutPrefix = removeTablePrefix(tableName, tablePrefix)
+        return nameWithoutPrefix.split("_")
+            .joinToString("-") { it.lowercase(Locale.getDefault()) }
     }
+
+    fun removeTablePrefix(tableName: String, tablePrefix: String?): String {
+        if (tableName.isBlank()) return ""
+        return tablePrefix
+            ?.takeIf { it.isNotEmpty() && tableName.startsWith(it) }
+            ?.let { tableName.removePrefix(it) }
+            ?: tableName
+    }
+
+
 }

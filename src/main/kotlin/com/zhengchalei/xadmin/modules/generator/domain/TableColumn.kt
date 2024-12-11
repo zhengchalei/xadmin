@@ -33,20 +33,23 @@ interface TableColumn : BaseEntity {
     @IdView("table") val tableId: Long
 
     /** 字段名 */
-    @Key val columnName: String
+    @Key val name: String
 
     /** 字段描述 */
-    val columnComment: String?
+    val comment: String?
 
     /** 字段类型 */
-    val columnType: String?
+    val type: String?
 
     /** 字段长度 */
-    val columnLength: Int?
-
-    /** 字段精度 */
-    val columnPrecision: Int?
+    val length: Int?
 
     /** 是否为空 */
-    val columnNullable: Boolean
+    val nullable: Boolean
+
+    /** 默认值 */
+    val defaultValue: String?
+
+    /** 唯一 */
+    val unique: Boolean
 }
