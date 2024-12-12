@@ -17,6 +17,7 @@ package com.zhengchalei.xadmin.config.security.provider
 
 import com.zhengchalei.xadmin.config.exceptions.NotLoginException
 import com.zhengchalei.xadmin.config.jimmer.filter.DataScope
+import com.zhengchalei.xadmin.config.security.SecurityUtils
 import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
 import java.util.*
 import org.redisson.api.RedissonClient
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Component
 class StatefulTokenProvider(private val redissonClient: RedissonClient) : AuthTokenProvider {
 
     private val tokenMap = redissonClient.getMap<String, StatefulTokenUser>("token")
+    private val userMap = redissonClient.getMap<Long, String>("token:user")
 
     override fun createToken(authentication: SysUserAuthentication): String {
         val token = UUID.randomUUID().toString()
@@ -43,6 +45,7 @@ class StatefulTokenProvider(private val redissonClient: RedissonClient) : AuthTo
                 authorities = authentication.authorities.map { it.authority },
             )
         tokenMap[token] = statefulTokenUser
+        userMap[statefulTokenUser.id] = token
         return token
     }
 
@@ -62,7 +65,10 @@ class StatefulTokenProvider(private val redissonClient: RedissonClient) : AuthTo
         )
     }
 
-    override fun logout(token: String) {
+    override fun logout() {
+        val userId = SecurityUtils.getCurrentUserId()
+        val token = userMap[userId]
+        userMap.remove(userId)
         tokenMap.remove(token)
     }
 }

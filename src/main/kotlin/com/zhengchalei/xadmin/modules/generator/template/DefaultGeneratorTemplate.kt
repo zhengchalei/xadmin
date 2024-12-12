@@ -19,18 +19,33 @@ import com.zhengchalei.xadmin.commons.util.StrUtil
 import com.zhengchalei.xadmin.commons.util.StrUtil.convertToKebabCase
 import com.zhengchalei.xadmin.commons.util.StrUtil.convertToPascalCase
 import com.zhengchalei.xadmin.modules.generator.domain.dto.TableDetailView
+import freemarker.cache.ClassTemplateLoader
+import freemarker.cache.TemplateLoader
 import freemarker.template.Configuration
+import freemarker.template.Template
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
 import org.springframework.stereotype.Service
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer
 
 @Service
-class DefaultGeneratorTemplate(private val freemarkerConfiguration: Configuration) {
+class DefaultGeneratorTemplate() {
 
     private val projectPath = "C:\\Users\\zhengchalei\\IdeaProjects\\xadmin"
+
+    private val freemarkerConfiguration: FreeMarkerConfigurer = freemarkerGeneratorConfig()
+
+    private final fun freemarkerGeneratorConfig(): FreeMarkerConfigurer {
+        val configuration = Configuration(Configuration.VERSION_2_3_33)
+        val templateLoader: TemplateLoader = ClassTemplateLoader(this.javaClass, "/templates/generator-templates")
+        configuration.templateLoader = templateLoader
+        val freeMarkerConfigurer = FreeMarkerConfigurer()
+        freeMarkerConfigurer.configuration = configuration
+        return freeMarkerConfigurer
+    }
 
     fun generator(table: TableDetailView) {
         generatorDTO(table)
@@ -77,7 +92,6 @@ class DefaultGeneratorTemplate(private val freemarkerConfiguration: Configuratio
     }
 
     private fun generatorSQL(table: TableDetailView) {
-        val entityName = convertToPascalCase(table.tableName, table.tablePrefix)
         val filePath = generateResourceFilePath(table, "db.changelog-${table.tableName}.xml")
         val dataModel = mapOf("table" to table, "StrUtil" to StrUtil)
         generateFile("sql.ftl", dataModel, filePath)
@@ -119,7 +133,7 @@ class DefaultGeneratorTemplate(private val freemarkerConfiguration: Configuratio
 
     // Consolidated file generation method with UTF-8 encoding
     private fun generateFile(templateName: String, dataModel: Map<String, Any?>, outputPath: String) {
-        val template = freemarkerConfiguration.getTemplate(templateName)
+        val template: Template = freemarkerConfiguration.configuration.getTemplate(templateName)
         try {
             val file = File(outputPath)
             file.parentFile.mkdirs() // Ensure parent directories exist

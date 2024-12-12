@@ -19,6 +19,7 @@ import com.zhengchalei.xadmin.commons.R
 import com.zhengchalei.xadmin.commons.util.IPUtil.getIpAddress
 import com.zhengchalei.xadmin.modules.sys.domain.dto.LoginDTO
 import com.zhengchalei.xadmin.modules.sys.domain.dto.LoginResponse
+import com.zhengchalei.xadmin.modules.sys.domain.dto.RegisterDTO
 import com.zhengchalei.xadmin.modules.sys.service.SysAuthService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -87,5 +88,18 @@ class SysAuthController(
     fun logout(): R<Boolean> {
         this.sysAuthService.logout()
         return R.success(data = true)
+    }
+
+    // send register email
+    @PostMapping("/send-register-email-code")
+    fun sendRegisterEmailCode(@RequestParam email: String): R<Unit> {
+        this.sysAuthService.sendRegisterEmailCode(email)
+        return R()
+    }
+
+    @PostMapping("/register")
+    fun register(@RequestBody registerDTO: RegisterDTO): R<Unit> {
+        this.sysAuthService.register(registerDTO)
+        return R()
     }
 }

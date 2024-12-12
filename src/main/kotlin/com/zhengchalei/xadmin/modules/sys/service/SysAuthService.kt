@@ -22,8 +22,12 @@ import com.zhengchalei.xadmin.config.security.provider.AuthTokenProvider
 import com.zhengchalei.xadmin.config.virtualThread.VirtualThreadExecutor
 import com.zhengchalei.xadmin.modules.sys.domain.SysLoginLog
 import com.zhengchalei.xadmin.modules.sys.domain.by
+import com.zhengchalei.xadmin.modules.sys.domain.dto.RegisterDTO
+import com.zhengchalei.xadmin.modules.sys.domain.dto.SysUserCreateInput
 import com.zhengchalei.xadmin.modules.sys.repository.SysLoginLogRepository
 import java.time.LocalDateTime
+import java.util.*
+import net.dreamlu.mica.captcha.cache.ICaptchaCache
 import net.dreamlu.mica.captcha.service.ICaptchaService
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher
 import org.babyfish.jimmer.kt.new
@@ -51,6 +55,8 @@ class SysAuthService(
     private val ip2regionSearcher: Ip2regionSearcher,
     private val virtualThreadExecutor: VirtualThreadExecutor,
     private val captchaService: ICaptchaService,
+    private val captchaCache: ICaptchaCache,
+    private val sysUserService: SysUserService,
 ) {
     private val log = LoggerFactory.getLogger(SysAuthService::class.java)
 
@@ -127,6 +133,30 @@ class SysAuthService(
 
     fun logout() {
         // TODO 期望值， 如果有Redis,使用Redis 存储JWT -》 User
-        // 否则为 DB PG 存储
+        this.authTokenProvider.logout()
+    }
+
+    fun register(registerDTO: RegisterDTO) {
+        // 判断验证码
+        val captchaCode = this.captchaCache.getAndRemove(registerDTO.email) ?: throw LoginFailException("验证码已过期")
+        if (captchaCode != registerDTO.captcha) {
+            throw LoginFailException("验证码错误")
+        }
+        val userDetailView =
+            this.sysUserService.createSysUser(
+                SysUserCreateInput.Builder()
+                    .username(registerDTO.username)
+                    .email(registerDTO.email)
+                    .status(false)
+                    .roleIds(listOf())
+                    .build()
+            )
+        this.sysUserService.changePassword(userDetailView.id, registerDTO.password)
+    }
+
+    fun sendRegisterEmailCode(email: String) {
+        val captchaCode = UUID.randomUUID().toString()
+        this.captchaCache.put(email, captchaCode, 300000L)
+        log.info("发送注册验证码: email: {}, code: {}", email, captchaCode)
     }
 }

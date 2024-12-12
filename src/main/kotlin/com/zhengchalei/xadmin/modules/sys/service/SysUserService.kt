@@ -17,6 +17,7 @@ package com.zhengchalei.xadmin.modules.sys.service
 
 import com.zhengchalei.xadmin.commons.Const
 import com.zhengchalei.xadmin.config.exceptions.ServiceException
+import com.zhengchalei.xadmin.config.exceptions.UserNotFoundException
 import com.zhengchalei.xadmin.modules.sys.domain.SysUser
 import com.zhengchalei.xadmin.modules.sys.domain.by
 import com.zhengchalei.xadmin.modules.sys.domain.dto.*
@@ -147,4 +148,16 @@ class SysUserService(
      * @return [Long]
      */
     fun currentUserId(): Long = this.sysUserRepository.currentUserId()
+
+    /** 修改密码 */
+    fun changePassword(userId: Long, password: String) {
+        val sysUser = this.sysUserRepository.findById(userId).orElseThrow { throw UserNotFoundException() }
+        val newPassword = passwordEncoder.encode(password)
+        this.sysUserRepository.update(
+            new(SysUser::class).by(sysUser) {
+                this.id = userId
+                this.password = newPassword
+            }
+        )
+    }
 }

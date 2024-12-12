@@ -151,8 +151,4 @@ class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigur
             dataScope = dataScope?.let { DataScope.value(dataScope) },
         )
     }
-
-    override fun logout(token: String) {
-        // 什么也不做 , 因为 JWT 是无状态的
-    }
 }

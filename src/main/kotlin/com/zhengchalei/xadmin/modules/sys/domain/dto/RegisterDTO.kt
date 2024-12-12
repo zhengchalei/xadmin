@@ -13,18 +13,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.zhengchalei.xadmin.config.security.provider
+package com.zhengchalei.xadmin.modules.sys.domain.dto
 
-import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
-import org.springframework.security.core.Authentication
+import jakarta.validation.constraints.NotBlank
 
-interface AuthTokenProvider {
-
-    fun createToken(authentication: SysUserAuthentication): String
-
-    fun validateToken(token: String): Boolean
-
-    fun getAuthentication(token: String): Authentication
-
-    fun logout() {}
-}
+data class RegisterDTO(
+    @NotBlank(message = "用户名不能为空") val username: String,
+    @NotBlank(message = "密码不能为空") val password: String,
+    @NotBlank(message = "邮箱不能为空") val email: String,
+    @NotBlank(message = "验证码不能为空") val captcha: String,
+)

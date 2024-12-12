@@ -61,6 +61,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-freemarker")
 
+    // mail
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+
     implementation("org.springframework.boot:spring-boot-starter-aop")
     // jackson
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
