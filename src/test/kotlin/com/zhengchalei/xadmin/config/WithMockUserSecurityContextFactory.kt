@@ -23,7 +23,7 @@ class WithMockUserSecurityContextFactory : WithSecurityContextFactory<WithMockUs
         authorities.addAll(
             Arrays
                 .stream(annotation.roles)
-                .map { Const.SecurityRolePrifix + it }
+                .map { Const.SECURITY_ROLE_PREFIX + it }
                 .map { SimpleGrantedAuthority(it) }
                 .toList(),
         )

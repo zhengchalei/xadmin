@@ -71,8 +71,8 @@ class SysRoleService(private val sysRoleRepository: SysRoleRepository) {
      * @return [SysRoleDetailView]
      */
     fun createSysRole(sysRoleCreateInput: SysRoleCreateInput): SysRoleDetailView {
-        if (sysRoleCreateInput.code == Const.AdminRole) {
-            throw ServiceException("角色不能为 ${Const.AdminRole}")
+        if (sysRoleCreateInput.code == Const.ADMIN_ROLE) {
+            throw ServiceException("角色不能为 ${Const.ADMIN_ROLE}")
         }
         val sysRole: SysRole = this.sysRoleRepository.insert(sysRoleCreateInput)
         return findSysRoleById(sysRole.id)
@@ -86,11 +86,11 @@ class SysRoleService(private val sysRoleRepository: SysRoleRepository) {
      */
     fun updateSysRoleById(sysRoleUpdateInput: SysRoleUpdateInput): SysRoleDetailView {
         val oldRole = this.sysRoleRepository.findById(sysRoleUpdateInput.id).orElseThrow { ServiceException("角色不存在") }
-        if (oldRole.code == Const.AdminRole) {
-            throw ServiceException("${Const.AdminRole} 不能修改")
+        if (oldRole.code == Const.ADMIN_ROLE) {
+            throw ServiceException("${Const.ADMIN_ROLE} 不能修改")
         }
-        if (sysRoleUpdateInput.code == Const.AdminRole) {
-            throw ServiceException("${Const.AdminRole} 不能修改")
+        if (sysRoleUpdateInput.code == Const.ADMIN_ROLE) {
+            throw ServiceException("${Const.ADMIN_ROLE} 不能修改")
         }
         val sysRole = this.sysRoleRepository.update(sysRoleUpdateInput)
         return findSysRoleById(sysRole.id)
@@ -103,8 +103,8 @@ class SysRoleService(private val sysRoleRepository: SysRoleRepository) {
      */
     fun deleteSysRoleById(id: Long) {
         val sysRole = this.sysRoleRepository.findById(id).orElseThrow { ServiceException("角色不存在") }
-        if (sysRole.code == Const.AdminRole) {
-            throw ServiceException("${Const.AdminRole} 不能删除")
+        if (sysRole.code == Const.ADMIN_ROLE) {
+            throw ServiceException("${Const.ADMIN_ROLE} 不能删除")
         }
         this.sysRoleRepository.deleteById(id)
     }

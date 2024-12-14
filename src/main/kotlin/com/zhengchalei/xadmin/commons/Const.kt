@@ -16,16 +16,20 @@ limitations under the License.
 package com.zhengchalei.xadmin.commons
 
 object Const {
-    const val AdminUser = "admin"
+    const val ADMIN_USER = "admin"
 
-    const val AdminRole = "admin"
+    const val ADMIN_ROLE = "admin"
 
-    const val DefaultPassword = "123456"
+    const val DEFAULT_PASSWORD = "123456"
 
-    const val SecurityRolePrifix = "ROLE_"
+    const val SECURITY_ROLE_PREFIX = "ROLE_"
 
     // env
     const val ENV_PROD = "prod"
     const val ENV_DEV = "dev"
     const val ENV_TEST = "test"
+
+
+    // const token header
+    const val TOKEN_HEADER = "x-token"
 }

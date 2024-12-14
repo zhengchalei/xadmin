@@ -94,13 +94,13 @@ class SysUserService(
      * @return [SysUserDetailView]
      */
     fun createSysUser(sysUserCreateInput: SysUserCreateInput): SysUserDetailView {
-        if (sysUserCreateInput.username == Const.AdminUser) {
-            throw ServiceException("用户名不能为 ${Const.AdminUser}")
+        if (sysUserCreateInput.username == Const.ADMIN_USER) {
+            throw ServiceException("用户名不能为 ${Const.ADMIN_USER}")
         }
         // TODO 集成邮件后, 这里密码应该由邮件发送
         val newSysUser =
             new(SysUser::class).by(sysUserCreateInput.toEntity()) {
-                password = passwordEncoder.encode(Const.DefaultPassword)
+                password = passwordEncoder.encode(Const.DEFAULT_PASSWORD)
             }
         val sysUser: SysUser = this.sysUserRepository.insert(newSysUser)
         return findSysUserById(sysUser.id)
@@ -115,8 +115,8 @@ class SysUserService(
     fun updateSysUserById(sysUserUpdateInput: SysUserUpdateInput): SysUserDetailView {
         val oldUser =
             this.sysUserRepository.findById(sysUserUpdateInput.id).orElseThrow { throw ServiceException("用户不存在") }
-        if (oldUser.username == Const.AdminUser) {
-            throw ServiceException("${Const.AdminUser} 不能修改用户名")
+        if (oldUser.username == Const.ADMIN_USER) {
+            throw ServiceException("${Const.ADMIN_USER} 不能修改用户名")
         }
         val sysUser = this.sysUserRepository.update(sysUserUpdateInput)
         return findSysUserById(sysUser.id)
@@ -129,7 +129,7 @@ class SysUserService(
      */
     fun deleteSysUserById(id: Long) {
         val sysUser = this.sysUserRepository.findById(id).orElseThrow { throw ServiceException("用户不存在") }
-        if (sysUser.username == Const.AdminUser) {
+        if (sysUser.username == Const.ADMIN_USER) {
             throw ServiceException("${sysUser.username} 不能删除")
         }
         this.sysUserRepository.deleteById(id)

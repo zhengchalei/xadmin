@@ -35,7 +35,7 @@ class SysUserDetails(val user: SysUser) : UserDetails {
         val permissions = user.roles.flatMap { it.permissions }
         authorityList.addAll(permissions.map { it.code }.map { SimpleGrantedAuthority(it) })
         authorityList.addAll(
-            roles.map { it.code }.map { Const.SecurityRolePrifix + it }.map { SimpleGrantedAuthority(it) }
+            roles.map { it.code }.map { Const.SECURITY_ROLE_PREFIX + it }.map { SimpleGrantedAuthority(it) }
         )
         return authorityList
     }

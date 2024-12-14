@@ -74,14 +74,14 @@ class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigur
                 .claim(
                     "roles",
                     authentication.authorities
-                        .filter { it.authority.startsWith(Const.SecurityRolePrifix) }
+                        .filter { it.authority.startsWith(Const.SECURITY_ROLE_PREFIX) }
                         .map { it.authority }
-                        .joinToString(",") { it.replaceFirst(Const.SecurityRolePrifix, "") },
+                        .joinToString(",") { it.replaceFirst(Const.SECURITY_ROLE_PREFIX, "") },
                 )
                 .claim(
                     "permissions",
                     authentication.authorities
-                        .filter { !it.authority.startsWith(Const.SecurityRolePrifix) }
+                        .filter { !it.authority.startsWith(Const.SECURITY_ROLE_PREFIX) }
                         .joinToString(",") { it.authority },
                 )
                 .claim("departmentId", authentication.departmentId)
@@ -133,7 +133,7 @@ class JwtAuthTokenProvider(private val authConfigurationProperties: AuthConfigur
             jwtClaimsSet
                 .getStringClaim("roles")
                 .split(",")
-                .map { Const.SecurityRolePrifix.plus(it) }
+                .map { Const.SECURITY_ROLE_PREFIX.plus(it) }
                 .filter { it.isNotBlank() }
         // 构建权限
         val authorities = mutableListOf(permissions, roles).flatten().map { SimpleGrantedAuthority(it) }

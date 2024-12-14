@@ -15,15 +15,16 @@ limitations under the License.
 */
 package com.zhengchalei.xadmin.modules.sys.controller
 
+import com.zhengchalei.xadmin.commons.Const
 import com.zhengchalei.xadmin.commons.R
 import com.zhengchalei.xadmin.commons.util.IPUtil.getIpAddress
 import com.zhengchalei.xadmin.modules.sys.domain.dto.LoginDTO
 import com.zhengchalei.xadmin.modules.sys.domain.dto.LoginResponse
 import com.zhengchalei.xadmin.modules.sys.domain.dto.RegisterDTO
 import com.zhengchalei.xadmin.modules.sys.service.SysAuthService
+import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import java.util.*
 import net.dreamlu.mica.captcha.service.ICaptchaService
 import org.babyfish.jimmer.client.meta.Api
 import org.slf4j.LoggerFactory
@@ -31,6 +32,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @Api("sys")
 @Validated
@@ -45,9 +47,14 @@ class SysAuthController(
         LoggerFactory.getLogger(com.zhengchalei.xadmin.modules.sys.controller.SysAuthController::class.java)
 
     @PostMapping("/login")
-    fun login(@RequestBody loginDTO: LoginDTO, httpServletRequest: HttpServletRequest): R<LoginResponse> {
+    fun login(
+        @RequestBody loginDTO: LoginDTO,
+        httpServletRequest: HttpServletRequest,
+        httpServletResponse: HttpServletResponse
+    ): R<LoginResponse> {
         val ip = getIpAddress(httpServletRequest)
         val token = sysAuthService.login(loginDTO.username, loginDTO.password, loginDTO.captcha, loginDTO.captchaID, ip)
+        httpServletResponse.addCookie(Cookie(Const.TOKEN_HEADER, token))
         return R(data = LoginResponse(accessToken = token, refreshToken = token, username = loginDTO.username))
     }
 

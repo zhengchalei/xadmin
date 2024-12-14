@@ -15,6 +15,7 @@ limitations under the License.
 */
 package com.zhengchalei.xadmin.config.security.filter
 
+import com.zhengchalei.xadmin.commons.Const
 import com.zhengchalei.xadmin.config.security.provider.AuthTokenProvider
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -55,6 +56,12 @@ class JwtAuthorizationFilter(
     }
 
     private fun resolveToken(request: HttpServletRequest): String? {
+        // 从 Cookie 获取
+        val xToken = request.cookies?.find { it.name == Const.TOKEN_HEADER }?.value
+        if (!xToken.isNullOrBlank()) {
+            return xToken
+        }
+
         // 从头部信息拿到 Authorization 的内容
         val bearerToken = request.getHeader(AUTHORIZATION)
         // 如果 不为空, 且 Bearer 开头
