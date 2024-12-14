@@ -29,7 +29,6 @@ object Const {
     const val ENV_DEV = "dev"
     const val ENV_TEST = "test"
 
-
     // const token header
     const val TOKEN_HEADER = "x-token"
 }

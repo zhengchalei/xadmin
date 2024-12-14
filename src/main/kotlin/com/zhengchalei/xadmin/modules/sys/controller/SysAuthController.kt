@@ -25,6 +25,7 @@ import com.zhengchalei.xadmin.modules.sys.service.SysAuthService
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import java.util.*
 import net.dreamlu.mica.captcha.service.ICaptchaService
 import org.babyfish.jimmer.client.meta.Api
 import org.slf4j.LoggerFactory
@@ -32,7 +33,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 @Api("sys")
 @Validated
@@ -50,7 +50,7 @@ class SysAuthController(
     fun login(
         @RequestBody loginDTO: LoginDTO,
         httpServletRequest: HttpServletRequest,
-        httpServletResponse: HttpServletResponse
+        httpServletResponse: HttpServletResponse,
     ): R<LoginResponse> {
         val ip = getIpAddress(httpServletRequest)
         val token = sysAuthService.login(loginDTO.username, loginDTO.password, loginDTO.captcha, loginDTO.captchaID, ip)
