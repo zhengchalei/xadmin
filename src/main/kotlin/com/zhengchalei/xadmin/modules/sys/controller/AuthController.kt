@@ -21,7 +21,7 @@ import com.zhengchalei.xadmin.commons.util.IPUtil.getIpAddress
 import com.zhengchalei.xadmin.modules.sys.domain.dto.LoginDTO
 import com.zhengchalei.xadmin.modules.sys.domain.dto.LoginResponse
 import com.zhengchalei.xadmin.modules.sys.domain.dto.RegisterDTO
-import com.zhengchalei.xadmin.modules.sys.service.SysAuthService
+import com.zhengchalei.xadmin.modules.sys.service.AuthService
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -38,13 +38,12 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RestController
 @RequestMapping("/api/auth")
-class SysAuthController(
-    private val sysAuthService: SysAuthService,
+class AuthController(
+    private val authService: AuthService,
     private val captchaService: ICaptchaService,
     @Value("\${spring.profiles.active}") private val profile: String,
 ) {
-    private val log =
-        LoggerFactory.getLogger(com.zhengchalei.xadmin.modules.sys.controller.SysAuthController::class.java)
+    private val log = LoggerFactory.getLogger(AuthController::class.java)
 
     @PostMapping("/login")
     fun login(
@@ -53,8 +52,15 @@ class SysAuthController(
         httpServletResponse: HttpServletResponse,
     ): R<LoginResponse> {
         val ip = getIpAddress(httpServletRequest)
-        val token = sysAuthService.login(loginDTO.username, loginDTO.password, loginDTO.captcha, loginDTO.captchaID, ip)
-        httpServletResponse.addCookie(Cookie(Const.TOKEN_HEADER, token))
+        val token = authService.login(loginDTO.username, loginDTO.password, loginDTO.captcha, loginDTO.captchaID, ip)
+        httpServletResponse.addCookie(
+            Cookie(Const.TOKEN_HEADER, token).apply {
+                path = "/" // 设为全局路径
+                isHttpOnly = true // 防止 JavaScript 访问
+                secure = httpServletRequest.isSecure // 根据请求协议动态设置
+                maxAge = -1 // 设置有效期（秒）
+            }
+        )
         return R(data = LoginResponse(accessToken = token, refreshToken = token, username = loginDTO.username))
     }
 
@@ -91,22 +97,15 @@ class SysAuthController(
         return
     }
 
-    @PostMapping("/logout")
-    fun logout(): R<Boolean> {
-        this.sysAuthService.logout()
-        return R.success(data = true)
-    }
-
-    // send register email
     @PostMapping("/send-register-email-code")
     fun sendRegisterEmailCode(@RequestParam email: String): R<Unit> {
-        this.sysAuthService.sendRegisterEmailCode(email)
+        this.authService.sendRegisterEmailCode(email)
         return R()
     }
 
     @PostMapping("/register")
     fun register(@RequestBody registerDTO: RegisterDTO): R<Unit> {
-        this.sysAuthService.register(registerDTO)
+        this.authService.register(registerDTO)
         return R()
     }
 }

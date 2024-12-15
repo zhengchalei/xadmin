@@ -18,6 +18,7 @@ package com.zhengchalei.xadmin.modules.sys.repository
 import com.zhengchalei.xadmin.config.security.SecurityUtils
 import com.zhengchalei.xadmin.modules.sys.domain.*
 import com.zhengchalei.xadmin.modules.sys.domain.dto.SysUserDetailView
+import com.zhengchalei.xadmin.modules.sys.domain.dto.SysUserExportView
 import com.zhengchalei.xadmin.modules.sys.domain.dto.SysUserListSpecification
 import com.zhengchalei.xadmin.modules.sys.domain.dto.SysUserPageView
 import org.babyfish.jimmer.spring.repository.KRepository
@@ -122,5 +123,13 @@ interface SysUserRepository : KRepository<SysUser, Long> {
             }
             .fetchOne()
             .id
+    }
+
+    fun findSysUserExportList(specification: SysUserListSpecification): List<SysUserExportView> {
+        return sql.createQuery(SysUser::class) {
+                where(specification)
+                select(table.fetch(SysUserExportView::class))
+            }
+            .execute()
     }
 }

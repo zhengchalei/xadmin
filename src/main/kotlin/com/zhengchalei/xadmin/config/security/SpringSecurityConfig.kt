@@ -64,6 +64,7 @@ class SpringSecurityConfig(
                 // favicon.ico
                 authorize.requestMatchers("/favicon.ico").permitAll()
 
+                authorize.requestMatchers("/login.html", "/login").permitAll()
                 authorize.requestMatchers("/api/auth/login").permitAll()
                 authorize.requestMatchers("/api/auth/register").permitAll()
                 authorize.requestMatchers("/api/auth/captcha").permitAll()

@@ -35,6 +35,19 @@ SysUserDetailView {
     }
 }
 
+SysUserExportView {
+    #allScalars
+    department {
+        name
+    }
+    posts {
+        name
+    }
+    roles {
+        name
+    }
+}
+
 input SysUserCreateInput {
     #allScalars(this)
     id(department)

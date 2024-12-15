@@ -43,12 +43,12 @@ import org.springframework.stereotype.Service
  * @param [sysLoginLogRepository] 系统登录日志存储库
  * @param [authenticationManager] 认证管理器
  * @param [authTokenProvider] jwt 提供商
- * @constructor 创建[SysAuthService]
+ * @constructor 创建[AuthService]
  * @author 郑查磊
  * @date 2024-08-17
  */
 @Service
-class SysAuthService(
+class AuthService(
     private val sysLoginLogRepository: SysLoginLogRepository,
     private val authenticationManager: AuthenticationManager,
     private val authTokenProvider: AuthTokenProvider,
@@ -58,7 +58,7 @@ class SysAuthService(
     private val captchaCache: ICaptchaCache,
     private val sysUserService: SysUserService,
 ) {
-    private val log = LoggerFactory.getLogger(SysAuthService::class.java)
+    private val log = LoggerFactory.getLogger(AuthService::class.java)
 
     /**
      * 登录

@@ -57,6 +57,12 @@ dependencies {
     implementation("net.dreamlu:mica-logging")
     annotationProcessor("net.dreamlu:mica-auto")
 
+    // hutool-json
+    implementation("cn.hutool:hutool-json")
+
+    // excel
+    implementation("cn.idev.excel:fastexcel:latest.release")
+
     // web
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-freemarker")

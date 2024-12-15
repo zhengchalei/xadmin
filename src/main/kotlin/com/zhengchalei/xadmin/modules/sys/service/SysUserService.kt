@@ -160,4 +160,8 @@ class SysUserService(
             }
         )
     }
+
+    fun findSysUserExportList(specification: SysUserListSpecification): List<SysUserExportView> {
+        return this.sysUserRepository.findSysUserExportList(specification)
+    }
 }
