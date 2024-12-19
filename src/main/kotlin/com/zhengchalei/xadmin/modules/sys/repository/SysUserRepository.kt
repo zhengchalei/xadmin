@@ -132,4 +132,12 @@ interface SysUserRepository : KRepository<SysUser, Long> {
             }
             .execute()
     }
+
+    fun findByEmail(email: String): SysUserDetailView {
+        return sql.createQuery(SysUser::class) {
+                where(table.email eq email)
+                select(table.fetch(SysUserDetailView::class))
+            }
+            .fetchOne()
+    }
 }

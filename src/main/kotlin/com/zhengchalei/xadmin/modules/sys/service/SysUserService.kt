@@ -164,4 +164,8 @@ class SysUserService(
     fun findSysUserExportList(specification: SysUserListSpecification): List<SysUserExportView> {
         return this.sysUserRepository.findSysUserExportList(specification)
     }
+
+    fun findSysUserByEmail(email: String): SysUserDetailView {
+        return this.sysUserRepository.findByEmail(email) ?: throw ServiceException("用户不存在")
+    }
 }

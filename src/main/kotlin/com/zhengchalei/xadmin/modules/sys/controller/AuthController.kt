@@ -21,6 +21,7 @@ import com.zhengchalei.xadmin.commons.util.IPUtil.getIpAddress
 import com.zhengchalei.xadmin.modules.sys.domain.dto.LoginDTO
 import com.zhengchalei.xadmin.modules.sys.domain.dto.LoginResponse
 import com.zhengchalei.xadmin.modules.sys.domain.dto.RegisterDTO
+import com.zhengchalei.xadmin.modules.sys.domain.dto.RestPasswordDTO
 import com.zhengchalei.xadmin.modules.sys.service.AuthService
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
@@ -97,8 +98,8 @@ class AuthController(
         return
     }
 
-    @PostMapping("/send-register-email-code")
-    fun sendRegisterEmailCode(@RequestParam email: String): R<Unit> {
+    @PostMapping("/send-register-email-code/{email}")
+    fun sendRegisterEmailCode(@PathVariable email: String): R<Unit> {
         this.authService.sendRegisterEmailCode(email)
         return R()
     }
@@ -106,6 +107,19 @@ class AuthController(
     @PostMapping("/register")
     fun register(@RequestBody registerDTO: RegisterDTO): R<Unit> {
         this.authService.register(registerDTO)
+        return R()
+    }
+
+    // 找回密码
+    @PostMapping("/send-rest-password-email-code/{email}")
+    fun sendRestPasswordEmailCode(@PathVariable email: String): R<Unit> {
+        this.authService.sendRestPasswordEmailCode(email)
+        return R()
+    }
+
+    @PostMapping("/rest-password")
+    fun restPassword(@RequestBody restPasswordDTO: RestPasswordDTO): R<Unit> {
+        this.authService.restPassword(restPasswordDTO)
         return R()
     }
 }

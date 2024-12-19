@@ -13,13 +13,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.zhengchalei.xadmin.config.security
+package com.zhengchalei.xadmin.modules.sys.controller
 
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 
 @Controller
-class LoginViewResource {
+class AuthViewController {
 
     @GetMapping("/")
     fun index(): String {
@@ -29,5 +29,15 @@ class LoginViewResource {
     @GetMapping(value = ["/login.html", "/login"])
     fun login(): String {
         return "login"
+    }
+
+    @GetMapping(value = ["/register", "/register.html"])
+    fun register(): String {
+        return "register"
+    }
+
+    @GetMapping(value = ["/rest-password", "/rest-password.html"])
+    fun restPassword(): String {
+        return "rest-password"
     }
 }

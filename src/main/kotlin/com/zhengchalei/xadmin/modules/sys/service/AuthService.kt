@@ -23,6 +23,7 @@ import com.zhengchalei.xadmin.config.virtualThread.VirtualThreadExecutor
 import com.zhengchalei.xadmin.modules.sys.domain.SysLoginLog
 import com.zhengchalei.xadmin.modules.sys.domain.by
 import com.zhengchalei.xadmin.modules.sys.domain.dto.RegisterDTO
+import com.zhengchalei.xadmin.modules.sys.domain.dto.RestPasswordDTO
 import com.zhengchalei.xadmin.modules.sys.domain.dto.SysUserCreateInput
 import com.zhengchalei.xadmin.modules.sys.repository.SysLoginLogRepository
 import java.time.LocalDateTime
@@ -158,5 +159,20 @@ class AuthService(
         val captchaCode = UUID.randomUUID().toString()
         this.captchaCache.put(email, captchaCode, 300000L)
         log.info("发送注册验证码: email: {}, code: {}", email, captchaCode)
+    }
+
+    fun sendRestPasswordEmailCode(email: String) {
+        val captchaCode = UUID.randomUUID().toString()
+        this.captchaCache.put(email, captchaCode, 300000L)
+        log.info("发送找回密码验证码: email: {}, code: {}", email, captchaCode)
+    }
+
+    fun restPassword(restPasswordDTO: RestPasswordDTO) {
+        val captchaCode = this.captchaCache.getAndRemove(restPasswordDTO.email) ?: throw LoginFailException("验证码已过期")
+        if (captchaCode != restPasswordDTO.captcha) {
+            throw LoginFailException("验证码错误")
+        }
+        val user = this.sysUserService.findSysUserByEmail(restPasswordDTO.email)
+        this.sysUserService.changePassword(user.id, restPasswordDTO.newPassword)
     }
 }

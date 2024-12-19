@@ -101,7 +101,6 @@
                 <button type="button" class="refresh-button" onclick="refreshCaptcha()">Refresh</button>
             </div>
             <input type="text" id="captcha" name="captcha" required placeholder="Enter captcha">
-            <input type="hidden" id="captchaID" name="captchaID" value="initial-uuid">
         </div>
         <button type="button" class="login-button" onclick="submitLogin()">Login</button>
     </form>
@@ -111,9 +110,7 @@
 
     function refreshCaptcha() {
         const captchaImg = document.getElementById('captcha-img');
-        const captchaIDInput = document.getElementById('captchaID');
         captchaImg.src = `/api/auth/captcha/` + captchaID;
-        captchaIDInput.value = captchaID;
     }
     refreshCaptcha();
 
