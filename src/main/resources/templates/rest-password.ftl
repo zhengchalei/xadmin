@@ -91,14 +91,13 @@
     <form id="reset-password-form">
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
+            <div class="captcha-group">
+                <input type="email" id="email" name="email" required>
+                <button type="button" class="send-code-btn" onclick="sendEmailCode()">Send Email Code</button>
+            </div>
         </div>
         <div class="form-group">
             <label for="captcha">Captcha</label>
-            <div class="captcha-group">
-                <img id="captcha-img" src="/api/auth/send-rest-password-email-code/initial-email" alt="Captcha">
-                <button type="button" onclick="refreshCaptcha()">Refresh</button>
-            </div>
             <input type="text" id="captcha" name="captcha" required placeholder="Enter captcha">
         </div>
         <div class="form-group">
@@ -111,15 +110,26 @@
     </form>
 </div>
 <script>
-    function refreshCaptcha() {
+    function sendEmailCode() {
         const email = document.getElementById('email').value;
         if (!email) {
-            alert('Please enter your email first.');
+            alert('Please enter a valid email address.');
             return;
         }
-        const captchaImg = document.getElementById('captcha-img');
-        captchaImg.src = `/api/auth/send-rest-password-email-code/` + encodeURIComponent(email);
+
+        fetch(`/api/auth/send-rest-password-email-code/<#noparse>${encodeURIComponent(email)}</#noparse>`, {
+            method: 'POST',
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Verification code sent to your email!');
+                } else {
+                    alert('Failed to send email code.');
+                }
+            })
+            .catch(() => alert('Error occurred while sending email code.'));
     }
+
 
     document.getElementById('reset-password-form').addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -147,10 +157,10 @@
                 window.location.href = '/login';
             } else {
                 const data = await response.json();
-                alert(`Error: ${data.errorMessage || 'Password reset failed.'}`);
+                alert(`Error: <#noparse>${data.errorMessage || 'Password reset failed.'}</#noparse>`);
             }
         } catch (error) {
-            alert(`Error submitting reset request: ${error.message}`);
+            alert(`Error submitting reset request: <#noparse>${error.message || 'Password reset failed.'}</#noparse>`);
         }
     });
 </script>

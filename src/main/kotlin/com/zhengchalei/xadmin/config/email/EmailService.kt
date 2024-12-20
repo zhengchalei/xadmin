@@ -20,6 +20,7 @@ import freemarker.cache.TemplateLoader
 import freemarker.template.Configuration
 import freemarker.template.Template
 import java.io.StringWriter
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.scheduling.annotation.Async
@@ -27,7 +28,10 @@ import org.springframework.stereotype.Service
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer
 
 @Service
-class EmailService(private val javaMailSender: JavaMailSender) {
+class EmailService(
+    private val javaMailSender: JavaMailSender,
+    @Value("\${spring.mail.username}") private val emailFrom: String,
+) {
 
     private val freemarkerConfiguration: FreeMarkerConfigurer = freemarkerGeneratorConfig()
 
@@ -51,11 +55,11 @@ class EmailService(private val javaMailSender: JavaMailSender) {
             }
 
         val message = javaMailSender.createMimeMessage()
-        MimeMessageHelper(message, true).apply {
-            setTo(email)
-            setSubject("xadmin操作验证码")
-            setText(text, true) // 第二个参数 true 表示发送 HTML 内容
-        }
+        val helper = MimeMessageHelper(message, true)
+        helper.setFrom(emailFrom)
+        helper.setTo(email)
+        helper.setSubject("xadmin验证码")
+        helper.setText(text, true)
         javaMailSender.send(message)
     }
 }

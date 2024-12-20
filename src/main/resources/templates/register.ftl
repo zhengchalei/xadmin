@@ -94,10 +94,7 @@
         </div>
         <div class="form-group">
             <label for="captcha">Captcha</label>
-            <div class="captcha-group">
-                <img id="captcha-img" src="/api/auth/captcha/initial-uuid" alt="Captcha">
-                <input type="text" id="captcha" name="captcha" required placeholder="Enter captcha">
-            </div>
+            <input type="text" id="captcha" name="captcha" required placeholder="Enter captcha">
         </div>
         <button type="submit" class="register-button">Register</button>
     </form>
@@ -110,7 +107,7 @@
             return;
         }
 
-        fetch(`/api/auth/send-register-email-code/${encodeURIComponent(email)}`, {
+        fetch(`/api/auth/send-register-email-code/<#noparse>${encodeURIComponent(email)}</#noparse>`, {
             method: 'POST',
         })
             .then(response => {

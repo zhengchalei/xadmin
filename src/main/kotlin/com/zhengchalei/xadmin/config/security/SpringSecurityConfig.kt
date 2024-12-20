@@ -65,10 +65,9 @@ class SpringSecurityConfig(
                 authorize.requestMatchers("/favicon.ico").permitAll()
 
                 authorize.requestMatchers("/login.html", "/login").permitAll()
-                authorize.requestMatchers("/api/auth/login").permitAll()
-                authorize.requestMatchers("/api/auth/register").permitAll()
-                authorize.requestMatchers("/api/auth/captcha").permitAll()
-                authorize.requestMatchers("/api/auth/captcha/**").permitAll()
+                authorize.requestMatchers("/register.html", "/register").permitAll()
+                authorize.requestMatchers("/rest-password.html", "/rest-password").permitAll()
+                authorize.requestMatchers("/api/auth/**").permitAll()
                 // dev
                 if (profile != Const.ENV_PROD) {
                     authorize.requestMatchers("/doc.html").permitAll()

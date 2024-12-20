@@ -15,6 +15,8 @@ limitations under the License.
 */
 package com.zhengchalei.xadmin.modules.sys.service
 
+import com.zhengchalei.xadmin.commons.Const
+import com.zhengchalei.xadmin.config.email.EmailService
 import com.zhengchalei.xadmin.config.exceptions.LoginFailException
 import com.zhengchalei.xadmin.config.exceptions.ServiceException
 import com.zhengchalei.xadmin.config.security.authentication.SysUserAuthentication
@@ -27,11 +29,11 @@ import com.zhengchalei.xadmin.modules.sys.domain.dto.RestPasswordDTO
 import com.zhengchalei.xadmin.modules.sys.domain.dto.SysUserCreateInput
 import com.zhengchalei.xadmin.modules.sys.repository.SysLoginLogRepository
 import java.time.LocalDateTime
-import java.util.*
-import net.dreamlu.mica.captcha.cache.ICaptchaCache
+import kotlin.random.Random
 import net.dreamlu.mica.captcha.service.ICaptchaService
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher
 import org.babyfish.jimmer.kt.new
+import org.redisson.api.RedissonClient
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -56,8 +58,9 @@ class AuthService(
     private val ip2regionSearcher: Ip2regionSearcher,
     private val virtualThreadExecutor: VirtualThreadExecutor,
     private val captchaService: ICaptchaService,
-    private val captchaCache: ICaptchaCache,
     private val sysUserService: SysUserService,
+    private val emailService: EmailService,
+    private val redissonClient: RedissonClient,
 ) {
     private val log = LoggerFactory.getLogger(AuthService::class.java)
 
@@ -139,7 +142,9 @@ class AuthService(
 
     fun register(registerDTO: RegisterDTO) {
         // 判断验证码
-        val captchaCode = this.captchaCache.getAndRemove(registerDTO.email) ?: throw LoginFailException("验证码已过期")
+        val registerMap = this.redissonClient.getMap<String, String>(Const.REGISTER_KEY)
+        val captchaCode = registerMap[registerDTO.email] ?: throw LoginFailException("邮箱未注册")
+        registerMap.remove(registerDTO.email)
         if (captchaCode != registerDTO.captcha) {
             throw LoginFailException("验证码错误")
         }
@@ -156,19 +161,28 @@ class AuthService(
     }
 
     fun sendRegisterEmailCode(email: String) {
-        val captchaCode = UUID.randomUUID().toString()
-        this.captchaCache.put(email, captchaCode, 300000L)
+        val captchaCode = Random.nextInt(1000, 10000).toString()
+        val registerMap = this.redissonClient.getMap<String, String>(Const.REGISTER_KEY)
+        if (registerMap.containsKey(email)) {
+            throw LoginFailException("验证码已发送， 请检查邮箱！")
+        }
+        registerMap[email] = captchaCode
+        this.emailService.sendVerificationCode(email, captchaCode)
         log.info("发送注册验证码: email: {}, code: {}", email, captchaCode)
     }
 
     fun sendRestPasswordEmailCode(email: String) {
-        val captchaCode = UUID.randomUUID().toString()
-        this.captchaCache.put(email, captchaCode, 300000L)
+        val restPasswordMap = this.redissonClient.getMap<String, String>(Const.REGISTER_KEY)
+        val captchaCode = Random.nextInt(1000, 10000).toString()
+        restPasswordMap[email] = captchaCode
+        this.emailService.sendVerificationCode(email, captchaCode)
         log.info("发送找回密码验证码: email: {}, code: {}", email, captchaCode)
     }
 
     fun restPassword(restPasswordDTO: RestPasswordDTO) {
-        val captchaCode = this.captchaCache.getAndRemove(restPasswordDTO.email) ?: throw LoginFailException("验证码已过期")
+        val restPasswordMap = this.redissonClient.getMap<String, String>(Const.REGISTER_KEY)
+        val captchaCode = restPasswordMap[restPasswordDTO.email] ?: throw LoginFailException("验证码不存在")
+        restPasswordMap.remove(restPasswordDTO.email)
         if (captchaCode != restPasswordDTO.captcha) {
             throw LoginFailException("验证码错误")
         }

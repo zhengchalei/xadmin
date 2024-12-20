@@ -31,4 +31,8 @@ object Const {
 
     // const token header
     const val TOKEN_HEADER = "x-token"
+
+    // key prefix
+    const val REGISTER_KEY = "register:code"
+    const val REST_PASSWORD_KEY = "rest-password:code"
 }
