@@ -108,6 +108,7 @@
             <button type="submit">Reset Password</button>
         </div>
     </form>
+    <a href="/login.html">Back to Login</a>
 </div>
 <script>
     function sendEmailCode() {

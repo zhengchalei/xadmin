@@ -98,6 +98,7 @@
         </div>
         <button type="submit" class="register-button">Register</button>
     </form>
+    <a href="/login.html">Login</a>
 </div>
 <script>
     function sendEmailCode() {

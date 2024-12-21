@@ -24,6 +24,8 @@ import com.zhengchalei.xadmin.config.security.filter.StatefulTokenAuthorizationF
 import com.zhengchalei.xadmin.config.security.provider.AuthConfigurationProperties
 import com.zhengchalei.xadmin.config.security.provider.AuthTokenProvider
 import com.zhengchalei.xadmin.config.security.provider.AuthTokenType
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.security.authentication.AuthenticationManager
@@ -83,13 +85,16 @@ class SpringSecurityConfig(
                 authorize.anyRequest().authenticated()
             }
             .exceptionHandling {
-                it.authenticationEntryPoint { _, response, authException ->
+                it.authenticationEntryPoint { request, response, authException ->
+                    // 判断 request 的请求方式, 如果是 get 并且判断是浏览器访问
+                    if (shouldRedirectToLogin(request, response)) return@authenticationEntryPoint
                     response.sendError(
                         401,
                         objectMapper.writeValueAsString(GlobalException.Error(authException.message ?: "未登录")),
                     )
                 }
-                it.accessDeniedHandler { _, response, accessDeniedException ->
+                it.accessDeniedHandler { request, response, accessDeniedException ->
+                    if (shouldRedirectToLogin(request, response)) return@accessDeniedHandler
                     response.sendError(
                         403,
                         objectMapper.writeValueAsString(GlobalException.Error(accessDeniedException.message ?: "无权限")),
@@ -99,6 +104,15 @@ class SpringSecurityConfig(
             .sessionManagement { it.disable() }
             .csrf { it.disable() }
             .build()
+    }
+
+    private fun shouldRedirectToLogin(request: HttpServletRequest, response: HttpServletResponse): Boolean {
+        if (request.method == "GET" && request.getHeader("User-Agent")?.contains("Mozilla") == true) {
+            // 重定向到登录页面
+            response.sendRedirect("/login.html")
+            return true
+        }
+        return false
     }
 
     @Bean

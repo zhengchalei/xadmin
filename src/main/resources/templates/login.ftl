@@ -104,6 +104,10 @@
         </div>
         <button type="button" class="login-button" onclick="submitLogin()">Login</button>
     </form>
+    <#--  注册  -->
+    <a href="/register.html">Register</a>
+    <#--  忘记密码  -->
+    <a href="/rest-password.html">Forgot Password</a>
 </div>
 <script>
     let captchaID = crypto.randomUUID();
@@ -112,6 +116,7 @@
         const captchaImg = document.getElementById('captcha-img');
         captchaImg.src = `/api/auth/captcha/` + captchaID;
     }
+
     refreshCaptcha();
 
     // Handle login form submission using fetch
@@ -145,8 +150,7 @@
                 if (data.success) {
                     // 重定向到首页
                     window.location.href = '/';
-                }
-                else {
+                } else {
                     alert('Login failed: ' + data.errorMessage);
                 }
             } else {

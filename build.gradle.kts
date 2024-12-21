@@ -155,8 +155,7 @@ spotless {
             limitations under the License.
             */
         """
-                .trimIndent()
-        )
+                .trimIndent())
         target("src/main/kotlin/**/*.kt")
     }
     kotlinGradle {
